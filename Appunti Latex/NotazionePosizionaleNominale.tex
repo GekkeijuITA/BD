@@ -1,0 +1,41 @@
+\documentclass[12pt]{article}
+\usepackage[italian]{babel}
+\usepackage{geometry}
+\usepackage{amsmath}
+
+\geometry{margin=2cm}
+\newtheorem{definition}{Definizione}
+
+\title{Notazione Posizionale e Nominale}
+\author{Lorenzo Vaccarecci}
+\date{27 Febbraio 2024}
+
+\begin{document}
+\maketitle
+\begin{definition}
+    \textbf{Dominio}: un insieme (anche infinito) di valori
+\end{definition}
+\begin{definition}
+    Un insieme è \textbf{non ordinato} e \textbf{non ha duplicati}
+\end{definition}
+\begin{definition}
+    \textbf{Relazione}: sottoinsieme \underline{finito} del prodotto cartesiano di n domini
+\end{definition}
+\section{Prodotto Cartesiano (Notazione Posizionale)}
+\(D_{1},\dots,D_{N}\in \mathcal{D} \) insiemi (anche infiniti) di valori (domini)\\
+Prodotto Cartesiano \(D_{1}\times\dots\times D_{N}\)\\
+\(\left\{\left(v_{1},\dots ,v_{N}\right)|v_{1}\in D_{1},\dots,v_{N}\in D_{N}\right\} \equiv \left\{t:[l,n]\rightarrow D_{1}\cup\dots\cup D_{n}|t(i)\in D_{i} \text{ } i=l\dots n\right\}\)
+\\Tutte le possibili combinazioni
+\subsection*{Esempio}
+\(D_{1}=\{0,1,2\}\)\\
+\(D_{2}=\{d,v\}\)\\
+\(D_{1}\times D_{2} = \{(0,d),(0,v),(1,d),(1,v),(2,d),(2,v)\} \neq D_{2}\times D_{1}\)\\
+Ha cardinalità 6 e grado 2.
+(grado = colonne; cardinalità = righe)
+\section{Prodotto Cartesiano (Notazione Nominale)}
+\(A_{1},\dots,A_{N}\) nomi di attributi\\
+\(\left\{\left(A_{1}:v_{1},\dots ,A_{n}:v_{N}\right)|v_{1}\in D_{1},\dots,v_{N}\in D_{N}\right\} \equiv \left\{t:[A_{1},\dots,A_{n}]\rightarrow D_{1}\cup\dots\cup D_{n}|t(A_{i})\in D_{i} \text{ } i=l\dots n\right\}\)
+\section{Valori Nulli}
+? NULL \(v_{i}\in D_{i}\cup\{?\}\)
+\section{Esempio di esercizio}
+\end{document}
