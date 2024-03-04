@@ -1,0 +1,68 @@
+\documentclass[12pt]{article}
+\usepackage[italian]{babel}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{ulem}
+\usepackage{array}
+
+\geometry{margin=2cm}
+\newtheorem{definition}{Definizione}
+\newtheorem{example}{Esempio}
+
+\title{DBMS}
+\author{Lorenzo Vaccarecci}
+\date{4 Marzo 2024}
+
+\graphicspath{{./Immagini/}}
+
+\begin{document}
+\maketitle
+\section{Introduzione}
+\begin{description}
+    \item[Base di dati]: collezione di dati tra loro correlati, che rappresentano le informazioni di interesse in un sistema informativo.
+    \item[Sistema di gestione di basi di dati (DBMS)]: sistema software che fornisce gli strumenti necessari a gestire basi di dati. 
+\end{description}
+\subsection{Differenze tra file system e DBMS}
+\begin{center}
+    \begin{tabular}{| m{6em} | m{20em} | m{15em} |}
+        \hline
+         & \textbf{FS/SO} & \textbf{DBMS} \\
+        \hline
+        \textbf{Ridondanza e inconsistenza} & 
+        Se ho un nome in file diversi, ad esempio, e lo voglio modificare allora devo modificarlo in tutti i file in cui è presente & 
+        Modello per descrivere le mie \uline{entità} e le associazioni tra le entità \\
+        \hline
+        \textbf{Difficoltà di accesso ai dati} &
+        Per ogni richiesta dovrei avere un nuovo programma &
+        \begin{itemize}
+            \setlength\itemsep{0em}
+            \item Disponibili linguaggi che permettono di specificare in modo semplice le richieste sui nostri dati
+            \item Uso interattivo
+        \end{itemize}
+        \\
+        \hline
+        \textbf{Integrità dei dati} &
+        Il vincolo di integrità deve essere preso in considerazione da ogni programma che utilizza dati corrispondenti&
+        \begin{itemize}
+            \setlength\itemsep{0em}
+            \item I vincoli di integrità vengono specificati nel sistema
+            \item Il sistema li verificherà ogni volta che i dati vengono modificati
+        \end{itemize} \\
+        \hline
+        \textbf{Protezione dei dati} &
+        A livello di File&
+        \begin{itemize}
+            \setlength\itemsep{0em}
+            \item Accesso concorrente e protezione dei dati a granularità più fine (in base al conenuto di interesse)
+        \end{itemize} \\
+        \hline
+    \end{tabular}
+\end{center}
+\subsection{Carte vincenti dei DBMS}
+\begin{itemize}
+    \item \textbf{Schema vs Istanza}: Lo schema è la struttura "della tabella" che include i vincoli di integrità; l'istanza è il contenuto dello schema.
+    \item \textbf{Linguaggi \uline{dichiarativi}}: dico cosa voglio fare, non come farlo. L'algoritmo viene scelto dal DBMS.
+\end{itemize}
+\end{document}
