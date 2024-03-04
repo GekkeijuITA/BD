@@ -62,7 +62,41 @@
 \end{center}
 \subsection{Carte vincenti dei DBMS}
 \begin{itemize}
+    \setlength\itemsep{0em}
     \item \textbf{Schema vs Istanza}: Lo schema è la struttura "della tabella" che include i vincoli di integrità; l'istanza è il contenuto dello schema.
     \item \textbf{Linguaggi \uline{dichiarativi}}: dico cosa voglio fare, non come farlo. L'algoritmo viene scelto dal DBMS.
+\end{itemize}
+\subsection{Livelli nella rappresentazione dei dati}
+\begin{itemize}
+    \setlength\itemsep{0em}
+    \item \textbf{Vista}: (solo in DB con schemi medio-grandi) descrive una porzione dell'intero schema della base di dati.
+    \item \textbf{Livello logico}: Descrive lo schema logico espresso tramite le strutture del modello dei dati\begin{itemize}
+        \item Quali sono i dati memorizzati nella base di dati
+        \item Eventuali associazioni tra di essi
+        \item Vincoli di integrità semantica e di autorizzazione
+        
+    \end{itemize}
+    AKA Rappresentazione a schema 
+    \item \textbf{Livello fisico}: Definisce lo schema fisico: strutture di memorizzazione dei dati (file, record, ecc.)
+    AKA Rappresentazione con i file
+\end{itemize}
+\subsection{Modello dei dati: Linguaggi}
+\begin{itemize}
+    \item \textbf{Data Definition Language (DDL)}: permette di agire sullo schema
+    \item \textbf{Data Manipulation Language (DML)}: permette di creare, modificare e interrogare l'istanza
+    \item \textbf{Storage Definition Language (SDL)}: definisce lo schema fisico del DB
+\end{itemize}
+\subsection{I servizi}
+\begin{itemize}
+    \item \textbf{Esterni}: possono essere invocati tramite interfacce o API
+    \item \textbf{Interni}: garantiscono l'integrità, ottimizzazione, gestione della concorrenza, ecc.
+\end{itemize}
+\section{Seconda definizione di DBMS}
+E' un sistema software (complesso) che offre molteplici servizi al fine di gestire
+\begin{itemize}
+    \item grandi quantità di dati persistenti e condivisi
+    \item in modo efficiente
+    \item garantendone l'integritàseguendo una determinata politica degli accessi
+    \item mediante l'esecuzione coordinata delle richieste e la protezione da malfunzionamenti
 \end{itemize}
 \end{document}
