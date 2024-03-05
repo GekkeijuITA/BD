@@ -5,13 +5,12 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{ulem}
-\usepackage{array}
 
 \geometry{margin=2cm}
 \newtheorem{definition}{Definizione}
 \newtheorem{example}{Esempio}
 
-\title{Titolo}
+\title{Continuazione - Chiavi Esterne}
 \author{Lorenzo Vaccarecci}
 \date{5 Marzo 2024}
 
@@ -19,4 +18,12 @@
 
 \begin{document}
 \maketitle
+\begin{itemize}
+    \item \textbf{Chiave esterna}: chiave della relazione riferita
+    \item \textbf{Relazione referente}: relazione dove la chiave esterna viene utilizzata \\(\(Y\subseteq U_{R}\) è chiave esterna in $R$ su $R'$)
+    \item \textbf{Relazione riferita}: relazione a cui si fa riferimento con la chiave esterna \\(\(Y\subseteq U_{R}'\) chiave per $R'$)
+\end{itemize}
+\(\forall \text{ istanza di } R,R' \text{ } \forall t \text{ nell'istanza di } R \text{ }\exists t' \text{ nell'istanza di } R' \text{ t.c. } t\left[Y\right]=t'\left[Y'\right]\)
+\\ $f$ funzione iniettiva, $Y$ chiave per $R'$, $X$ chiave esterna per $R$: \(X=f(Y)\subseteq U_{R}\)
+\\\textbf{Le chiavi esterne le indichiamo con un apice}: Video(\uline{colloc},\(\text{titolo}^\text{FILM}\),\(\text{regista}^\text{FILM}\),tipo)
 \end{document}
