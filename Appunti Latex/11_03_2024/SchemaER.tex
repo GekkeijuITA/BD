@@ -1,0 +1,74 @@
+\documentclass[12pt]{article}
+\usepackage[italian]{babel}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{ulem}
+\usepackage{tikz}
+\usetikzlibrary{er, positioning}
+\usetikzlibrary{arrows}
+
+\geometry{margin=2cm}
+\let\olditemize\itemize
+\renewcommand\itemize{\olditemize\setlength\itemsep{0em}}
+
+\tikzset {multi attribute/.style={attribute,double distance=1.5pt}}
+\tikzset {derived attribute/.style={attribute,dashed}}
+\tikzset {total/.style={double distance=1.5pt}}
+\tikzset {every entity/.style={ draw=orange,fill=orange!20}}
+\tikzset {every attribute/.style={draw=purple ,fill=purple!20}}
+\tikzset {every relationship/.style={draw=green,fill=green!20}}
+\newcommand {\key}[1]{\underline{#1}}
+
+\title{Schema ER}
+\author{Lorenzo Vaccarecci}
+\date{11 Marzo 2024}
+
+\graphicspath{{../Immagini/}}
+
+\begin{document}
+\maketitle
+\section{Schema ER}
+\begin{center}
+    \begin{tikzpicture}[auto, node distance=3.5cm]
+        \node[entity](gruppo){Gruppo};
+        \node[relationship](appartiene)[right of=gruppo]{Appartiene};
+        \node[entity](musicista)[right of=appartiene]{Musicista};
+        \node[entity](gruppo){Gruppo};
+        \node[relationship](suona1)[below of=musicista]{Suona};
+        \node[relationship](suona2)[below of=appartiene]{Suona};
+        \node[relationship](prevede)[below of=gruppo]{Prevede};
+        \node[entity](strumento)[below of=suona2]{Strumento};
+        \path (appartiene) edge node {} (musicista) edge node {} (gruppo);
+        \path (suona1) edge node {} (musicista) edge node {} (strumento);
+        \path (suona2) edge node {} (gruppo) edge node {} (strumento) edge node {} (musicista);
+        \path (prevede) edge node {} (gruppo) edge node {} (strumento);
+    \end{tikzpicture}    
+\end{center}
+\begin{description}
+    \item \begin{tikzpicture}
+        \node[entity]{Attributo};
+    \end{tikzpicture}
+    \item \begin{tikzpicture}
+        \node[relationship]{Relazione};
+    \end{tikzpicture}
+    \item \begin{tikzpicture}
+        \node[attribute]{Attributo};
+    \end{tikzpicture}
+\end{description}
+\section{Da schema a testo}
+\begin{description}
+    \item[] [[Appartiene]] = \{(band, jack),(rs, susie),(band, susie), \dots\}
+    \item[] [[Precede]] = \{(band, basso),(band, chitarra),(rs, basso),(rs, chitarra)\}
+    \item[] [[Suona]] = \{(chitarra, susie),(chitarra, jack),(basso, susie),(basso, jack)\}
+\end{description}
+\section{Attributo}
+\begin{center}
+    \begin{tikzpicture}[auto, node distance=3.5cm]
+        \node[entity](entita){Entità}
+        child {node[attribute](attributo){Attributo}};
+        \draw[thick, -o] (entita.south) -- (attributo.north);
+    \end{tikzpicture}
+\end{center}
+\end{document}
