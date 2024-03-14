@@ -1,0 +1,33 @@
+\documentclass[12pt]{article}
+\usepackage[italian]{babel}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{ulem}
+\usepackage{tikz}
+
+\usetikzlibrary{er, positioning}
+\usetikzlibrary{arrows}
+
+\geometry{margin=2cm}
+\let\olditemize\itemize
+\renewcommand\itemize{\olditemize\setlength\itemsep{0em}}
+
+\tikzset {multi attribute/.style={attribute,double distance=1.5pt}}
+\tikzset {derived attribute/.style={attribute,dashed}}
+\tikzset {total/.style={double distance=1.5pt}}
+\tikzset {every entity/.style={ draw=orange,fill=orange!20}}
+\tikzset {every attribute/.style={draw=purple,fill=purple!20}}
+\tikzset {every relationship/.style={draw=green,fill=green!20}}
+\newcommand {\key}[1]{\underline{#1}}
+
+\title{Schema ER}
+\author{Lorenzo Vaccarecci}
+\date{12 Marzo 2024}
+
+\graphicspath{{../Immagini/}}
+
+\begin{document}
+\maketitle
+\end{document}

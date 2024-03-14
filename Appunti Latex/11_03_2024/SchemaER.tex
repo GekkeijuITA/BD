@@ -43,7 +43,7 @@
         \path (appartiene) edge node {} (musicista) edge node {} (gruppo);
         \path (suona1) edge node {} (musicista) edge node {} (strumento);
         \path (suona2) edge node {} (gruppo) edge node {} (strumento) edge node {} (musicista);
-        \path (prevede) edge node {} (gruppo) edge node {} (strumento);
+        \path (prevede) edge node {($min$,$max$)} (gruppo) edge node {} (strumento);
     \end{tikzpicture}    
 \end{center}
 \begin{description}
