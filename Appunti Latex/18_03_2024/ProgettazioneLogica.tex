@@ -1,0 +1,45 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\input{../variables.tex}
+\preamble
+
+\title{Progettazione Logica}
+\date{18 Marzo 2024}
+
+\begin{document}
+\maketitle
+\begin{center}
+    \begin{tikzpicture}[node distance=2cm]
+        \node[entity] (er) {Schema ER + vincoli};
+        \node[entity] (carlavoro) [right of=er, xshift=3cm] {Carico di lavoro};
+        \node[entity] (voldati) [right of=carlavoro, xshift=3cm] {Volume dei dati};
+        \node[attribute] (ristrut) [below of=carlavoro] {Ristrutturazione};
+        \node[attribute] (trad) [below of=ristrut] {Traduzione};
+        \node[entity] (fine) [below of=trad] {Schema relazionale + vincoli};
+        \draw[->] (er) -- (ristrut);
+        \draw[->] (carlavoro) -- (ristrut);
+        \draw[->] (voldati) -- (ristrut);
+        \draw[->] (ristrut) -- (trad);
+        \draw[->] (trad) -- (fine);
+    \end{tikzpicture}
+\end{center}
+\textit{Volume dei dati: quante istruzioni per ogni entità/associazione}
+\section{Ristrutturazione}
+\subsection{Attributi composti}
+\begin{enumerate}
+    \item Se non utilizzato per ricerce, si può mettere tutto in un unico attributo.
+    \item Se utilizzato per ricerce, si può mettere in attributi separati.
+    \item Si trasforma in entità.
+\end{enumerate}
+\subsection{Attributi multivalore}
+\begin{enumerate}
+    \item Se abbiamo la cardinalità generica ($n$), si trasforma in relazione.
+    \item Se abbiamo cardinalità limitata, si trasforma in attributi separati.
+\end{enumerate}\newpage
+\subsection{Gerarchie}
+\begin{enumerate}
+    \item eliminare il padre (solo se la gerarchia è totale): eliminiamo il padre e le associazioni si collegano ai figli, gli attributi del padre vengono passati ai figli
+    \item eliminare i figli: eliminiamo i figli ma le associazioni si collegano al padre e  gli eventuali attributi vengono passati al padre come opzionali
+    \item trasformare in associazione: si trasforma la gerarchia in associazione con cardinalità $(0,1)$ e $(1,1)$ con chiave esterna semplice (dal padre al figlio).
+\end{enumerate}
+\end{document}
