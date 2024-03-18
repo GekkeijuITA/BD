@@ -6,6 +6,17 @@
     \usepackage{graphicx}
     \usepackage{ulem}
     \usepackage[dvipsnames]{xcolor}
+    \usepackage{tikz}
+
+    \usetikzlibrary{er, positioning}
+    \usetikzlibrary{arrows}
+
+    \tikzset {multi attribute/.style={attribute,double distance=1.5pt}}
+    \tikzset {derived attribute/.style={attribute,dashed}}
+    \tikzset {total/.style={double distance=1.5pt}}
+    \tikzset {every entity/.style={ draw=orange,fill=orange!20}}
+    \tikzset {every attribute/.style={draw=purple,fill=purple!20}}
+    \tikzset {every relationship/.style={draw=green,fill=green!20}}
 
     \geometry{margin=2cm}
     \let\olditemize\itemize
@@ -14,3 +25,4 @@
 
     \author{Lorenzo Vaccarecci}
 }
+\newcommand {\key}[1]{\underline{#1}}
