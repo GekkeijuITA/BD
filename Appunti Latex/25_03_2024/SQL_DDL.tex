@@ -1,0 +1,116 @@
+\documentclass[12pt]{report}
+\usepackage[utf8]{inputenc}
+\input{../variables.tex}
+\preamble
+
+\title{SQL (DDL)}
+\date{25 Marzo 2024}
+\begin{document}
+\maketitle
+\tableofcontents
+\chapter{Comandi}
+\section{Creare tabelle}
+\begin{spverbatim}
+    CREATE TABLE *nome* (...);
+\end{spverbatim}
+\section{Inserire tuple}
+\begin{spverbatim}
+    INSERT INTO *Tabella* VALUES (...);
+\end{spverbatim}
+\section{Modificare attributi}
+\begin{spverbatim}
+    UPDATE *Tabella* SET *attributo* TO *valore*;
+\end{spverbatim}
+\section{Cancellare}
+\begin{spverbatim}
+    DELETE FROM *Tabella*; % Cancella tutto
+
+    % Cancella le tuple che soddisfano la condizione
+    DELETE FROM *Tabella* WHERE *condizione*;
+\end{spverbatim}
+\section{Ricerca}
+\begin{spverbatim}
+    WHERE *condizione*;
+\end{spverbatim}
+\chapter{Tipi}
+\section{Decimal}
+Prende come argomento il numero di cifre ad esempio:
+\begin{spverbatim}
+    *attributo* DECIMAL(4) % Andrà da -9999 a 9999
+\end{spverbatim}
+\section{Varchar}
+Lo usiamo solo se abbiamo un limite massimo \textbf{e} non sappiamo se ci saranno delle stringhe più corte
+\begin{spverbatim}
+    *attributo* VARCHAR(numeroCaratteri)
+\end{spverbatim}
+\section{Char}
+Lo usiamo nel caso in cui sappiamo che la stringa sarà, per la maggior parte delle volte, esattamente quel numero
+\begin{spverbatim}
+    *attributo* CHAR(numeroCaratteri);
+\end{spverbatim}
+\section{Date}
+Lo usiamo per le date
+\begin{spverbatim}
+    *attributo* DATE
+\end{spverbatim}
+\subsection{Opzioni}
+\begin{spverbatim}
+    CURRENT_DATE % Restituisce la data corrente (anno/mese/giorno)
+\end{spverbatim}
+\section{Numeric}
+Lo usiamo per i "float" indicando il numero di cifre prima e dopo la virgola
+\begin{spverbatim}
+    *attributo* NUMERIC(#int,#dec)
+\end{spverbatim}
+ad esempio
+\begin{spverbatim}
+    *attributo* NUMERIC(3,2) % -999.99 a 999.99
+\end{spverbatim}
+\chapter{Opzioni attributi}
+\section{NOT NULL}
+Serve per avere un attributo obbligatorio
+\begin{spverbatim}
+    *attributo* *TIPO* NOT NULL
+\end{spverbatim}
+\section{DEFAULT}
+Serve per avere un valore predefinito in un attributo
+\begin{spverbatim}
+    *attributo* *TIPO* DEFAULT *valore*
+\end{spverbatim}
+\section{UNIQUE}
+Serve per avere un attributo unico ma non chiave
+\begin{spverbatim}
+    *attributo* *TIPO* UNIQUE
+\end{spverbatim}
+oppure
+\begin{spverbatim}
+    *attributo* *TIPO*,
+    UNIQUE(*attributo*)
+\end{spverbatim}
+\chapter{Chiavi}
+\section{Chiave primaria}
+\begin{spverbatim}
+    *attributo* *TIPO* PRIMARY KEY
+\end{spverbatim}
+oppure (solo con attributo dichiarato in precedenza):
+\begin{spverbatim}
+    *attributo* *TIPO*,
+    PRIMARY KEY(*attributo*)
+\end{spverbatim}
+\section{Chiave esterna}
+    FOREIGN KEY (*chiave*,...) REFERENCES *tabella*
+\subsection{Opzioni}
+\subsubsection{On Delete}
+    Per eliminare tutte le tuple della tabella esterna associate alla tupla corrente
+    \begin{spverbatim}
+        *Chiave esterna* ON DELETE CASCADE
+    \end{spverbatim}
+    Per impedire la cancellazione della tupla corrente se ha associate delle tuple in altre tabelle
+    \begin{spverbatim}
+        *Chiave esterna* ON DELETE RESTRICT
+    \end{spverbatim}
+\subsubsection{On Update Cascade}
+\begin{spverbatim}
+    *Chiave esterna* ON UPDATE CASCADE
+\end{spverbatim}
+\end{document}
