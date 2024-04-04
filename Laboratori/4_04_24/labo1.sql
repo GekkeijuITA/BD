@@ -26,3 +26,10 @@ INSERT INTO professori VALUES(12367,'caminata','alessio',999999.78,FALSE);
 INSERT INTO corsi VALUES('aD4FgHjK7l','Informatica','Introduzione alla Programmazione',TRUE,12345);
 INSERT INTO corsi VALUES('9pQ2wErT5y','Informatica','Calculus',TRUE,67890);
 INSERT INTO corsi VALUES('6zX8cVbN3m','Informatica','Algebra',TRUE,12367);
+
+-- RIGHE ERRATE: 
+-- INSERT INTO professori VALUES(12345,'pippo','pluto',123456.78,FALSE);
+-- UPDATE professori SET stipendio = 1234567.12 WHERE n_id = 12345;
+-- DELETE FROM professori WHERE n_id = 12345;
+-- UPDATE corsi SET professore = 99999 WHERE n_id = '6zX8cVbN3m';
+-- INSERT INTO corsi VALUES('6zX8cVbN3m','Informatica','Logica',FALSE);
