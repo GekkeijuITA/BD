@@ -1,3 +1,6 @@
+-- Ravera Mattia (5671195)
+-- Sacco Daniele (5616921)
+-- Vaccarecci Lorenzo Livio (5462843)
 set search_path to "corsi";
 
 CREATE TABLE professori(
