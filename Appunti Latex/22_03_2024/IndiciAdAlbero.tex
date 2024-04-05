@@ -59,4 +59,18 @@ Molto simile alla ricerca per uguaglianza solo che se non c'è controllo qual è
 Lo split avviene nel primo nodo pieno che si incontra. Per nodo pieno si intende che non c'è spazio per inserire un nuovo separatore.
 \section{Cancellazione}
 Simile all'inserimento.
+\section{Indici Clusterizzati e non Clusterizzati}
+Un indice ad albero è \textcolor{red}{clusterizzato} se il file dei dati è ordinato rispetto alla chiave di ricerca, in caso contrario è \textcolor{red}{non clusterizzato}.
+\begin{itemize}
+    \item le operazioni di inserimento, cancellazione e aggiornamento nel file ordinato sono facilitate dalla presenza dell'indice.
+    \item \textit{Al più un indice clusterizzato per tabella}
+\end{itemize}
+\subsection{Domanda}
+$I_{A}^C$ (indice clusterizzato su $A$) e $I_{A}^{NC}$ (indice non clusterizzato su $A$), $A$ chiave.\\
+\textit{Che differenze ci sono tra $I_{A}^C$ e $I_{A}^{NC}$?}\\
+\textbf{Risposta}: Sono uguali perchè $A$ è chiave e quindi l'indic punterà a un solo blocco. Sono diversi se $A$ non è chiave.
+\section{Indici su Singolo Attributo}
+Indice la cui chiave di ricerca è costituita da un solo attributo.
+\section{Indici su Multi-Attributo}
+Indice la cui chiave di ricerca è costituita da più attributi.
 \end{document}
