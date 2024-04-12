@@ -1,0 +1,56 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\input{../variables.tex}
+\preamble
+
+\title{Elaboratore delle interrogazioni}
+\date{12 Aprile 2024}
+\begin{document}
+\maketitle
+\section{Introduzione}
+Consideriamo la seguente interrogazione SQL
+\begin{verbatim}
+    SELECT B,D
+    FROM R,S
+    WHERE R.A = "c" AND S.E = 2 AND R.C = S.C
+\end{verbatim}
+Può essere riscritta in algebra relazionale(linguaggio operazionale) come\\
+\(
+  \Pi_{B,D}(\sigma_{R.A="c" \land S.E=2 \land R.C=S.C}(R \times S))  
+\)
+\\L'espressione algebrica rappresenta un algoritmo (logico) di esecuzione che opera su tabelle e si può rappresentare come un albero.\\
+Piano di esecuzione logico (bottom-up):
+\begin{center}
+    \Tree[ .$\Pi_{B,D}$ [ .$\sigma_{R.A="c" \land S.E=2 \land R.C=S.C}$ [ .$\times$ [ .$R$ ] [ .$S$ ] ] ] ]
+\end{center}
+Altra possibile strategia corrisponde a piano logico alternativo:
+[Appunti mancanti (pag.11-12 circa delle slide)]
+\begin{center}
+    % Albero corrispondente al piano II
+\end{center}
+Esecuzione più efficiente?\\
+\textcolor{red}{il piano II, in quanto evita l'esecuzione del prodotto cartesiano riducendo la dimensione dei risultati intermedi generati e il numero di operazioni eseguite (anticipa le select).}
+\section{Dal piano logico al piano fisico}
+Esistono molteplici strategie logiche e molteplici algoritmi.
+\textcolor{red}{Il compito del query processor è individuare il piano fisico di esecuzione più efficiente, a partire da uno schema logico e uno schema fisico in input.} Il costo di determinare la strategia ottima può essere elevato, il vantaggio in termini di tempo di esecuzione che se ne ricava è tuttavia tale da rendere preferibile eseguire l'ottimizzazione.
+\subsection{Passi principali}
+\begin{itemize}
+    \item compilatore
+    \item ottimizzatore (ottimizza a livello logico e fisico)
+    \item query engine (esegue il piano fisico)
+\end{itemize}
+\subsubsection{Esempio}
+\begin{verbatim}
+    SELECT B,D
+    FROM R,S
+    WHERE R.A = "c" AND S.E = 2 AND R.C = S.C
+\end{verbatim}
+\begin{enumerate}
+    \item parser
+    \item traduzione (FROM, WHERE, SELECT) \(\rightarrow
+        \Pi_{B,D}(\sigma_{R.A="c" \land S.E=2 \land R.C=S.C}(R \times S))  
+      \)
+    \item ottimizzazione 
+    \item esecuzione
+\end{enumerate}
+\end{document}
