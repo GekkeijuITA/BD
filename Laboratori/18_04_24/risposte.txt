@@ -1,0 +1,18 @@
+------ 1 ------
+/Users/lorenzovaccarecci/Library/Application Support/Postgres/var-16
+------ 2 ------
+"postgres"	"5"
+"lorenzovaccarecci"	"16385"
+"template1"	"1"
+"template0"	"4"
+
+File trovati nella cartella base/
+------ 3 ------
+"16549"	"unicorsi"	"corsidilaurea"	"16557"	1	23
+"16549"	"unicorsi"	"corsi"	"16564"	1	38
+"16549"	"unicorsi"	"professori"	"16550"	1	37
+"16549"	"unicorsi"	"studenti"	"16582"	1	64
+"16549"	"unicorsi"	"esami"	"16599"	1	105
+"16549"	"unicorsi"	"pianidistudio"	"16615"	1	26
+
+------ 4 ------
