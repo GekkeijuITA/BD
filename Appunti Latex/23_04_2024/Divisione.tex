@@ -1,0 +1,66 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\input{../variables.tex}
+\preamble
+
+\title{Divisione in Algebra Relazionale}
+\date{23 Aprile 2024}
+
+\begin{document}
+\maketitle
+La divisione è l'inverso del prodotto cartesiano.\\
+$R \div S$ è definita come:
+\begin{equation*}
+    \left\{t:U_{R}\backslash U_{S}|\forall s\in S\quad\exists r\in R\quad r[U_{S}]=s,r[U_{R}\backslash U_{S}]=t\right\}
+\end{equation*}
+$U_{S}\subsetneq U_{R} \quad U_{R\backslash S}=U_{S}\backslash U_{R}$
+\section*{Esempio}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        A1 & A2 & A3\\
+        \hline
+        \rowcolor{yellow}
+        k & a & a\\
+        \hline
+        \rowcolor{red}
+        j & a & b\\
+        \hline
+        \rowcolor{red}
+        j & a & a\\
+        \hline
+        k & b & b\\
+        \hline
+        m & c & b\\
+        \hline
+        m & a & a\\
+        \hline
+        \rowcolor{yellow}
+        k & a & b \\
+        \hline
+    \end{tabular}
+    $\div$
+    \begin{tabular}{|c|c|}
+        \hline
+        A2 & A3\\
+        \hline
+        a & a\\
+        \hline
+        a & b\\
+        \hline
+    \end{tabular}
+    =
+    \begin{tabular}{|c|}
+        \hline
+        A1\\
+        \hline
+        j\\
+        \hline
+        k\\
+        \hline
+    \end{tabular}
+\end{center}
+Prendiamo le colonne $A2$ e $A3$ (perchè ci sono nella tabella di destra) della tabella di sinistra e guardiamo quali righe sono uguali a quelle della tabella di destra (come se ci fosse un AND) e prendiamo le colonne non toccate dalla divisione. Nel nostro caso $j$ ha sia le righe $aa$ che $ab$, stessa cosa $k$ (anche se non sequenziali); La $m$ invece non sarà nel risultato perchè sì che ha $aa$ ma non ha $ab$. \textbf{Non ci interessa infatti l'ordine delle righe, basta che ci siano}.
+\section*{Detto meglio}
+Guardiamo le colonne "in comune" tra le due tabelle e prendiamo le righe della tabella di sinistra che hanno tutte le righe della tabella di destra. Inoltre prendiamo le colonne della tabella di sinistra che non sono state prese e che soddisfano le condizioni della tabella di destra. L'ordine delle righe non è importante.
+\end{document}
