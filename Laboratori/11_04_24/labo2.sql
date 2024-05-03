@@ -17,13 +17,10 @@ SELECT DISTINCT matricola, cognome, nome
 
 SELECT nome, cognome, 'professore' FROM professori UNION SELECT nome, cognome, 'studente' FROM studenti;
 
-SELECT matricola FROM studenti JOIN corsidilaurea ON 
-	denominazione = 'Informatica' AND studenti.corsodilaurea = id
-INTERSECT
-(
-SELECT studente FROM esami JOIN corsi ON 
-	denominazione = 'Basi Di Dati 1' AND corso = id AND data BETWEEN '2010-06-01' AND '2010-06-30' AND voto >= 18
-UNION
-SELECT studente FROM esami JOIN corsi ON 
-	denominazione = 'Interfacce Grafiche' AND corso = id AND data BETWEEN '2010-06-01' AND '2010-06-30' AND voto < 18
-)
+SELECT * FROM esami WHERE 
+	data BETWEEN '2010-06-01' 
+	AND '2010-06-30' 
+	AND voto >= 18
+	AND studente IN(SELECT matricola FROM studenti JOIN corsidilaurea ON 
+	denominazione = 'Informatica' WHERE corsodilaurea = id)
+	AND corso IN(SELECT id FROM corsi WHERE denominazione = 'Basi Di Dati 1' OR denominazione = 'Interfacce Grafiche')
