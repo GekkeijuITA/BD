@@ -9,6 +9,7 @@
     \usepackage{tikz}
     \usepackage{qtree}
     \usepackage{spverbatim}
+    \usepackage{listings}
 
     \usetikzlibrary{er, positioning}
     \usetikzlibrary{arrows}
@@ -26,7 +27,34 @@
     \graphicspath{{../Immagini/}}
 
     \author{Lorenzo Vaccarecci}
+
+    \definecolor{codegreen}{rgb}{0,0.6,0}
+    \definecolor{codegray}{rgb}{0.5,0.5,0.5}
+    \definecolor{codepurple}{rgb}{0.58,0,0.82}
+    \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+    \lstdefinestyle{mystyle}{
+        backgroundcolor=\color{backcolour},   
+        commentstyle=\color{codegreen},
+        keywordstyle=\color{magenta},
+        numberstyle=\tiny\color{codegray},
+        stringstyle=\color{codepurple},
+        basicstyle=\ttfamily\footnotesize,
+        breakatwhitespace=false,         
+        breaklines=true,                 
+        captionpos=b,                    
+        keepspaces=true,                 
+        numbers=left,                    
+        numbersep=5pt,                  
+        showspaces=false,                
+        showstringspaces=false,
+        showtabs=false,                  
+        tabsize=2
+    }
+
+    \lstset{style=mystyle}
 }
 \newcommand {\key}[1]{\underline{#1}}
 \newcommand {\question}[1]{\textit{#1}\\}
 \newcommand {\important}[1]{\textcolor{red}{#1}}
+\newcommand {\remark}[1]{\textcolor{Cyan}{#1}}

@@ -26,8 +26,7 @@ Descrive come accedere al file dei dati di una relazione.
 \begin{itemize}
     \item \textcolor{red}{Scansione sequenziale}
     \item \textcolor{red}{Indice più una condizione di selezione (Predicato di ricerca)}: utilizzabile solo se esiste una condizione di selezione che può essere eseguita usando l'indice
-\end{itemize} 
-\newpage
+\end{itemize}
 \textbf{Esempio:}
 \begin{verbatim}
     SELECT * FROM R WHERE R.A=5
@@ -94,12 +93,21 @@ primaria, la clusterizzazione influisce).
 \question{Cosa succede se eseguo una selezione su un risultato intermedio?}
 La selezione può essere implementata solo in modo sequenziale perchè \important{non è possibile utilizzare un indice su un risultato intermedio.}
 \subsubsection{Join}
-E' un'operazione costosa: richiede $T(R)*T(S)$ confronti (dove $T(R)$ e $T(S)$ sono il numero di tuple delle due relazioni). Per evitare tutti i possibili confronti:
+E' un'operazione costosa: richiede $T(R)\cdot T(S)$ confronti (dove $T(R)$ e $T(S)$ sono il numero di tuple delle due relazioni). Per evitare tutti i possibili confronti:
 \begin{itemize}
-    \item \important{Nested Loop Join}: Si accede ad una tupla di $R$ (outer relation) e si confronta con ogni tupla di $S$ (inner relation). L'ordine corrisponde all'ordine delle tuple della relazione esterna. Costi: $B(R) + T(R) * B(S)$. \important{Conviene considerare come relazione outer la relazione più grande}.
-    \item \important{Index Nested Join}: Come il nested loop join, ma si utilizza un indice su $S$ per accedere alle tuple.
-    \item \important{Merge Join}:
-    \item \important{Hash Join}:
+    \item \important{Nested Loop Join}: Si accede ad una tupla di $R$ (outer relation) e si confronta con ogni tupla di $S$ (inner relation). L'ordine corrisponde all'ordine delle tuple della relazione esterna. Costi: $B(R) + T(R) \cdot B(S)$. \important{Conviene considerare come relazione outer la relazione più grande}.
+    \item \important{Index Nested Join}: Come il nested loop join, ma si utilizza un indice su $S$ per accedere alle tuple e si usa solo se esiste l'indice. Costi: $B(R)+T(R) \cdot$costo di accesso a $S$.
+    \item \important{Merge Join}: \textcolor{Cyan}{ applicabile quando le relazioni in input sono ordinate rispetto all’attributo di join}. \important{L’algoritmo sfrutta il fatto che entrambi gli input sono
+    ordinati rispetto all’attributo di join}. Prima avviene l'ordinamento delle relazioni, poi si scansionano le relazioni in parallelo e si fanno i confronti tupla per tupla.
+    \item \important{Hash Join}: applico la funzione hash alle tuple delle due relazioni e le metto in un bucket. Se due tuple hanno lo stesso hash, vengono messe nello stesso bucket. Si calcola il join tra i bucket. \important{Sicuramente due tuple in due bucket diversi non possono essere in join}, se sono nello stesso bucket \textbf{potrebbero} essere in join.
 \end{itemize}
 $B(\cdot)$ è il numero di blocchi letti.
+\begin{center}
+    \includegraphics[scale=0.5]{opfisici.png}
+\end{center}
+\subsection{Condizioni più generali}
+\begin{itemize}
+    \item \important{Uguaglianza su più di un attributo}
+    \item \important{Theta-join con disuguaglianza}
+\end{itemize}
 \end{document}
