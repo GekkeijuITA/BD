@@ -1,0 +1,96 @@
+Percorso: "/Users/lorenzovaccarecci/Library/Application Support/Postgres/var-16"
+DB: "postgres"	"5"
+Numero di blocchi:
+"oid"	"nspname"	"relname"	"relfilenode"	"relpages"	"reltuples"
+"16634"	"unicorsilarge"	"corsidilaurea"	"16642"	1	23
+"16634"	"unicorsilarge"	"corsi"	"16649"	17	2000
+"16634"	"unicorsilarge"	"professori"	"16635"	15	2000
+"16634"	"unicorsilarge"	"studenti"	"16667"	715	60000
+"16634"	"unicorsilarge"	"esami"	"16684"	883	120000
+"16634"	"unicorsilarge"	"pianidistudio"	"16700"	383	60000
+Numero di tuple per tabella:
+    "corsidilaurea"	23
+    "corsi"	2000
+    "professori" 2000
+    "studenti" 60000
+    "esami"	120000
+    "pianidistudio"	60000
+
+1)
+Quale cammino di accesso alla relazione esami è stato utilizzato? 
+    E' stato usato il cammino di accesso sequenziale
+Quale operatore fisico viene utilizzato ?
+    E' presente "SEQ SCAN" che è l'operatore fisico della selezione
+Qual è il costo stimato per il nodo?
+    cost=0.00..2083.00 
+Qual è la dimensione stimata per il risultato?
+    rows=120000
+Qual è la dimensione effettiva? 
+    rows=120000
+Ci sono differenze tra questi due valori?
+    No 
+Qual è il tempo di esecuzione complessivo del piano?
+    17.091 ms
+Provare adesso a rieseguire l'interrogazione più volte. Quali valori cambiano? Come mai?
+    I valori che cambiano sono actual time, planning time, execution time.
+    Cambiano perchè la pianificazione dell'ottimizzazione fisica dipende da quale approccio iniziale viene usato per determinare l'algoritmo più efficiente
+(*) Provate infine a mappare il piano di esecuzione fisico scelto da Postgres nella notazione proposta in aula (usate carta e penna e, se volete caricare la soluzione, fate una foto).
+2)
+Quale cammino di accesso alla relazione esami è stato utilizzato?
+    Il cammino fisico utilizzato è accesso sequenziale
+Quale operatore fisico viene utilizzato? E' uguale o diverso rispetto a quello individuato al punto (1)?
+    E' uguale rispetto a quello individuato al punto (1), viene aggiunta la condizione
+Qual è il costo stimato per il nodo?
+    cost=0.00..2383.00 
+3)
+Qual è il costo stimato per il nodo?
+    cost=0.00..2383.00
+Qual è la dimensione stimata per il risultato? 
+    rows=52644
+Qual è la dimensione effettiva? 
+    rows=52486 
+Ci sono differenze tra questi due valori?
+    Si
+Qual è il tempo di esecuzione complessivo del piano?
+    26.203 ms
+4)
+Qual è la dimensione stimata per il risultato?
+    rows=11176 
+Qual è la dimensione effettiva? 
+    rows=11250
+Ci sono differenze tra questi due valori?
+    Si
+Qual è il tempo di esecuzione complessivo del piano?
+    8.314 ms
+5)
+Quanti nodi contiene il piano?
+    1
+Quali operatori fisici vengono utilizzati?
+    Viene usato INDEX SCAN 
+Qual è il tempo di esecuzione complessivo del piano?
+    3.888 ms
+6)
+Quanti nodi contiene il piano?
+    1
+Qual è la dimensione stimata per il risultato?
+    6081
+Qual è la dimensione effettiva?
+    5973
+Ci sono differenze tra questi due valori?
+    Si
+Qual è il tempo di esecuzione complessivo del piano?
+    2.941 ms
+7)
+Quanti nodi contiene il piano?
+    3
+Qual è la dimensione stimata per il risultato?
+    28
+Qual è la dimensione effettiva?
+    36 
+Ci sono differenze tra questi due valori?   
+    Si
+Qual è il tempo di esecuzione complessivo del piano?
+    1.541 ms
+8)
+9)
+10)
