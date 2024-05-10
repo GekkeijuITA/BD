@@ -1,0 +1,94 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\input{../variables.tex}
+\preamble
+
+\title{Controllo dell'Accesso}
+\date{10 Maggio 2024}
+
+\begin{document}
+\maketitle
+\section{Introduzione}
+Il problema è che \textbf{non tutti gli utenti possono eseguire le stesse operazioni} (\textit{es. gestore e cliente}). Lo scopo del controllo dell'accesso è quello di \textbf{limitare e controllare} le operazioni degli utenti e \textbf{prevenire} azioni che potrebbero compromettere la correttezza e la sicurezza del sistema. Le operazioni vengono catturate prima di essere eseguite.
+\section{Politiche di sicurezza}
+\begin{itemize}
+    \item \remark{Regole e principi}: per la protezione delle informazioni
+    \item \remark{Insieme di direttive ad alto livello}
+\end{itemize}
+\textit{Es. "le valutazioni dei film possono essere viste solo dal responsabile della videoteca"}.\\
+Tre entità principali:
+\begin{itemize}
+    \item \important{Oggetti}: sono le risorse a cui vogliamo garantire protezione (le tabelle)
+    \item \important{Soggetti}: sono le entità (gli utenti)
+    \item \important{Privilegi}: descrivono quali operazioni possono essere eseguite dai soggetti sugli oggetti
+\end{itemize}
+\section{Controllo degli Accessi in SQL}
+\begin{itemize}
+    \item \important{Sistema chiuso}: un accesso è concesso solo se è stato esplicitamente permesso
+    \item \important{Amministrazione decentralizzata} (mediante \textbf{ownership}): l'utente che crea una relazione, riceve privilegi di controllo su di essa e può concedere o revocare privilegi
+    \item \important{\texttt{GRANT}}: se un privilegio è concesso con grant option l'utente che lo riceve può non solo esercitare il privilegio, ma anche concederlo ad altri
+    \item \important{\texttt{REVOKE}}: toglie i privilegi a uno o più utenti
+\end{itemize}
+\subsection{\texttt{GRANT}}
+L'inserimento di una nuova autorizzazione avviene tramite il comando \texttt{GRANT}:
+\begin{lstlisting}[language=SQL]
+    GRANT {<lista privilegi> | ALL PRIVILEGES}
+    ON <nome oggetto>
+    TO {<lista utenti> | <lista ruoli> | PUBLIC}
+    [WITH GRANT OPTION];
+\end{lstlisting}
+La lista dei privilegi è composta da: \texttt{SELECT}, \texttt{INSERT}, \texttt{UPDATE}, \texttt{DELETE}, ecc.\\ 
+\texttt{WITH GRANT OPTION} (opzionale) consente la delega dell'amministrazione dei privilegi.
+Alla creazione di una risorsa, il creatore riceve automaticamente tutti i privilegi su di essa quindi \textbf{i comandi di \texttt{GRANT}} corrispondenti vengono \textbf{eseguiti automaticamente} dal sistema.
+Possiamo concedere il privilegio anche su singole colonne.
+\href{https://2023.aulaweb.unige.it/pluginfile.php/352748/mod_resource/content/4/03A-controlloAccesso-23-24.pdf}{Esempi di \texttt{GRANT} (p.20)}.
+\subsection{\texttt{REVOKE}}
+La revoca di privilegi avviene tramite il comando \texttt{REVOKE}:
+\begin{lstlisting}[language=SQL]
+    REVOKE [GRANT OPTION FOR] <lista privilegi>
+    ON <nome oggetto>
+    FROM <lista utenti>
+    [CASCADE | RESTRICT];
+\end{lstlisting}
+La clausola opzionale \texttt{GRANT OPTION FOR}, se presente, revoca il privilegio di concedere il privilegio ad altri utenti. \textbf{Un utente può revocare solo i privilegi concessi da lui.}
+\section{Rappresentazione delle autorizzazioni}
+In modo astratto le informazioni contenute nei cataloghi possono essere rappresentate in astratto come un insieme di grafi (\important{grafi delle autorizzazioni}). \important{Esiste un grafo per ogni privilegio $p$ su una certa tabella}. Un grafo delle interrogazioni per il privilegio sulla tabella $R$ contiene:
+\begin{center}
+    \begin{tikzpicture}[node distance={20mm}, main/.style = {draw, circle}] 
+        \node[main] (1) {$u_{1}$};
+        \node[main] (2) [right of = 1] {$u_{2}$}; 
+        \draw[->] (1) -- node[above] {$g$} (2);
+    \end{tikzpicture}
+\end{center} 
+Un nodo per ogni utente che ha il privilegio $p$ sulla tabella $R$. L'arco uscente da $u_{1}$ verso $u_{2}$ indica che $u_{1}$ ha concesso il privilegio a $u_{2}$ ed è etichettato $g$ se è concesso con \texttt{GRANT OPTION}.
+\begin{center}
+    \includegraphics[scale=0.4]{esempioautorizzazioni.png}
+\end{center}
+Un comando di \texttt{GRANT} può essere eseguito parzialmente in alcuni casi:
+\begin{center}
+    \includegraphics[scale=0.4]{esempiograntparziale.png}
+\end{center}
+Il comando \texttt{REVOKE}:
+\begin{center}
+    \includegraphics[scale=0.4]{esempiorevoke.png}
+\end{center}
+\texttt{RESTRICT}: non elimina altri nodi oltre quello designato\\
+\texttt{CASCADE}: elimina anche tutti i nodi che dipendono da quello designato, quindi se un nodo è puntato da due nodi, viene eliminato solo l'arco che parte dal nodo chiamante (però i figli vengono eliminati).
+\begin{center}
+    \includegraphics[scale=0.4]{esempiorevokecascade.png}
+\end{center}
+Se non si specifica niente, il comportamento di default è \texttt{RESTRICT}.
+\section{Ruoli}
+I ruoli sono funzioni svolte in ambito di un'organizzazione. \important{Gli utenti sono abilitati a ricoprire uno o più ruoli}. I privilegi possono essere concessi anche ai ruoli, le autorizzazioni specificate per un ruolo sono quelle necessarie per esercitare le funzioni connesse al ruolo stesso. Semplificano l'attribuzione dei privilegi ai soggetti.
+\begin{lstlisting}[language=SQL]
+    CREATE ROLE <nome ruolo>;
+    DROP ROLE <nome ruolo>;
+    SET ROLE <nome ruolo>; -- Associazione dimanica di un ruolo all'utente della sessione attiva
+\end{lstlisting}
+Nel comando \texttt{GRANT} mettiamo
+\begin{lstlisting}[language=SQL]
+    GRANT <lista ruoli>
+    TO {<lista utenti> | PUBLIC}
+    [WITH ADMIN OPTION]; -- Analogo a GRANT OPTION
+\end{lstlisting}
+\end{document}

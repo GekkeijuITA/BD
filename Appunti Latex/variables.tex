@@ -10,6 +10,7 @@
     \usepackage{qtree}
     \usepackage{spverbatim}
     \usepackage{listings}
+    \usepackage{hyperref}
 
     \usetikzlibrary{er, positioning}
     \usetikzlibrary{arrows}
@@ -53,6 +54,17 @@
     }
 
     \lstset{style=mystyle}
+
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        filecolor=magenta,      
+        urlcolor=cyan,
+        pdftitle={Overleaf Example},
+        pdfpagemode=FullScreen,
+    }
+
+    \urlstyle{same}
 }
 \newcommand {\key}[1]{\underline{#1}}
 \newcommand {\question}[1]{\textit{#1}\\}
