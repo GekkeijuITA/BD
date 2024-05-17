@@ -1,0 +1,36 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\input{../variables.tex}
+\preamble
+
+\title{Transazioni (FLAT)}
+\date{17 Maggio 2024}
+
+\begin{document}
+\maketitle
+\section{Cosa è una transazione}
+\important{E' un'unità di elaborazione} che corrisponde a \remark{una serie di operazioni fisiche elementari} sulla base di dati a cui viene garantita un'esecuzione che soddisfa alcune buone proprietà.
+\section{Proprietà ACID}
+\begin{itemize}
+    \item \important{A}tomicità: se succede qualcosa di sbagliato allora il sistema torna allo stato precedente alla transazione.
+    \item \important{C}onsistenza: lo stato iniziale e finale di una transazione devono sempre soddisfare tutti i vincoli di integrita' esistenti. \textbf{Gli stati intermedi possono pero' violare la consistenza.} 
+    \item \important{I}solamento: se si hanno più transazioni contemporaneamente, "non si pestano i piedi".
+    \item \important{D}urabilità (persistenza): nel momento in cui la transazione è completata, le modifiche sono permanenti. 
+\end{itemize}
+Le proprietà ACID sono garantite da specifiche componenti presenti del DBMS (\important{Transaction Manager}).
+\section{Comandi SQL}
+In SQL si usano i comandi \texttt{BEGIN} e \texttt{COMMIT}:
+\begin{lstlisting}[language=SQL]
+    BEGIN;
+        ...
+    COMMIT;
+\end{lstlisting}
+Il comando \texttt{COMMIT} restituisce \texttt{COMMIT} se è andato a buon fine, altrimenti restituisce \texttt{ROLLBACK}.\\
+Un altro modo è:
+\begin{lstlisting}[language=SQL]
+    BEGIN;
+        ...
+    ROLLBACK;
+\end{lstlisting}
+In questo modo si annullano tutte le operazioni come se ci fosse stato un errore (anche se tutto corretto).
+\end{document}

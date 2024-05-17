@@ -91,4 +91,39 @@ Nel comando \texttt{GRANT} mettiamo
     TO {<lista utenti> | PUBLIC}
     [WITH ADMIN OPTION]; -- Analogo a GRANT OPTION
 \end{lstlisting}
+E' possibile dare una gerarchia ai ruoli:
+\begin{lstlisting}[language=SQL]
+    GRANT <ruolo_figlio> 
+    TO <ruolo_padre>;
+\end{lstlisting}
+I privilegi del figlio sono acquisiti dal padre ma non viceversa.
+\\\textbf{Esempio:}
+\begin{lstlisting}[language=SQL]
+    CREATE ROLE direttoreVideoteca;
+    CREATE ROLE commesso;
+
+    GRANT SELECT ON film TO commesso;
+    GRANT INSERT, DELETE ON film TO direttoreVideoteca;
+    GRANT commesso TO direttoreVideoteca;
+\end{lstlisting}
+Di solito prima si danno i privilegi(specifici) ai figli e poi al padre.
+\subsection{REVOKE}
+\begin{lstlisting}[language=SQL]
+    REVOKE [ADMIN OPTION FOR]
+    <lista ruoli>
+    FROM <lista utenti>
+\end{lstlisting}
+\section{Controllo dell'accesso basato sul contenuto}
+\subsection{Autorizzazione su Viste}
+Le viste consentono di realizzare il così detto
+\important{controllo dell'accesso in base al contenuto}. Permettono di concedere anche \important{privilegi statistici} (es. una vista che computa il numero di noleggi effettuati da ogni cliente e concedere all'utente l'accesso alla vista invece che alla tabella).\\
+\question{Chi può creare una vista?}
+\remark{Gli utenti che hanno il privilegio di \texttt{SELECT} su tutte le tabelle utilizzate dalla vista.}\\
+\question{Il proprietario della vista quali privilegi può esercitare sulla vista?}
+Bisogna considerare:
+\begin{itemize}
+    \item Le autorizzazioni sulle tabelle coinvolte ($P1$)
+    \item \href{https://2023.aulaweb.unige.it/pluginfile.php/352757/mod_resource/content/3/LinguaggioSQLParte4DatiDerivati-23-24.pdf}{Regole per formare le autorizzazioni $P2$ (p. 26)}
+\end{itemize}
+\remark{Il proprietario ha i privilegi che ha sono l'intersezione tra $P1$ e $P2$}.
 \end{document}
