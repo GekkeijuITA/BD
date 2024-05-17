@@ -1,0 +1,14 @@
+\babel@toc {italian}{}\relax 
+\babel@toc {italian}{}\relax 
+\contentsline {chapter}{\numberline {1}Modello Relazionale}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Introduzione}{2}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Relazioni}{2}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Definizione: Prodotto cartesiano}{2}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Definizione: Relazione}{2}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Definizione: Schema di relazione}{2}{subsection.1.2.3}%
+\contentsline {subsection}{\numberline {1.2.4}Definizione: Schema di base di dati}{3}{subsection.1.2.4}%
+\contentsline {subsection}{\numberline {1.2.5}Definizione: Tuple e relazione}{3}{subsection.1.2.5}%
+\contentsline {section}{\numberline {1.3}Valori nulli}{3}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Chiavi}{3}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Definizione: Chiave e super-chiave}{3}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Definizione: Chiave esterna}{4}{subsection.1.4.2}%
