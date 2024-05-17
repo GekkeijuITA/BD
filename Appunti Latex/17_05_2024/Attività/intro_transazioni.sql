@@ -4,7 +4,7 @@ create schema banca;
 set search_path to banca;
 
 CREATE TABLE ContoCorrente(
-numero integer CONSTRAINT Pk PRIMARY KEY DEFERRABLE INITIALLY IMMEDIATE,
+numero integer CONSTRAINT Pk PRIMARY KEY DEFERRABLE INITIALLY IMMEDIATE, -- Riga 291 spiegazione
 	--capiremo dopo cosa significa
 saldo integer not null
 );
