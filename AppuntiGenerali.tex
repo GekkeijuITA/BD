@@ -108,8 +108,8 @@
                     \item \important{Univocità}: nella relazione non ci possono essere due tuple distinte che abbiano lo stesso valore per tutti gli attributi della chiave $X$.
                     \item Nessun \textbf{sottoinsieme proprio} di $X$ verifica la proprietà (1).
                 \end{enumerate}
-                Un insieme di attributi che verifica la proprietà (1) ma non la (2) è detto \important{super-chiave} di $R$.\\
-                In una relazione ci possono essere più insiemi di attributi che soddisfano le due proprietà. In tal caso si parla di \important{chiavi candidate}. \textbf{Una relazione ha sicuramente almeno una chiave}. Nel caso in cui ci sono più chiavi candidate, una di queste viene scelta come \important{chiave primaria} su cui il DBMS ottimizza le operazioni.\\
+                Un insieme di attributi che verifica la proprietà (1) ma non la (2) è detto \important{super-chiave} di $R$. Una super-chiave può essere una chiave della relazione.\\
+                In una relazione ci possono essere più insiemi di attributi che soddisfano le due proprietà. In tal caso si parla di \important{chiavi candidate}. \textbf{Una relazione ha sicuramente almeno una chiave (sia primaria che super)}. Nel caso in cui ci sono più chiavi candidate, una di queste viene scelta come \important{chiave primaria} su cui il DBMS ottimizza le operazioni.\\
                 Un criterio per scegliere la chiave primaria è quello di scegliere la chiave più piccola in termini di numero di attributi o quella più usata nelle interrogazioni. Una chiave non può contenere valori nulli.
             \subsection{Definizione: Chiave esterna}
                 Sia $R_{1}$ ed $R_{2}$ due relazioni, sia $X$ una chiave per $R_{1}$ e $Y$ una chiave per $R_{2}$ tale che $Y$ e $X$ contengano lo stesso numero di attributi e di dominio compatibile (\textit{es. interi e reali sono compatibili}). $X$ è una chiave esterna di $R_{1}$ su $R_{2}$ se per ogni tupla $t$ di $R_{1}$ esiste una tupla $t'$ di $R_{2}$ tale che $t[X]=t'[Y]$. $R_{1}$ viene detta relazione \textbf{referente} e $R_{2}$ relazione \textbf{riferita}.\\
