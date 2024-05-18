@@ -55,11 +55,7 @@
         % Title
         {\Huge \bfseries{[Appunti Basi di Dati]}\par}
         \vspace{1cm}
-        {\large Appunti del corso "Basi di Dati" dell'Università degli Studi di Genova\par}  % Uncomment this for MCA
-        % {\Large\bfseries Master of Science\par}   % Uncomment this for M.sc
-        \vspace{1cm}
-        {\large da\par}
-        \vspace{2cm}
+        {\large Appunti del corso "Basi di Dati" dell'Università degli Studi di Genova\par}
         {\Large\bfseries Lorenzo Vaccarecci\par}
         \vspace{1cm}
         % University Logo
@@ -119,4 +115,82 @@
                 \begin{equation*}
                     R_{1}\left(\dots,chiave\_esterna^{R_{2}},\dots\right)
                 \end{equation*}
+    \chapter{Modello ER}
+    \section{Introduzione}
+    Il termine \important{diagramma ER} indica la rappresentazione grafica di uno schema concettuale ER.
+    Gli elementi principali di un diagramma ER sono:
+    \begin{itemize}
+        \item \important{Entità}: una collezione di oggetti della realtà che vogliamo modellare che possiedono caratteristiche comuni, graficamente viene rappresentata da un rettangolo
+        \item \important{Relazioni} (o associazione): rappresenta un legame logico tra più entità, graficamente viene rappresentata da un rombo
+        \item \important{Attributi}: rappresenta una proprietà posseduta da un'entità o da una relazione, è \remark{mono-valore} se può assumere al più un valore (\textit{es. la matricola di uno studente}), è \remark{multi-valore} altrimenti (\textit{es. i numeri di telefono di un'azienda}). Può essere a sua volta essere formato da \textit{sotto-attributi} rendendolo \remark{composto}, un attributo composto può avere domini di diverso tipo (\remark{domini composti})
+    \end{itemize}
+    \begin{center}
+        \begin{tikzpicture}[node distance=4.7em]
+            \node[entity] (entity1) {$E_{1}$};
+            \node (attr1) [above of = entity1] {A};
+            \draw (entity1) -- node[near end, above, draw, circle, minimum size=0.01cm, fill=white] {} (attr1);
+            \node[relationship] (rel1) [right of = entity1] {R} edge (entity1);
+            \node[entity] (entity2) [right of = rel1] {$E_{2}$} edge (rel1);
+            \node[attribute] (attr2) [above of = entity2] {B} edge (entity2);
+            \node (attr3) [above of = attr2] {C} edge (attr2);
+            \draw (attr2) -- node[near end, above, draw, circle, minimum size=0.01cm, fill=white] {} (attr3);
+            \node (attr4) [above left of = attr2] {D} edge (attr2);
+            \draw (attr2) -- node[near end, above left, draw, circle, minimum size=0.01cm, fill=white] {} (attr4);
+            \node (attr5) [above right of = attr2] {E} edge (attr2);
+            \draw (attr2) -- node[near end, above right, draw, circle, minimum size=0.01cm, fill=white] {} (attr5);
+        \end{tikzpicture}
+    \end{center}
+    Le istanze di un'associazione sono un sottoinsieme del prodotto cartesiano delle entità coinvolte, non possono esistere duplicati. Le associazioni sono classificate in base al loro \remark{grado} (il numero di entità in relazione):
+    \begin{itemize}
+        \item \textbf{Unaria}: un'entità è in relazione con se stessa
+        \item \textbf{Binaria}: due entità sono in relazione
+        \item \textbf{$n$-aria}: $n$ entità sono in relazione
+    \end{itemize}
+    Le informazioni sui domini degli attributi non sono direttamente rappresentabili in un diagramma ER, ma possono essere specificate nella documentazione a corredo dei diagrammi ER.
+    \section{Vincoli di integrità}
+    \subsection{Vincoli di cardinalità}
+    I vincoli di cardinalità per associazioni stabiliscono il numero minimo e massimo di istanze di un'associazione a cui le istanze delle entità coinvolte nella associazione possono partecipare. Graficamente, vengono rappresentati come coppia di valori interi $(min,max)$ collocata vicino alla linea che connette l'associazione con ciascuna entità che mette in relazione.
+    \begin{center}
+        \begin{tikzpicture}[node distance=10em]
+            \node[entity] (entity1) {$E_{1}$};
+            \node[relationship] (rel1) [right of = entity1] {R};
+            \node[entity] (entity2) [right of = rel1] {$E_{2}$};
+            \path (entity1) edge node[above]{$(min,max)$} (rel1);
+            \path (rel1) edge node[above]{$(min,max)$} (entity2);
+        \end{tikzpicture}
+    \end{center}
+    $(min,max)$:
+    \begin{itemize}
+        \item $min=0$: l'entità non è obbligata a partecipare all'associazione
+        \item $min=1$: l'entità è obbligata a partecipare all'associazione
+        \item $max=1$: l'entità può partecipare al massimo una volta all'associazione
+        \item $max=n$: l'entità può partecipare al massimo $n$ volte all'associazione
+    \end{itemize}
+    Se in un diagramma ER non è specificata la cardinalità di un'associazione, si assume che il vincolo sia $(0,n)$.\\
+    Date due entità $E_{1}$ e $E_{2}$ se:
+    \begin{itemize}
+        \item $max_{E_{1}}=max_{E_{2}}=1$ allora l'associazione è \remark{uno a uno}
+        \item $max_{E_{1}}=1,max_{E_{2}}=n$ allora l'associazione è \remark{uno a molti}
+        \item $max_{E_{1}}=max_{E_{2}}=n$ allora l'associazione è \remark{molti a molti}
+    \end{itemize}
+    Le cardinalità possono essere specificate anche per gli attributi, permettendo di specificare se un attributo è mono o multi-valore, e se è obbligatorio o meno. Se non viene specificata la cardinalità di un attributo, si assume che sia $(1,1)$.
+    \subsection{Vincoli di identificazione}
+    Definire un vincolo d'identificazione per un'entità significa specificare un insieme di attributi e/o entità che posseggono la proprietà di identificare univocamente le istanze dell'entità (\important{identificatori o chaivi}).
+    \begin{itemize}
+        \item \important{Identificatore interno}: è costituito da uno o più attributi dell'entità stessa
+        \item \important{Identificatore misto}: è costituito da attributi dell'entità e da attributi di altre entità
+        \item \important{Identificatore esterno}: è costituito da attributi di altre entità
+        \item \important{Identificatore semplice}: è costituito da un solo attributo
+        \item \important{Identificatore composto}: è costituito da più attributi
+    \end{itemize}
+    Un'entità le cui istanze vengono identificate mediante l'associazione con altre entità viene chiamata \remark{entità debole}.
+    \section{Gerarchie di generalizzazione}
+    Nel modello ER è possibile organizzare le entità in gerarchia di generalizzazione definendo un insieme di entità dette \remark{figlie} come specializzazione di un'altra entità detta \remark{padre} rappresentante le proprietà in comune a tutte le entità figlie.
+    \begin{itemize}
+        \item \important{Generalizzazione totale}: ogni istanza dell'entità padre è anche un'istanza di \textbf{almeno} una delle entità figlie
+        \item \important{Generalizzazione parziale}: se un'istanza dell'entità padre non è un'istanza di nessuna delle entità figlie
+        \item \important{Generalizzazione esclusiva}: se un'istanza dell'entità padre è un'istanza di \textbf{al più} una delle entità figlie
+        \item \important{Generalizzazione condivise}: se un'istanza dell'entità padre può essere un'istanza di \textbf{più} entità figlie
+    \end{itemize}
+    Le generalizzazioni possono essere di quattro tipi diversi: totali esclusive, totali condivise, parziali esclusive e parziali condivise.
 \end{document}
