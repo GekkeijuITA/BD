@@ -1,0 +1,196 @@
+\documentclass[12pt, a4paper]{report}
+\usepackage[utf8]{inputenc}
+\input{Appunti Latex/variables.tex}
+\preamble
+
+\usepackage{lipsum} 
+\usepackage{caption}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{titlesec}
+
+\geometry{top=1in, bottom=1in, left=1in, right=1in}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+\titleformat{\chapter}[display]
+  {\normalfont\fontsize{14}{16}\selectfont\bfseries\centering}{\MakeUppercase{\chaptertitlename}\ \thechapter}{20pt}{\fontsize{14}{16}\selectfont\bfseries}
+\titleformat{\section}
+  {\normalfont\fontsize{12}{14}\selectfont\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\fontsize{12}{14}\selectfont\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{12}{14}\selectfont\bfseries}{\thesubsubsection}{1em}{}
+
+  \makeatletter
+  \renewcommand*\l@chapter[2]{%
+    \ifnum \c@tocdepth >\m@ne
+      \addpenalty{-\@highpenalty}%
+      \vskip 1.0em \@plus\p@
+      \setlength\@tempdima{1.5em}%
+      \begingroup
+        \parindent \z@ \rightskip \@pnumwidth
+        \parfillskip -\@pnumwidth
+        \leavevmode \bfseries
+        \advance\leftskip\@tempdima
+        \hskip -\leftskip
+        #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+        \penalty\@highpenalty
+      \endgroup
+    \fi}
+  
+  \renewcommand*\l@section{\@dottedtocline{1}{0em}{2.3em}}
+  \renewcommand*\l@subsection{\@dottedtocline{2}{2.3em}{3.2em}}
+  \renewcommand*\l@subsubsection{\@dottedtocline{3}{5.5em}{4.1em}}
+  \renewcommand*\l@paragraph{\@dottedtocline{4}{8.6em}{5em}}
+  \renewcommand*\l@subparagraph{\@dottedtocline{5}{12em}{6em}}
+  \makeatother 
+
+\begin{document}
+    \begin{titlepage}
+        \centering
+        % Title
+        {\Huge \bfseries{[Appunti Basi di Dati]}\par}
+        \vspace{1cm}
+        {\large Appunti del corso "Basi di Dati" dell'Università degli Studi di Genova\par}
+        {\Large\bfseries Lorenzo Vaccarecci\par}
+        \vspace{1cm}
+        % University Logo
+        \includegraphics[width=0.7\textwidth]{Appunti Latex/Immagini/logoUnige.png}\\
+        \vspace{1cm}
+        % Department and University
+        {\Large\bfseries Dipartimento di Informatica\par}
+        {\Large\bfseries Università degli Studi di Genova\par}
+        {\Large\bfseries 2024\par}
+    \end{titlepage}
+    \tableofcontents
+    \chapter{Modello Relazionale}
+        \section{Introduzione}
+            Le interrogazioni sulle relazioni possono essere espresse in due formalismi:
+            \begin{itemize}
+                \item \textbf{Algebra relazionale}: le interrogazioni vengono espresse usando operatori specifici alle relazioni.
+                \item \textbf{Calcolo relazionale}: le interrogazioni vengono espresse usando formule logiche.
+            \end{itemize}
+        \section{Relazioni}
+            Un dominio è un insieme (anche infinito) di valori. Indicheremo con $\mathcal{D}$ l'insieme di tutti i domini.
+            \subsection{Definizione: Prodotto cartesiano}
+                Siano $D_{1},D_{2},\ldots,D_{k} \in \mathcal{D} \text{ con } k$ domini. Il prodotto cartesiano indicato con $D_{1}\times D_{2}\times \ldots \times D_{k}$, è definito come l'insieme $\left\{\left(v_{1},v_{2},\ldots,v_{k}\right)|v_{1}\in D_{1},\ldots,v_{k}\in D_{k}\right\}$.\\
+                Gli elementi appartenenti al prodotto cartesiano sono detti \important{tuple}. Il prodotto cartesiano ha \textbf{grado} $k$.
+            \subsection{Definizione: Relazione}
+                Una relazione di $k$ domini è un sottoinsieme finito del prodotto cartesiano, ha \textbf{grado} $k$ quindi ogni tupla ha $k$ componenti. La \textbf{cardinalità} di una relazione è il numero di tuple appartenenti alla relazione. Una relazione è \underline{sempre} un insieme finito. \remark{Non vi sono tuple duplicate}.\\
+            La coppia (nome di attributo, dominio) è detta \important{attributo}. L'uso di attributi permette di denotare le componenti di ogni tupla per nome piuttosto che per posizione.
+            \subsection{Definizione: Schema di relazione}
+                \begin{itemize}
+                    \item $R$ un nome di relazione
+                    \item $\left\{A_{1},A_{2},\ldots,A_{n}\right\}$ un insieme di nomi di attributi
+                    \item $dom:\left\{A_{1},A_{2},\ldots,A_{n}\right\}\rightarrow \mathcal{D}$ una funzione totale che associa ad ogni nome di attributo il corrispondente dominio.
+                \end{itemize}
+                La coppia $(R(A_{1},A_{2},\ldots,A_{n}),dom)$ è uno schema di relazione. $U_{r}$ denota l'insieme dei nomi di attributi di $R$, ovvero \important{$U_{r}=\left\{A_{1},A_{2},\ldots,A_{n}\right\}$}.
+            \subsection{Definizione: Schema di base di dati}
+                Siano $S_{1},S_{2},\ldots,S_{n}$ schemi di relazioni distinti, $\mathcal{S}=\left\{S_{1},S_{2},\ldots,S_{n}\right\}$ è detto schema di base di dati.
+            \subsection{Definizione: Tuple e relazione}
+                Una tupla $t$ definita su una relazione $R$ è un insieme di funzioni totali che associano all'attributo di nome $A_{i}$ un valore del dominio di tale attributo. Una relazione definita su uno schema di relazione è un insieme finito di tuple definite su tale schema. Tale relazione è anche detta istanza dello schema. $t=\left[A_{1}:v_{1},A_{2}:v_{2},\ldots,A_{n}:v_{n}\right]$ dove $v_{i}\in dom(A_{i}) \text{ con } i=1,\ldots,n$. Notazione: $t[A_{i}]$ indica il valore dell'attributo $A_{i}$(quindi $v_{i}$) nella tupla $t$.
+        \section{Valori nulli}
+            Un aspetto importante nella modellazione dei dati riguarda il fatto che non sempre sono disponibili tutte le informazioni sulle entità del dominio applicativo che vengono rappresentate nella base di dati. L'approccio adottato è quello di introdurre un valore speciale, detto \important{valore nullo}, il quale denota la mancanza di un valore.\\
+            Nella trattazione assumiamo di denotare il valore nullo con il simbolo '\texttt{?}'. Il valore nullo è un valore accettato in tutti i domini.
+        \section{Chiavi}
+            Una \important{chiave} di una relazione è un insieme di attributi che distingue fra loro le tuple della relazione. Più formalmente:
+            \subsection{Definizione: Chiave e super-chiave}
+                Sia $R$ uno schema di relazione. Un insieme $X\subseteq U_{R}$ di attributi di $R$ è chiave di $R$ se verifica le seguenti proprietà:
+                \begin{enumerate}
+                    \item \important{Univocità}: nella relazione non ci possono essere due tuple distinte che abbiano lo stesso valore per tutti gli attributi della chiave $X$.
+                    \item Nessun \textbf{sottoinsieme proprio} di $X$ verifica la proprietà (1).
+                \end{enumerate}
+                Un insieme di attributi che verifica la proprietà (1) ma non la (2) è detto \important{super-chiave} di $R$. Una super-chiave può essere una chiave della relazione.\\
+                In una relazione ci possono essere più insiemi di attributi che soddisfano le due proprietà. In tal caso si parla di \important{chiavi candidate}. \textbf{Una relazione ha sicuramente almeno una chiave (sia primaria che super)}. Nel caso in cui ci sono più chiavi candidate, una di queste viene scelta come \important{chiave primaria} su cui il DBMS ottimizza le operazioni.\\
+                Un criterio per scegliere la chiave primaria è quello di scegliere la chiave più piccola in termini di numero di attributi o quella più usata nelle interrogazioni. Una chiave non può contenere valori nulli.
+            \subsection{Definizione: Chiave esterna}
+                Sia $R_{1}$ ed $R_{2}$ due relazioni, sia $X$ una chiave per $R_{1}$ e $Y$ una chiave per $R_{2}$ tale che $Y$ e $X$ contengano lo stesso numero di attributi e di dominio compatibile (\textit{es. interi e reali sono compatibili}). $X$ è una chiave esterna di $R_{1}$ su $R_{2}$ se per ogni tupla $t$ di $R_{1}$ esiste una tupla $t'$ di $R_{2}$ tale che $t[X]=t'[Y]$. $R_{1}$ viene detta relazione \textbf{referente} e $R_{2}$ relazione \textbf{riferita}.\\
+                \remark{Vincolo di integrità refernziale}: se una tupla $t$ di $R_{1}$ fa riferimento ai valori della chiave di una tupla $t'$ di $R_{2}$, allora $t'$ deve esistere in $R_{2}$. Può essere violata da inserimenti e modifiche nella relazione referente e da cancellazioni e modifiche nella relazione riferita.\\
+                Una relazione può contenere più chiavi esterne, eventualmente anche sulla stessa relazione e possono assumere valori nulli.\\
+                \textbf{Notazione:}
+                \begin{equation*}
+                    R_{1}\left(\dots,chiave\_esterna^{R_{2}},\dots\right)
+                \end{equation*}
+    \chapter{Modello ER}
+    \section{Introduzione}
+    Il termine \important{diagramma ER} indica la rappresentazione grafica di uno schema concettuale ER.
+    Gli elementi principali di un diagramma ER sono:
+    \begin{itemize}
+        \item \important{Entità}: una collezione di oggetti della realtà che vogliamo modellare che possiedono caratteristiche comuni, graficamente viene rappresentata da un rettangolo
+        \item \important{Relazioni} (o associazione): rappresenta un legame logico tra più entità, graficamente viene rappresentata da un rombo
+        \item \important{Attributi}: rappresenta una proprietà posseduta da un'entità o da una relazione, è \remark{mono-valore} se può assumere al più un valore (\textit{es. la matricola di uno studente}), è \remark{multi-valore} altrimenti (\textit{es. i numeri di telefono di un'azienda}). Può essere a sua volta essere formato da \textit{sotto-attributi} rendendolo \remark{composto}, un attributo composto può avere domini di diverso tipo (\remark{domini composti})
+    \end{itemize}
+    \begin{center}
+        \begin{tikzpicture}[node distance=4.7em]
+            \node[entity] (entity1) {$E_{1}$};
+            \node (attr1) [above of = entity1] {A};
+            \draw (entity1) -- node[near end, above, draw, circle, minimum size=0.01cm, fill=white] {} (attr1);
+            \node[relationship] (rel1) [right of = entity1] {R} edge (entity1);
+            \node[entity] (entity2) [right of = rel1] {$E_{2}$} edge (rel1);
+            \node[attribute] (attr2) [above of = entity2] {B} edge (entity2);
+            \node (attr3) [above of = attr2] {C} edge (attr2);
+            \draw (attr2) -- node[near end, above, draw, circle, minimum size=0.01cm, fill=white] {} (attr3);
+            \node (attr4) [above left of = attr2] {D} edge (attr2);
+            \draw (attr2) -- node[near end, above left, draw, circle, minimum size=0.01cm, fill=white] {} (attr4);
+            \node (attr5) [above right of = attr2] {E} edge (attr2);
+            \draw (attr2) -- node[near end, above right, draw, circle, minimum size=0.01cm, fill=white] {} (attr5);
+        \end{tikzpicture}
+    \end{center}
+    Le istanze di un'associazione sono un sottoinsieme del prodotto cartesiano delle entità coinvolte, non possono esistere duplicati. Le associazioni sono classificate in base al loro \remark{grado} (il numero di entità in relazione):
+    \begin{itemize}
+        \item \textbf{Unaria}: un'entità è in relazione con se stessa
+        \item \textbf{Binaria}: due entità sono in relazione
+        \item \textbf{$n$-aria}: $n$ entità sono in relazione
+    \end{itemize}
+    Le informazioni sui domini degli attributi non sono direttamente rappresentabili in un diagramma ER, ma possono essere specificate nella documentazione a corredo dei diagrammi ER.
+    \section{Vincoli di integrità}
+    \subsection{Vincoli di cardinalità}
+    I vincoli di cardinalità per associazioni stabiliscono il numero minimo e massimo di istanze di un'associazione a cui le istanze delle entità coinvolte nella associazione possono partecipare. Graficamente, vengono rappresentati come coppia di valori interi $(min,max)$ collocata vicino alla linea che connette l'associazione con ciascuna entità che mette in relazione.
+    \begin{center}
+        \begin{tikzpicture}[node distance=10em]
+            \node[entity] (entity1) {$E_{1}$};
+            \node[relationship] (rel1) [right of = entity1] {R};
+            \node[entity] (entity2) [right of = rel1] {$E_{2}$};
+            \path (entity1) edge node[above]{$(min,max)$} (rel1);
+            \path (rel1) edge node[above]{$(min,max)$} (entity2);
+        \end{tikzpicture}
+    \end{center}
+    $(min,max)$:
+    \begin{itemize}
+        \item $min=0$: l'entità non è obbligata a partecipare all'associazione
+        \item $min=1$: l'entità è obbligata a partecipare all'associazione
+        \item $max=1$: l'entità può partecipare al massimo una volta all'associazione
+        \item $max=n$: l'entità può partecipare al massimo $n$ volte all'associazione
+    \end{itemize}
+    Se in un diagramma ER non è specificata la cardinalità di un'associazione, si assume che il vincolo sia $(0,n)$.\\
+    Date due entità $E_{1}$ e $E_{2}$ se:
+    \begin{itemize}
+        \item $max_{E_{1}}=max_{E_{2}}=1$ allora l'associazione è \remark{uno a uno}
+        \item $max_{E_{1}}=1,max_{E_{2}}=n$ allora l'associazione è \remark{uno a molti}
+        \item $max_{E_{1}}=max_{E_{2}}=n$ allora l'associazione è \remark{molti a molti}
+    \end{itemize}
+    Le cardinalità possono essere specificate anche per gli attributi, permettendo di specificare se un attributo è mono o multi-valore, e se è obbligatorio o meno. Se non viene specificata la cardinalità di un attributo, si assume che sia $(1,1)$.
+    \subsection{Vincoli di identificazione}
+    Definire un vincolo d'identificazione per un'entità significa specificare un insieme di attributi e/o entità che posseggono la proprietà di identificare univocamente le istanze dell'entità (\important{identificatori o chaivi}).
+    \begin{itemize}
+        \item \important{Identificatore interno}: è costituito da uno o più attributi dell'entità stessa
+        \item \important{Identificatore misto}: è costituito da attributi dell'entità e da attributi di altre entità
+        \item \important{Identificatore esterno}: è costituito da attributi di altre entità
+        \item \important{Identificatore semplice}: è costituito da un solo attributo
+        \item \important{Identificatore composto}: è costituito da più attributi
+    \end{itemize}
+    Un'entità le cui istanze vengono identificate mediante l'associazione con altre entità viene chiamata \remark{entità debole}.
+    \section{Gerarchie di generalizzazione}
+    Nel modello ER è possibile organizzare le entità in gerarchia di generalizzazione definendo un insieme di entità dette \remark{figlie} come specializzazione di un'altra entità detta \remark{padre} rappresentante le proprietà in comune a tutte le entità figlie.
+    \begin{itemize}
+        \item \important{Generalizzazione totale}: ogni istanza dell'entità padre è anche un'istanza di \textbf{almeno} una delle entità figlie
+        \item \important{Generalizzazione parziale}: se un'istanza dell'entità padre non è un'istanza di nessuna delle entità figlie
+        \item \important{Generalizzazione esclusiva}: se un'istanza dell'entità padre è un'istanza di \textbf{al più} una delle entità figlie
+        \item \important{Generalizzazione condivise}: se un'istanza dell'entità padre può essere un'istanza di \textbf{più} entità figlie
+    \end{itemize}
+    Le generalizzazioni possono essere di quattro tipi diversi: totali esclusive, totali condivise, parziali esclusive e parziali condivise.
+\end{document}
