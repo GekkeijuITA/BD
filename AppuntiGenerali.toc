@@ -18,3 +18,10 @@
 \contentsline {subsection}{\numberline {2.2.1}Vincoli di cardinalità}{6}{subsection.2.2.1}%
 \contentsline {subsection}{\numberline {2.2.2}Vincoli di identificazione}{6}{subsection.2.2.2}%
 \contentsline {section}{\numberline {2.3}Gerarchie di generalizzazione}{7}{section.2.3}%
+\contentsline {chapter}{\numberline {3}Progettazione Logica}{8}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Introduzione}{8}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Fase di ristrutturazione}{8}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Analisi della ridondanza}{8}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Partizionamento/accorpamento di entità}{8}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Eliminazione degli attributi composti e multi-valore}{9}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Eliminazione delle gerarchie di generalizzazione}{9}{subsection.3.2.4}%

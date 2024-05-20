@@ -193,4 +193,47 @@
         \item \important{Generalizzazione condivise}: se un'istanza dell'entità padre può essere un'istanza di \textbf{più} entità figlie
     \end{itemize}
     Le generalizzazioni possono essere di quattro tipi diversi: totali esclusive, totali condivise, parziali esclusive e parziali condivise.
+    \chapter{Progettazione Logica}
+    \section{Introduzione}
+    L'obiettivo principale della progettazione logica è tradurre uno schema ER in uno schema relazionale equivalente. Si articola in due fasi:
+    \begin{itemize}
+        \item \remark{Fase di ristrutturazione dello schema ER}: questa fase prevede l'eliminazione dallo schema ER di tutti quei costrutti non direttamente rappresentabili nel modello relazionale, anche questa fase si può suddividere in più sotto-fasi:
+        \begin{itemize}
+            \item analisi della ridondanza
+            \item partizionamento/accorpamento di entità
+            \item eliminazione degli attributi composti e multi-valore
+            \item eliminazione delle gerarchie di generalizzazione
+        \end{itemize}
+        \item \remark{Fase di traduzione dello schema ER}: in questa fase, lo schema ER restituito dalla fase di ristrutturazione viene tradotto in un equivalente schema relazionale. \underline{La traduzione non è sempre univoca}.
+    \end{itemize}
+    \section{Fase di ristrutturazione}
+    \subsection{Analisi della ridondanza}
+    Uno schema ER presenta delle ridondanze quando un'informazione viene rappresentata sia esplicitamente nello schema sia può essere derivata da altre informazioni presenti nello schema. Nei diagrammi ER la presenza di ridondanza dovrebbe essere limitata solo a quei casi in cui sia possibile ottenere un significativo beneficio in termini di tempo di esecuzione delle interrogazioni.
+    \subsection{Partizionamento/accorpamento di entità}
+    Lo schema ER può essere ulteriormente ristrutturato partizionando od accorpando entità ed associazioni sulla base dell'analisi del carico di lavoro. Un'entità $E$ può essere partizionata in due entità $E_{1},E_{2}$ una delle quali identificata esternamente dall'altra, collegate mediante un'associazione uno a uno. Questa operazione può essere conveniente quando alcune operazioni frequenti coinvolgono solo un sottoinsieme degli attributi di $E$. Viceversa, due entità $E_{1},E_{2}$ collegate da un'associazione uno a uno, possono essere accorpate in un'unica entità contenente gli attributi di $E_{1}$ e $E_{2}$ nel caso in cui operazioni frequenti abbiano la necessità di accedere ad entrambi gli insiemi di attributi.
+    \subsection{Eliminazione degli attributi composti e multi-valore}
+    Il modello relazionale consente la specifica solo di attributi semplici e mono-valore. E' quindi necessario ristrutturare lo schema ER generato dalla fase di progettazione concettuale per eliminare eventuali attributi composti e multi-valore in esso presenti. L'eliminazione di un attributo composto $A$ da un'entità $E$ può avvenite in due modi:
+    \begin{itemize}
+        \item \remark{Eliminando i sotto-attributi di $A$ e considerando l'attributo composto come un attributo semplice}
+        \item \remark{Considerando tutti i sotto-attributi di $A$ come attributi di $E$}
+    \end{itemize}
+    Quest'ultima soluzione richiede ovviamente una ridefinizione del dominio dell'attributo.\\
+    La modellazione di attributi multi-valore mediante attributi a valore semplice richiede la definizione di una nuova entità, collegata all'entità di partenza tramite un'opportuna associazione, in cui l'attributo multi-valore è rappresentato mediante un attributo mono-valore che identifica l'entità. Il vincolo di cardinalità dell'associazione è quello dell'attributo multi-valore oggetto di ristrutturazione.
+    \subsection{Eliminazione delle gerarchie di generalizzazione}
+    Consideriamo un'entità $E$ generalizzazione di un insieme di entità $E_{1},\ldots,E_{n}$
+    \begin{itemize}
+        \item \important{Eliminazione delle entità figlie}: Le entità figlie vengono eliminate ed i loro attributi vengono inseriti nell'entità padre come attributi opzionali. \begin{itemize}
+            \item \remark{Generalizzazione totale}: l'attributo portato al padre non può essere nullo
+            \item \remark{Generalizzazione parziale}: un valore nullo indica un'istanza dell'entità padre che non era istanza di alcuna delle entità figlie
+            \item \remark{Generalizzazione condivise}: l'attributo sarà multi-valore in quanto un'istanza dell'entità padre potrebbe essere istanza di più entità figlie
+        \end{itemize}
+        \item \important{Eliminazione dell'entità padre}: consiste nell'eliminare l'entità padre $E$ e nell'inserire i suoi attributi in ciascuna delle entità figlie. Tale procedimento è applicabile solo nel caso in cui la generalizzazione sia \textbf{totale}. \begin{itemize}
+            \item \remark{Generalizzazione esclusiva}: è necessario aggiungere un vincolo per indicare che non possono esistere istanze di due entità figlie distinte aventi lo stesso valore per gli identificatori.
+        \end{itemize}
+        Ogni associazione a cui partecipava l'entità padre l'entità padre viene inoltre sostituita con $n$ nuove associazioni, una per ogni entità figlia.
+        \item \important{Sostituzione della generalizzazione con associazioni}: le entità coinvolte nella generalizzazione non vengono modificate, mentre la gerarchia di generalizzazione viene sostituita da $n$ associazioni uno a uno, ognuna delle quali lega l'entità padre con una diversa entità figlia. Le entità figlie sono identificate esternamente dall'entità padre e partecipano obbligatoriamente alle associazioni create mentre la partecipazione dell'entità padre è opzionale. \begin{itemize}
+            \item \remark{Generalizzazione esclusiva}: un'istanza del padre non può partecipare contemporaneamente a due o più associazioni
+            \item \remark{Generalizzazione totale}: ogni istanza dell'entità padre deve partecipare obbligatoriamente ad almeno un'associazione
+        \end{itemize}
+    \end{itemize}
 \end{document}
