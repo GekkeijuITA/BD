@@ -283,4 +283,103 @@
         \item \important{Associazione uno a molti}: l'entità "da sola" riceve la chiave dell'altra entità come chiave esterna: $E_{1}(\underline{K},A,B,L),E_{2}(\underline{L},C,D, K^{E_{1}})$
         \item \important{Associazione molti a molti}: si crea una nuova relazione con le chiavi delle entità coinvole e gli eventuali attributi dell'associazione: $R(\underline{K,L})$
     \end{itemize}
+    \chapter{Linguaggio SQL}
+    \section{Tipi}
+    \begin{itemize}
+        \item \texttt{INTEGER}: interi a 32 bit
+        \item \texttt{SMALLINT}: interi a 16 bit
+        \item \texttt{BIGINT}: interi a 64 bit
+        \item \texttt{NUMERIC}: numeri decimali, usa due parametri: la precisione (il numero totale di cifre) e la scala (il numero di cifre dopo la virgola) $\rightarrow$ \texttt{NUMERIC(precisione,scala)} i valori di default sono 1 (precisione) e 0 (scala)
+        \item \texttt{DECIMAL}: come \texttt{NUMERIC} ma le cifre possono essere $\geq$ p
+        \item \texttt{REAL}: numeri in virgola mobile a precisione singola
+        \item \texttt{DOUBLE PRECISION}: numeri in virgola mobile a precisione doppia
+        \item \texttt{FLOAT}: numeri in virgola mobile a precisione personalizzata $\rightarrow$ \texttt{FLOAT(p)} con $1\leq p \leq n$ dove $n$ dipende dall'implementazione
+        \item \texttt{CHARACTER}: stringhe di lunghezza fissa $\rightarrow$ \texttt{CHARACTER(n)}, di default è 1
+        \item \texttt{CHARACTER VARYING}: stringhe di lunghezza variabile $\rightarrow$ \texttt{CHARACTER VARYING(n)} dove $n$ è la lunghezza massima
+        \item \texttt{DATE}: data in formato \texttt{YYYY-MM-DD}
+        \item \texttt{TIME}: tempo in formato \texttt{HH:MM:SS}, può essere specificata la precisione dei secondi $\rightarrow$ \texttt{TIME(p)} con $0\leq p \leq 6$
+        \item \texttt{TIMESTAMP}: concatenazione di \texttt{DATE} e \texttt{TIME}
+        \item \texttt{INTERVAL}: durata temporale in riferimento ad uno o più dei qualificatori tra \texttt{YEAR}, \texttt{MONTH}, \texttt{DAY}, \texttt{HOUR}, \texttt{MINUTE}, \texttt{SECOND} $\rightarrow$ \texttt{INTERVAL 'valore' qualificatore}
+        \item \texttt{BOOLEAN}: valore booleano \texttt{TRUE},\texttt{FALSE} o \texttt{UNKNOWN}
+        \item \texttt{BLOB}: dati binari di lunghezza variabile
+        \item \texttt{CLOB}: dati di testo di lunghezza variabile
+    \end{itemize}
+    \section{Creazione di tabelle}
+    \begin{lstlisting}[language=SQL]
+        CREATE TABLE nome_tabella(
+            nome_colonna tipo_colonna,
+            ...
+        );
+    \end{lstlisting}
+    \subsection{Obbligatorietà di colonne}
+    Per la specifica dell'obbligatorietà di una colonna si utilizza la clausola \texttt{NOT NULL}:
+    \begin{lstlisting}[language=SQL]
+        CREATE TABLE nome_tabella(
+            nome_colonna tipo_colonna NOT NULL,
+            ...
+        );
+    \end{lstlisting}
+    \subsection{Chiavi}
+    Per la specifica di una chiave primaria si utilizza la clausola \texttt{PRIMARY KEY}:
+    \begin{lstlisting}[language=SQL]
+        CREATE TABLE nome_tabella(
+            nome_colonna tipo_colonna PRIMARY KEY,
+            ...
+        );
+    \end{lstlisting}
+    Per le chiavi alternative si usa \texttt{UNIQUE}. Se si hanno chiavi composte da più attributi:
+    \begin{lstlisting}[language=SQL]
+        CREATE TABLE nome_tabella(
+            nome_colonna1 tipo_colonna,
+            nome_colonna2 tipo_colonna,
+            ...
+            PRIMARY KEY(nome_colonna1,nome_colonna2)
+        );
+    \end{lstlisting}
+    (stessa cosa per \texttt{UNIQUE}).\\
+    Per la specifica di una chiave esterna si utilizza la clausola \texttt{FOREIGN KEY}:
+    \begin{lstlisting}[language=SQL]
+        CREATE TABLE nome_tabella(
+            nome_colonna tipo_colonna,
+            ...
+            FOREIGN KEY(nome_colonna)
+                REFERENCES nome_tabella_esterna(nome_colonna_esterna)
+        );
+    \end{lstlisting}
+    La chiave esterna può avere delle "azioni" da eseguire in caso di cancellazione (\texttt{ON DELETE}):
+    \begin{itemize}
+        \item \texttt{NO ACTION}: la cancellazione di una tupla non è permessa se esistono riferimenti ad essa
+        \item \texttt{CASCADE}: la cancellazione di una tupla comporta la cancellazione delle tuple che fanno riferimento ad essa
+        \item \texttt{SET NULL}: la cancellazione di una tupla comporta l'impostazione a \texttt{NULL} del valore della chiave esterna delle tuple che fanno riferimento ad essa
+        \item \texttt{SET DEFAULT}: la cancellazione di una tupla comporta l'impostazione al valore di default del valore della chiave esterna delle tuple che fanno riferimento ad essa
+    \end{itemize}
+    In caso di modifica (\texttt{ON UPDATE}) le "azioni" funzionano in modo simile.
+    \section{Cancellazione di tabelle}
+    \begin{lstlisting}[language=SQL]
+        DROP TABLE nome_tabella [CASCADE | RESTRICT];
+    \end{lstlisting}
+    L'opzione \texttt{CASCADE} permette di eliminare anche le tabelle che fanno riferimento alla tabella da eliminare, mentre \texttt{RESTRICT} impedisce la cancellazione se esistono tabelle che fanno riferimento alla tabella da eliminare.
+    \section{Modifica di tabelle}
+    \subsection{Aggiunta di colonne}
+    \begin{lstlisting}[language=SQL]
+        ALTER TABLE nome_tabella
+            ADD nome_colonna tipo_colonna;
+    \end{lstlisting}
+    \subsection{Modifica di colonne}
+    \begin{lstlisting}[language=SQL]
+        ALTER TABLE nome_tabella
+            ALTER COLUMN nome_colonna SET DATA TYPE tipo_colonna;
+    \end{lstlisting}
+    \subsection{Cancellazione di colonne}
+    \begin{lstlisting}[language=SQL]
+        ALTER TABLE nome_tabella
+            DROP COLUMN nome_colonna [CASCADE | RESTRICT];
+    \end{lstlisting}
+    \section{Interrogazioni}
+    \subsection{Selezione}
+    \begin{lstlisting}[language=SQL]
+        SELECT lista_attributi
+        FROM nome_tabella
+        WHERE condizione;
+    \end{lstlisting}
 \end{document}
