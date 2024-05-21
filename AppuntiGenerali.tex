@@ -236,4 +236,51 @@
             \item \remark{Generalizzazione totale}: ogni istanza dell'entità padre deve partecipare obbligatoriamente ad almeno un'associazione
         \end{itemize}
     \end{itemize}
+    In generale, la scelta di accorpare le entità figlie nell'entità padre comporta uno spreco di memoria per la presenza dei valori nulli. La soluzione di eliminare l'entità padre consente un risparmio di memoria rispetto alla soluzione di eliminare le entità figlie in quanto evita il problema dei valori nulli.
+    \section{Fase di traduzione}
+    La fase di traduzione può essere suddivisa nelle seguenti sotto-fasi:
+    \begin{itemize}
+        \item \remark{Traduzione delle entità}
+        \item \remark{Traduzione delle associazioni}
+        \item \remark{Traduzione dei vincoli di integrità}
+        \item \remark{Ottimizzazioni finali}
+    \end{itemize}
+    \subsection{Traduzione delle entità}
+    \begin{center}
+        \begin{tikzpicture}[node distance=4.7em]
+            \node[entity] (entity) {$E$};
+            \node (attr1) [above of = entity] {A} edge (entity);
+            \node (attr2) [above left of = entity] {B} edge (entity);
+            \node (attr3) [above right of = entity] {C} edge (entity);
+            \draw (entity) -- node[near end, above, draw, circle, minimum size=0.01cm, fill=white] {} (attr1);
+            \draw (entity) -- node[near end, above left, draw, circle, minimum size=0.01cm, fill=black] {} (attr2);
+            \draw (entity) -- node[near end, above right, draw, circle, minimum size=0.01cm, fill=white] {} (attr3);
+        \end{tikzpicture} 
+        $\rightarrow$
+        E(\underline{B},A,C);
+    \end{center}
+    Nel caso di chiavi esterne si scrivono in fondo (di solito) e in corsivo indicando anche la tabella di provenienza per una maggiore comprensione della traduzione: E(\underline{K},...,\textit{$FK^{E_{i}}$}).\\
+    I criteri per la scelta della chiave primaria si possono sintetizzare come segue:
+    \begin{itemize}
+        \item \important{Non devono contenere valori nulli}
+        \item \important{Devono essere composti da pochi attributi}
+        \item \important{Sono gli attributi più utilizzati nelle interrogazioni per accedere alle entità}
+    \end{itemize}
+    \subsection{Traduzione delle associazioni}
+    \begin{center}
+        \begin{tikzpicture}[node distance=10em, auto]
+            \node[entity] (entity) {$E_{1}$};
+            \node[relationship] (rel) [right of = entity] {R} edge (entity);
+            \node[entity] (entity2) [right of = rel] {$E_{2}$} edge (rel);
+            \path (entity1) edge node[above]{$(min_{1},max_{1})$} (rel1);
+            \path (rel1) edge node[above]{$(min_{2},max_{2})$} (entity2);
+        \end{tikzpicture}
+    \end{center}
+    \textit{Consideriamo che $E_{1}$ ha gli attributi A,B e $E_{2}$ ha gli attributi C,D. La chiave di $E_{1}$ è K e la chiave di $E_{2}$ è L.}\\
+    Casi:
+    \begin{itemize}
+        \item \important{Associazione uno a uno}: si "elimina" una delle due entità e si accorpa con l'altra: $E_{1}(\underline{K,L},A,B,C,D)$
+        \item \important{Associazione uno a molti}: l'entità "da sola" riceve la chiave dell'altra entità come chiave esterna: $E_{1}(\underline{K},A,B,L),E_{2}(\underline{L},C,D, K^{E_{1}})$
+        \item \important{Associazione molti a molti}: si crea una nuova relazione con le chiavi delle entità coinvole e gli eventuali attributi dell'associazione: $R(\underline{K,L})$
+    \end{itemize}
 \end{document}
