@@ -1,0 +1,89 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\input{../variables.tex}
+\preamble
+
+\title{Sviluppo di Applicazioni per Basi di Dati}
+\date{23 Maggio 2024}
+
+\begin{document}
+\maketitle
+\section{Problema}
+SQL non permette di eseguire elaborazioni complesse sui dati e interagire con il sistema operativo. SQL quindi non è \remark{completo}:
+\begin{itemize}
+    \item \important{Computazionalmente}: banalmente mancano i costrutti di scelta o iterazione
+    \item \important{Operazionalmente}: mancano i costrutti per interagire con il sistema operativo
+\end{itemize}
+\section{Soluzione}
+Si \important{combina} SQL con un linguaggio di programmazione generico.\\
+Approcci:
+\begin{itemize}
+    \item \important{interno}(al DBMS): lato server, il codice eseguito dal DBMS
+    \item \important{esterno}(al DBMS): lato client o server, il codice eseguito da un'applicazione che invia la query al DBMS (\textit{es. un programma Java}).
+\end{itemize}
+\section{Routine}
+I programmi sono organizzati in routine (procedure o funzioni) e possono essere eseguite direttamente dal DBMS o chiamate da applicazioni basate su accoppiamento esterno.
+\subsection{Routine Anonime}
+Sono dei blocchi di codice a cui non viene dato un nome:
+\begin{lstlisting}
+    DO
+    $$
+        <Corpo Routine>
+    $$
+    LANGUAGE <Linguaggio>;
+\end{lstlisting}
+\underline{Il linguaggio usato deve essere supportato dal DBMS}.
+\section{Attività}
+Questa parte di codice crea una routine anonima che stampa un messaggio:
+\begin{lstlisting}[language=SQL]
+    DO
+    $$
+        BEGIN
+            RAISE NOTICE 'Hello, world!';
+        END
+    $$;
+\end{lstlisting}
+Per dichiarare delle variabili
+\begin{lstlisting}[language=SQL]
+    DO
+    $$
+        DECLARE
+            <Nome Variabile> <Tipo Variabile> [:= <Valore> | DEFAULT <Valore>];
+        BEGIN
+            <Corpo Routine>
+        END
+    $$
+\end{lstlisting}
+La dichiarazione è molto simile a quella usata per creare le colonne di una tabella.\\
+Per poter stampare le variabili:
+\begin{lstlisting}[language=SQL]
+    RAISE NOTICE 'Messaggio %', <Variabile>;
+\end{lstlisting}
+Se la variabile non è stata inizializzata, stamperà \texttt{NULL}. Ovviamente se una variabile ha l'opzione \texttt{NOT NULL} non possiamo assegnarli \texttt{NULL}.\\
+A una variabile possiamo assegnare il risultato di una query:
+\begin{lstlisting}[language=SQL]
+    denominazioneCdL := (SELECT denominazione FROM corsidilaurea WHERE id = 9)
+\end{lstlisting}
+While loop:
+\begin{lstlisting}[language=SQL]
+    DO
+    $$
+        BEGIN
+            WHILE <Condizione>
+            LOOP
+                <Corpo Loop>
+            END LOOP;
+        END
+    $$
+\end{lstlisting}
+\subsection{Cursore}
+Serve per manipolare il risultato di una query.
+\begin{lstlisting}[language=SQL]
+    DECLARE
+        <Nome Cursore> CURSOR FOR <Query>;
+    BEGIN
+        OPEN <Nome Cursore>; -- Apre il cursore ed esegue la query
+        FETCH <Nome Cursore> INTO <Variabile>; -- Prende il risultato della query e lo mette nella variabile
+    END
+\end{lstlisting}
+\end{document}
