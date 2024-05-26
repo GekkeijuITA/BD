@@ -378,8 +378,213 @@
     \section{Interrogazioni}
     \subsection{Selezione}
     \begin{lstlisting}[language=SQL]
-        SELECT lista_attributi
+        SELECT [DISTINCT] lista_attributi
         FROM nome_tabella
         WHERE condizione;
+    \end{lstlisting}
+    La clausola \texttt{DISTINCT} permette di eliminare i duplicati.\\
+    Nella selezione ci si può riferire alle colonne mettendo prima il nome della tabella a cui appartengono seguito da un punto:
+    \begin{lstlisting}[language=SQL]
+        SELECT nome_tabella.nome_colonna
+        FROM nome_tabella;
+    \end{lstlisting}
+    Questo può aiutare in caso di colonne con lo stesso nome in tabelle diverse o semplicemente per una maggiore chiarezza.\\
+    Se ci si vuole riferire a tutte le colonne di una (o più) tabelle si può usare il simbolo \texttt{*}:
+    \begin{lstlisting}[language=SQL]
+        SELECT *
+        FROM nome_tabella;
+    \end{lstlisting}
+    Nel \texttt{WHERE} si possono usare i connettivi logici \texttt{AND}, \texttt{OR} e \texttt{NOT}.
+    \subsection{Operatori di confronto}
+    \subsubsection{Condizioni su intervalli di valori}
+    L'operatore \texttt{BETWEEN} permette di ritrovare le tuple che contengono valori di una colonna in un intervallo specificato:
+    \begin{lstlisting}[language=SQL]
+        SELECT *
+        FROM nome_tabella
+        WHERE nome_colonna BETWEEN valore1 AND valore2;
+    \end{lstlisting}
+    \texttt{BETWEEN} è l'abbreviazione di:
+    \begin{lstlisting}[language=SQL]
+        SELECT *
+        FROM nome_tabella
+        WHERE nome_colonna >= valore1 AND nome_colonna <= valore2;
+    \end{lstlisting}
+    Può essere usato con il \texttt{NOT}.
+    \subsubsection{Ricerca di valori in un insieme}
+    L'operatore \texttt{IN} permette di determinare le tuple che contengono uno tra i valori di un insieme spiecificato:
+    \begin{lstlisting}[language=SQL]
+        SELECT *
+        FROM nome_tabella
+        WHERE nome_colonna IN (valore1,valore2,...);
+    \end{lstlisting}
+    E' l'abbreviazione di:
+    \begin{lstlisting}[language=SQL]
+        SELECT *
+        FROM nome_tabella
+        WHERE nome_colonna = valore1 OR nome_colonna = valore2 OR ...;
+    \end{lstlisting}
+    Può essere usato con il \texttt{NOT}.
+    \subsubsection{Condizioni di confronto per stringhe di caratteri}
+    L'operatore \texttt{LIKE} permette di eseguire alcune sepmlici operazioni di \textit{pattern matching} su colonne di tipo stringa:
+    \begin{itemize}
+        \item \texttt{\%}: rappresenta una sequenza di zero o più caratteri
+        \item \texttt{\_}: rappresenta un singolo carattere
+    \end{itemize}
+    \begin{lstlisting}[language=SQL]
+        SELECT *
+        FROM nome_tabella
+        WHERE nome_colonna LIKE '__d%';  -- trova la tupla che inizia con due caratteri qualsiasi, seguita da 'd' e poi da zero o piu' caratteri
+    \end{lstlisting}
+    \subsection{Espressioni e funzioni aritmetiche}
+    \begin{itemize}
+        \item \texttt{+}: somma
+        \item \texttt{-}: sottrazione
+        \item \texttt{*}: moltiplicazione
+        \item \texttt{/}: divisione
+        \item \texttt{ABS($n$)}: valore assoluto di $n$
+        \item \texttt{MOD($n$,$m$)}: resto della divisione di $n$ per $m$
+    \end{itemize}
+    \subsection{Espressioni e funzioni per stringhe}
+    \begin{itemize}
+        \item \texttt{||}: concatenazione
+        \item \texttt{LENGTH($s$)}: lunghezza della stringa $s$
+        \item \texttt{LOWER($s$)}: trasforma la stringa $s$ in minuscolo
+        \item \texttt{UPPER($s$)}: trasforma la stringa $s$ in maiuscolo
+        \item \texttt{SUBSTR($s$,$m$,$n$)}: sottostringa di $s$ a partire dalla posizione $m$ di lunghezza $n$, se $n$ è omesso la sottostringa è fino alla fine di $s$
+        \item \texttt{TRIM $s1$ FROM $s2$}: rimuove gli spazi bianchi da $s2$, se $s1$ è specificato rimuove i caratteri di $s1$ da $s2$
+    \end{itemize}
+    \subsection{Espressioni e funzioni per date e tempi}
+    \begin{itemize}
+        \item \texttt{CURRENT\_DATE}: data corrente
+        \item \texttt{CURRENT\_TIME}: tempo corrente
+        \item \texttt{CURRENT\_TIMESTAMP}: data e tempo correnti
+        \item \texttt{EXTRACT($campo$ FROM $data$)}: estrae il campo specificato da una data o un tempo (\textit{es.} \texttt{EXTRACT(YEAR FROM CURRENT\_DATE)} restituisce l'anno corrente)
+    \end{itemize}
+    \subsection{Ordinamento dei risultati di una query}
+    \begin{lstlisting}[language=SQL]
+        SELECT *
+        FROM nome_tabella
+        ORDER BY nome_colonna [ASC | DESC];
+    \end{lstlisting}
+    Ordina i risultati in base ai valori della colonna specificata in ordine crescente (\texttt{ASC}) o decrescente (\texttt{DESC}).
+    \subsection{Operazione di join}
+    \begin{itemize}
+        \item \texttt{CROSS JOIN}: prodotto cartesiano tra due tabelle \begin{lstlisting}[language=SQL]
+            SELECT *
+            FROM tabella1
+            CROSS JOIN tabella2;
+        \end{lstlisting}
+        \item \texttt{JOIN ON}: prodotto cartesiano tra due tabelle con una condizione \begin{lstlisting}[language=SQL]
+            SELECT *
+            FROM tabella1
+            JOIN tabella2
+            ON tabella1.colonna = tabella2.colonna;
+        \end{lstlisting}
+        \item \texttt{JOIN USING}: prodotto cartesiano tra due tabelle con una condizione su una o piu' colonne comuni \begin{lstlisting}[language=SQL]
+            SELECT *
+            FROM tabella1
+            JOIN tabella2
+            USING (colonna_comune1, ...);
+        \end{lstlisting}
+        \item \texttt{NATURAL JOIN}: prodotto cartesiano tra due tabelle con una condizione su tutte le colonne con lo stesso nome \begin{lstlisting}[language=SQL]
+            SELECT *
+            FROM tabella1
+            NATURAL JOIN tabella2;
+        \end{lstlisting}
+    \end{itemize}
+    \subsubsection{Outer join}
+    Con i \texttt{JOIN} non si ha traccia delle tuple di una tabella che corrispondono a nessuna tupla dell'altra tabella. Per ovviare a questo problema si usano le \texttt{OUTER JOIN} che aggiunge al risultato anche le tuple che non hanno corrispondenza completandole con valori nulli. Il \texttt{JOIN} originario è detto \texttt{INNER JOIN}.
+    \begin{itemize}
+        \item \texttt{FULL}: tutte le tuple di entrambe le tabelle che non hanno corrispondenza vengono completate ed inserite nel risultato
+        \item \texttt{LEFT}: solo le tuple della tabella a sinistra che non hanno corrispondenza vengono completate ed inserite nel risultato
+        \item \texttt{RIGHT}: solo le tuple della tabella a destra che non hanno corrispondenza vengono completate ed inserite nel risultato
+    \end{itemize}
+    \subsection{Funzioni di gruppo}
+    \begin{itemize}
+        \item \texttt{MAX}: massimo valore di un insieme di valori
+        \item \texttt{MIN}: minimo valore di un insieme di valori
+        \item \texttt{SUM}: somma di un insieme di valori
+        \item \texttt{AVG}: media di un insieme di valori
+        \item \texttt{COUNT}: cardinalità di un insieme
+    \end{itemize}
+    Esistono anche le funzioni \texttt{STDEV} e \texttt{VAR} per calcolare la deviazione standard e la varianza.\\
+    La funzione \texttt{COUNT} puà avere tre tipi di argomenti:
+    \begin{itemize}
+        \item un nome di una colonna: conta il numero di valori non nulli nella colonna specificata
+        \item un nome di colonna preceduto dal qualificatore \texttt{DISTINCT}: conta il numero di valori distinti non nulli nella colonna specificata
+        \item \texttt{*}: conta il numero di tuple nel risultato
+    \end{itemize}
+    \subsection{Raggruppamento}
+    \begin{lstlisting}[language=SQL]
+        SELECT colonna1
+        FROM tabella
+        GROUP BY colonna1;
+    \end{lstlisting}
+    Nel \texttt{GROUP BY} si possono usare solo le colonne che compaiono nella clausola \texttt{SELECT}. Raggruppa le tuple in base ai valori della colonna specificata.\\
+    E' possibile specificare condizioni di ricerca su gruppi di tuple utilizzando la clausola \texttt{HAVING}:
+    \begin{lstlisting}[language=SQL]
+        SELECT colonna1
+        FROM tabella
+        GROUP BY colonna1
+        HAVING condizione;
+    \end{lstlisting}
+    \subsection{Sotto-interrogazioni}
+    \begin{lstlisting}[language=SQL]
+        SELECT *
+        FROM tabella
+        WHERE colonna IN (SELECT colonna FROM tabella2);
+    \end{lstlisting}
+    Per le sotto-interrogazioni si possono usare i quantificatori \texttt{ALL} e \texttt{ANY}:
+    \begin{itemize}
+        \item \texttt{ANY}: restituisce vero quando la valutazione dell'operatore di confronto è vera per almeno una delle tuple restituite dalla sotto-interrogazione, restituisce falso altrimenti o se la sotto-interrogazione non restituisce tuple
+        \item \texttt{ALL}: restituisce vero quando la valutazione dell'operatore di confronto è vera per tutte le tuple restituite dalla sotto-interrogazione  o se la sotto-interrogazione non restituisce tuple, restituisce falso altrimenti
+    \end{itemize}
+    \texttt{IN} è equivalente a \texttt{= ANY}.\\
+    \texttt{NOT IN} è equivalente a \texttt{<> ALL}.\\
+    \subsection{Sotto-interrogazioni correlate}
+    Una sotto-interrogazione è detta \remark{correlata} se il risultato della sotto-interrogazione dipende dal valore di una colonna della query esterna. Per fare riferimento alle colonne delle tuple della query esterna si usano degli alias:
+    \begin{lstlisting}[language=SQL]
+        SELECT *
+        FROM tabella T
+        WHERE colonna IN (SELECT colonna
+                          FROM tabella2
+                          WHERE tabella2.colonna = T.colonna);
+    \end{lstlisting}
+    oppure
+    \begin{lstlisting}[language=SQL]
+        SELECT *
+        FROM tabella AS T
+        WHERE colonna IN (SELECT colonna
+                          FROM tabella2
+                          WHERE tabella2.colonna = T.colonna);
+    \end{lstlisting}
+    \subsubsection{Operatori}
+    Le sotto-interrogazioni correlate sono spesso usate in combinazione con gli operatori \texttt{EXISTS} e \texttt{NOT EXISTS}:
+    \begin{itemize}
+        \item \texttt{EXISTS}: restituisce vero se la sotto-interrogazione restituisce almeno una tupla, falso altrimenti \begin{lstlisting}[language=SQL]
+            SELECT *
+            FROM tabella
+            WHERE EXISTS (SELECT *
+                          FROM tabella2
+                          WHERE tabella2.colonna = tabella.colonna);
+        \end{lstlisting}
+        \item \texttt{NOT EXISTS}: restituisce vero se la sotto-interrogazione non restituisce alcuna tupla, falso altrimenti \begin{lstlisting}[language=SQL]
+            SELECT *
+            FROM tabella
+            WHERE NOT EXISTS (SELECT *
+                              FROM tabella2
+                              WHERE tabella2.colonna = tabella.colonna);
+        \end{lstlisting}
+    \end{itemize}
+    \subsection{Operatori insiemistici}
+    \begin{itemize}
+        \item \texttt{UNION}: restituisce l'unionde di due insiemi di tuple, elimina i duplicati
+        \item \texttt{INTERSECT}: restituisce l'intersezione di due insiemi di tuple, elimina i duplicati
+        \item \texttt{EXCEPT (o MINUS)}: restituisce la differenza tra due insiemi di tuple, elimina i duplicati
+    \end{itemize}
+    \subsection{Inserimento}
+    \begin{lstlisting}[language=SQL]
+        INSERT INTO nome_tabella
+        VALUES (valore1,valore2,...);
     \end{lstlisting}
 \end{document}

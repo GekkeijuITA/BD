@@ -40,3 +40,20 @@
 \contentsline {subsection}{\numberline {4.4.3}Cancellazione di colonne}{14}{subsection.4.4.3}%
 \contentsline {section}{\numberline {4.5}Interrogazioni}{14}{section.4.5}%
 \contentsline {subsection}{\numberline {4.5.1}Selezione}{14}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Operatori di confronto}{15}{subsection.4.5.2}%
+\contentsline {subsubsection}{Condizioni su intervalli di valori}{15}{subsection.4.5.2}%
+\contentsline {subsubsection}{Ricerca di valori in un insieme}{15}{lstnumber.-14.4}%
+\contentsline {subsubsection}{Condizioni di confronto per stringhe di caratteri}{15}{lstnumber.-16.4}%
+\contentsline {subsection}{\numberline {4.5.3}Espressioni e funzioni aritmetiche}{16}{subsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5.4}Espressioni e funzioni per stringhe}{16}{subsection.4.5.4}%
+\contentsline {subsection}{\numberline {4.5.5}Espressioni e funzioni per date e tempi}{16}{subsection.4.5.5}%
+\contentsline {subsection}{\numberline {4.5.6}Ordinamento dei risultati di una query}{16}{subsection.4.5.6}%
+\contentsline {subsection}{\numberline {4.5.7}Operazione di join}{16}{subsection.4.5.7}%
+\contentsline {subsubsection}{Outer join}{17}{lstnumber.-22.4}%
+\contentsline {subsection}{\numberline {4.5.8}Funzioni di gruppo}{17}{subsection.4.5.8}%
+\contentsline {subsection}{\numberline {4.5.9}Raggruppamento}{18}{subsection.4.5.9}%
+\contentsline {subsection}{\numberline {4.5.10}Sotto-interrogazioni}{18}{subsection.4.5.10}%
+\contentsline {subsection}{\numberline {4.5.11}Sotto-interrogazioni correlate}{18}{subsection.4.5.11}%
+\contentsline {subsubsection}{Operatori}{19}{lstnumber.-27.6}%
+\contentsline {subsection}{\numberline {4.5.12}Operatori insiemistici}{19}{subsection.4.5.12}%
+\contentsline {subsection}{\numberline {4.5.13}Inserimento}{19}{subsection.4.5.13}%
