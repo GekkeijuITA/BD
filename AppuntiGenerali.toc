@@ -57,3 +57,14 @@
 \contentsline {subsubsection}{Operatori}{19}{lstnumber.-27.6}%
 \contentsline {subsection}{\numberline {4.5.12}Operatori insiemistici}{19}{subsection.4.5.12}%
 \contentsline {subsection}{\numberline {4.5.13}Inserimento}{19}{subsection.4.5.13}%
+\contentsline {chapter}{\numberline {5}Gestore delle strutture di memorizzazione}{20}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Gerarchia delle memorie}{20}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Disco magnetico}{20}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Tempo di trasferimento}{21}{subsection.5.2.1}%
+\contentsline {section}{\numberline {5.3}Il Database Fisico}{21}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}File}{21}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Record}{21}{subsection.5.3.2}%
+\contentsline {section}{\numberline {5.4}Allocazione dei file}{22}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Allocazione contigua}{22}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Allocazione concatenata}{22}{subsection.5.4.2}%
+\contentsline {section}{\numberline {5.5}Organizzazione dei record nei file}{22}{section.5.5}%

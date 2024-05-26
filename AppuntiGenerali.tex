@@ -587,4 +587,106 @@
         INSERT INTO nome_tabella
         VALUES (valore1,valore2,...);
     \end{lstlisting}
+    \chapter{Gestore delle strutture di memorizzazione}
+    \section{Gerarchia delle memorie}
+    La gerarchia può essere vista come una piramide, i dischi magnetici saranno alla base (lento, economico e capiente) mentre la \important{memoria principale} sarà in alto (veloce, costosa e di piccola capacità). Per calcolare il tempo di accesso a una memoria si può usare la formula:
+    \begin{equation*}
+        T_{accesso} = Latenza + \frac{\text{Dimensione dati da trasferire}}{\text{Velocità di Trasferimento}}
+    \end{equation*}
+    \section{Disco magnetico}
+    \begin{center}
+        \begin{tikzpicture}
+        % Disegna il cerchio esterno
+        \fill[gray] (0,0) circle [radius=4];
+        \draw (0,0) circle [radius=4];
+        
+        % Disegna il cerchio intermedio
+        \def\radius{2.5}
+        \def\n{10}
+        \def\angle{360/\n}
+        \fill[green] (0,0) circle [radius=\radius];
+        \draw (0,0) circle [radius=\radius];
+
+        \foreach \i in {1,...,\n} {
+            \ifnum \i=1
+                \fill[blue!50] (0.15,0.5) -- (\i*\angle:{0.5}) -- (\i*\angle:{\radius}) arc (\i*\angle:{(\i+1)*\angle}:{\radius}) -- cycle;
+            \fi
+            \draw (\i*\angle:{0.5}) -- ({\angle * \i}:\radius);
+        }
+
+        % Disegna il cerchio interno
+        \fill[white] (0,0) circle [radius=1];
+        \draw (0,0) circle [radius=1];
+        \fill[black] (0,0) circle [radius=0.5];
+        \draw (0,0) circle [radius=0.5];     
+
+        % Disegna la testina
+        \fill[red] (0,1.5) -- (0.5,4) -- (-0.5,4) -- cycle;
+        \end{tikzpicture}
+    \end{center}
+    \begin{itemize}
+        \item \important{Tracce}: superficie in cui l'informazione è memorizzata (colore verde, cerchio intermedio)
+        \item \important{Settore}: porzione di traccia (colore blu)
+        \item \important{Cilindro}: insieme di tracce allineate verticalmente
+        \item \important{Piatto}: colore grigio, cerchio esterno
+        \item \important{Asse di rotazione}: asse attorno al quale ruota il piatto in senso orario (colore nero, cerchio interno)
+    \end{itemize}
+    Un disco è composto da uno o più piatti, per leggere e scrivere utilizza delle testine (una per ogni piatto, nel disegno di colore rosso). Le testine si muovono allo stesso tempo e non sono indipendenti l'una dall'altra.\\
+    \remark{Se i dati sono memorizzati su uno stesso cilindro (anche di tracce diverse) possono essere recuperati molto più velocemente che non dati distribuiti su diversi cilindri (il movimento della testina è molto lento).}
+    \begin{itemize}
+        \item \important{Command Overhead}: tempo impiegato a impartire comandi al drive
+        \item \important{Seek Time}: tempo impiegato dal braccio\footnote{Il braccio è quello che tiene tutte le testine allineate} a posizionarsi sulla traccia desiderata
+        \item \important{Settle Time}: tempo impiegato per la stabilizzazione del braccio
+        \item \important{Rotational Latency}: tempo di attesa dal primo settore da leggere
+    \end{itemize}
+    \subsection{Tempo di trasferimento}
+    Il tempo di trasferimento è il tempo impiegato per trasferire un certo numero di byte e si riferisce alla velocità con cui si trasferiscono byte dai (sui) piatti sulla (dalla) cache del controller. Dipende dalla \important{velocità di trasferimento (o Transfer Rate $Tr$)}.\\
+    Un \important{blocco (o pagina)} è una sequenza contigua di settori su una traccia, costituisce l'unità di I/O per il trasferimento dei dati tra il disco e la memoria principale.\\
+    Il compito del gestore delle strutture di memorizzazione è quello di ridurre i tempi di latenza.
+    \section{Il Database Fisico}
+    \important{A livello fisico di un DB consiste in un insieme di file, ognuno dei quali viene visto come una collezione di pagine di dimensione fissa.}
+    \begin{center}
+        \begin{tabular}{| c | c |}
+            \hline
+            \textbf{LIVELLO LOGICO} & \textbf{LIVELLO FISICO}\\
+            \hline
+            Relazione (tabella) & File\\
+            \hline
+            Tupla & Record\\
+            \hline
+        \end{tabular}
+    \end{center}
+    \subsection{File}
+    Un file è una sequenza di record, è detto \remark{file con record a lunghezza fissa} se tutti i record hanno la stessa dimensione in byte, altrimenti parliamo di \remark{file con record a lunghezza variabile}.
+    \subsection{Record}
+    Un record è costituito da un insieme di valori collegati e in generale ogni record include un header che può contenere:
+    \begin{itemize}
+        \item \important{Identificatore della relazione} cui il record appartiene
+        \item \important{Identificatore univoco RID} del record nel DB
+        \item \important{Timestamp} che indica quando il record è stato inserito o modificato per l'ultima volta
+        \item \important{Lunghezza record}
+    \end{itemize}
+    \section{Allocazione dei file}
+    \subsection{Allocazione contigua}
+    \begin{itemize}
+        \item I blocchi dei file sono allocati in blocchi di disco contigui quindi non si deve muovere troppo la testina
+        \item Rende molto efficiente le letture dell'intero file
+        \item Gli aggiornamenti sono costosi (se si ha un file pieno e si vuole aggiungere un record, devo spostare tutti i blocchi in un'altra posizione di lunghezza +1)
+    \end{itemize}
+    \subsection{Allocazione concatenata}
+    \begin{itemize}
+        \item Ogni blocco di un file contiene un puntatore al successivo blocco del file
+        \item Gli aggiornamenti sono molto efficienti
+        \item La lettura dell'intero file è molto lenta
+        \item Utilizzo di \important{bucket} non necessariamente contigui ma vicini (possibilmente nello stesso cilindro), per gruppi di record tra loro collegati
+    \end{itemize}
+    \section{Organizzazione dei record nei file}
+    \begin{itemize}
+        \item \important{File heap}: i record vengono memorizzati in ordine di inserimento
+        \item \important{File ordinato su $X$}: i record vengono memorizzati in ordine rispetto ad un campo $X$
+        \item \important{File hash su $X$}: i record vengono memorizzati in ordine parziale rispetto ad un campo $X$ (vengono raggruppati in base al valore di $X$)
+    \end{itemize}
+    \begin{center}
+        \includegraphics[scale=0.4]{Appunti Latex/Immagini/recordfile.png}
+    \end{center}
 \end{document}
