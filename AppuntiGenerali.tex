@@ -283,6 +283,90 @@
         \item \important{Associazione uno a molti}: l'entità "da sola" riceve la chiave dell'altra entità come chiave esterna: $E_{1}(\underline{K},A,B,L),E_{2}(\underline{L},C,D, K^{E_{1}})$
         \item \important{Associazione molti a molti}: si crea una nuova relazione con le chiavi delle entità coinvole e gli eventuali attributi dell'associazione: $R(\underline{K,L})$
     \end{itemize}
+    \chapter{Algebra Relazionale}
+    \section{Introduzione}
+    L'algebra è composta da cinque operazioni di base:
+    \begin{itemize}
+        \item Proiezione
+        \item Selezione
+        \item Prodotto cartesiano
+        \item Unione
+        \item Differenza
+    \end{itemize}
+    Ogni operazione ha come argomento una o due relazioni e restituisce come risultato una relazione; è pertanto possibile applicate un'operazione al risultato di un'altra operazione (proprietà di chiusura). In riferimento alla notazione per nome, viene introdotta un'ulteriore operazione, di \textbf{ridenominazione}, che permette di modificare i nomi degli attributi.
+    \section{Ridenominazione}
+    La ridenominazione di una relazione $R$ indicata con
+    \begin{equation*}
+        \rho_{A_{1},A_{2},\ldots,A_{n} \leftarrow B_{1},B_{2},\ldots,B_{n}}(R)
+    \end{equation*}
+    ridenomina l'attributo di nome $A_{i}$ con il nome $B_{i}, i=1,\ldots,n$. La ridenominazione è corretta se il nuovo schema di relazione per $R$ ha attributi con nomi tutti distinti. 
+    \section{Proiezione}
+    La proiezione di una relazione $R$ su un insieme $A={A_{1},A_{2},\ldots,A_{n}}\subseteq U_{R}$ di nomi di attributi di $R$, indicata con:
+    \begin{equation*}
+        \Pi_{A_{1},A_{2},\ldots,A_{n}}(R)
+    \end{equation*}
+    è una relazione di grado $n$ le cui tuple hanno come attributi solo gli attributi specificati in $A$. Il risultato della proiezione è un insieme di tuple senza duplicati.
+    \section{Selezione}
+    La selezione su una relazione $R$, dato un predicato $F$ su $R$, indicata con:
+    \begin{equation*}
+        \sigma_{F}(R)
+    \end{equation*}
+    genera una relazione che contiene tutte le tuple di $R$ che verificano $F$. $F$ può essere una combinazione degli operatori booleani $\land,\lor, \lnot$ e operatori relazionali di confronto $=,\neq,<,>,\leq,\geq$.\\
+    Lo schema (ed il grado) della relazione risultato sono uguali a quelli rella relazione operando.
+    \section{Prodotto cartesiano}
+    Il prodotto cartesiano di due relazioni $R$ e $S$, indicato con:
+    \begin{equation*}
+        R \times S
+    \end{equation*}
+    sono tutte le possibili combinazione delle tuple di $R$ con le tuple di $S$. La relazione risultato ha grado pari alla somma dei gradi delle relazioni operandi e la cardinalità è il prodotto delle cardinalità degli argomenti.\\
+    \textbf{Il prodotto cartesiano può essere applicato solo se le due relazioni $R$ e $S$ hanno schemi disgiunti}.
+    \section{Unione}
+    l'unione delle relazioni $R$ ed $S$, indicata con:
+    \begin{equation*}
+        R \cup S
+    \end{equation*}
+    è l'insieme delle tuple che sono in $R$ od in $S$. \textbf{Le due relazioni devono avere lo stesso schema}.\\
+    Le tuple duplicate vengono eliminate dal risultato.
+    \section{Differenza}
+    La differenza delle relazioni $R$ ed $S$, indicata con:
+    \begin{equation*}
+        R - S
+    \end{equation*}
+    è l'insieme delle tuple che sono in $R$ ma non in $S$. \textbf{Le due relazioni devono avere lo stesso schema e stesso grado}.
+    \section{Intersezione}
+    L'intersezione delle relazioni $R$ ed $S$, indicata con:
+    \begin{equation*}
+        R \cap S = R - (R - S)
+    \end{equation*}
+    restituisce le tuple che sono sia in $R$ che in $S$. \textbf{Le due relazioni devono avere lo stesso schema}.
+    \section{Join}
+    Il join (detto anche theta-join) di due relazioni $R$ ed $S$ sugli attributi $A$ di $R$ e $B$ di $S$, indicato con:
+    \begin{equation*}
+        R \bowtie_{A\theta B} S
+    \end{equation*}
+    dove $\theta$ è un operatore relazionale di confronto, è definito dall'espressione algebrica:
+    \begin{equation*}
+        \sigma_{A\theta B}(R \times S)
+    \end{equation*}
+    il join pertanto è un prodotto cartesiano seguito da una selezione. \\
+    \textbf{Il join può essere applicato solo se le due relazioni $R$ ed $S$ hanno schemi disgiunti}.
+    \textit{Il join si chiama equi-join se l'operatore $\theta$ è l'uguaglianza.}
+    \subsection{Join naturale}
+    \begin{equation*}
+        R \bowtie S
+    \end{equation*}
+    è un join in cui si considerano solo gli attributi comuni tra $R$ ed $S$ e poi elimina i duplicati dalla relazione risultato. Nel caso particolare $U_{R}=U_{S}$, il join naturale degenera nell'intersezione, mentre, nel caso $U_{R}\cap U_{S}=\emptyset$, degenera nel prodotto cartesiano.
+    \section{Divisione}
+    L'operazione di divisione, date due relazioni $R$ ed $S$, con insiemi di attributi $U_{R}\subset U_{S}$ indicata con:
+    \begin{equation*}
+        R \div S
+    \end{equation*}
+    \remark{L'idea intuitiva è che l'operazione di divisione è utile per determinare le tuple per cui in una relazione c'è una corrispondenza con tutte le tuple di un'altra relazione}. Il grado della relazione risultato è $h-k$ dove $h$ è il grado di $R$ e $k$ è il grado di $S$.\\
+    La divisione è \textbf{commutaiva} e \textbf{associativa}.
+    La divisione è un'operazione derivata dall'algebra relazionale. La divisione di due relazioni $R$ ed $S$ è definita come:
+    \begin{equation*}
+        R \div S = \Pi_{D}(R) - \Pi_{D}((\Pi_{D}(R)\times S)-R)
+    \end{equation*}
     \chapter{Linguaggio SQL}
     \section{Tipi}
     \begin{itemize}
@@ -628,13 +712,212 @@
         \end{itemize}
         \item \important{Vincoli su relazioni multiple}: sono vincoli che coinvolgono tuple di relazioni diverse. Un importante tipo di vincolo in questa classe è l'integrità referenziale
     \end{itemize}
-    Quando si crea una tabella è possibile usare il comando \texttt{CHECK} per definire vincoli arbitrari su colonna o su relazione, che corrispondono a vincoli su singola tupla della classificazione precedente. Per definire un vincolo \texttt{CHECK} si usa la seguente sintassi:
+    Quando si crea una tabella è possibile usare il comando \texttt{CHECK} per definire vincoli arbitrari su colonna o su relazione, che corrispondono a vincoli su singola tupla della classificazione precedente. Per definire un vincolo \texttt{CHECK} su una colonna si usa la seguente sintassi:
     \begin{lstlisting}[language=SQL]
         CREATE TABLE nome_tabella(
             nome_colonna tipo_colonna CHECK (condizione),
             ...
         );
     \end{lstlisting}
+    Mentre per definire un vincolo \texttt{CHECK} su una relazione si usa la seguente sintassi:
+    \begin{lstlisting}[language=SQL]
+        CREATE TABLE nome_tabella(
+            ...
+            CHECK (condizione),
+            ...
+        );
+    \end{lstlisting}
+    \textit{La relazione vuota soddisfa sempre tutti i vincoli \texttt{CHECK}}.\\
+    Una possibilità prevista da SQL per tutti i vincoli associati alle definizioni di relazioni è quella di assegnare un nome al vincolo premettendo alla specifica del vincolo la clausola \texttt{CONSTRAINT nome\_vincolo}. Il nome del vincolo deve essere unico rispetto ad altri nomi di vincoli definiti per la stessa relazione:
+    \begin{lstlisting}[language=SQL]
+        CREATE TABLE nome_tabella(
+            ...
+            CONSTRAINT nome_vincolo CHECK (condizione),
+            ...
+        );
+    \end{lstlisting}
+    \section{Asserzioni}
+    SQL prevede il meccanismo delle asserzioni per specificare vincoli su più tuple o relazioni. Le condizioni che possono essere espresse solo tramite asserzioni sono quelle relative al numero minimo di tuple (che soddisfano una certa condizione) contenute in una tabella.
+    \begin{lstlisting}[language=SQL]
+        CREATE ASSERTION nome_asserzione
+        CHECK (condizione);
+    \end{lstlisting}
+    Definire tali vincoli di integrità come asserzioni è concettualmente più corretto, ed, in generale, porta ad una verifica più efficiente.\\
+    Un'asserzione può essere rimossa tramite il comando \texttt{DROP ASSERTION nome\_asserzione}.
+    \section{Controllo di vincoli di integrità}
+    SQL consente di specificare sia vincoli d'integrità con \remark{valutazione immediata}, cioè valutati dopo ogni comando di manipolazione dei dati, sia vincoli la cui \remark{valutazione è differita} al termine dell'esecuzione di una sequenza di operazioni di manipolazione dei dati, che constituiscono una \important{transazione}. Quando i vincoli sono immediatamente verificati, una violazione del vincolo causa la non esecuzione del comando che ne ha causato la violazione (eventuali modifiche parziali vengono annullate). Nel caso in cui i vincoli siano valutati alla fine della transazione, invece, la violazione del vincolo comporta l'abort della transazione. Tutte le operazioni nella transazione vengono cioè annullate, poichè non vi è modo di stabilire quale operazione ha causato la violazione del vincolo.\\
+    Nella definizione di un vincolo è possibile specificare se dovrà essere sempre valutato dopo ogni singola operazione SQL (\texttt{NOT DEFERRABLE}, di default è questa), viceversa  la valutazione di un vincolo può essere differita alla fine della transazione (\texttt{DEFERRABLE}). Un vincolo \texttt{DEFERRABLE} può essere specificato con le opzioni
+    \begin{itemize}
+        \item \texttt{INITIALLY IMMEDIATE} (default): la verifica avviene dopo ogni istruzione SQL 
+        \item \texttt{INITIALLY DEFERRED}: la verifica avviene alla fine della transazione
+    \end{itemize}
+    La modalità di controllo di un vincolo può essere cambiata dinamicamente:
+    \begin{lstlisting}[language=SQL]
+        SET CONSTRAINTS {lista vincoli | ALL} {DEFERRED | IMMEDIATE};
+    \end{lstlisting} 
+    Un vincolo di integrità è violato se la valutazione della condizione di controllo restituisce \texttt{FALSE}, viceversa un vincolo di integrità non è violato se la valutazione della condizione restituisce \texttt{TRUE} o \texttt{UNKNOWN}.
+    \section{Dati derivati e Viste}
+    \subsection{Colonne derivate}
+    I valori per la colonna derivata sono calcolati ed assegnati automaticamente ogni volta che una nuova tupla è inserita nella relazione e mantenuti aggiornati in seguito ad aggiornamenti a tuple della relazione. Nel comando \texttt{CREATE TABLE} o nella clausola \texttt{ADD COLUMN} del comando \texttt{ALTER TABLE} si può specificare una colonna derivata con la seguente sintassi:
+    \begin{lstlisting}[language=SQL]
+        colonna_derivata [tipo_colonna] GENERATED ALWAYS AS (espressione)
+    \end{lstlisting}
+    \subsection{Derivazione di relazioni}
+    SQL prevede la possibilità di definire una nuova relazione basandosi su relazioni già definite. A livello di schema è possibile, mediante la clausola opzionale \texttt{LIKE} del comando \texttt{CREATE TABLE}, copiare la struttura completa di una o più relazioni esistenti nella definizione di una nuova relazione.\\
+    SQL permette  inoltre, mediante la clausola opzionale \texttt{AS} del comando \texttt{CREATE TABLE}, di creare una relazione con la stessa struttura di un'interrogazione. Se viene specificata la clausola \texttt{WITH DATA}, la relazione così creata è popolata con le tuple risultato della valutazione dell'interrogazione, altrimenti viene creata una relazione vuota.
+    \begin{lstlisting}[language=SQL]
+        CREATE TABLE nome_tabella
+        [WITH DATA] AS (SELECT ...)
+    \end{lstlisting}
+    \section{Viste}
+    In SQL è possibile definire viste alternative degli stessi dati. Una \important{vista} è una relazione \underline{virtuale} attrvaerso cui è possibile "vedere" i dati memorizzati nelle relazioni "reali" (dette di base). Il comando di definizione di una vista ha la seguente sintatti:
+    \begin{lstlisting}[language=SQL]
+        CREATE VIEW nome_vista [(lista colonne)]
+        AS interrogazione
+        [WITH [{LOCAL | CASCADED}] CHECK OPTION];
+    \end{lstlisting}
+    Una vista può essere cancellata tramite il comando:
+    \begin{lstlisting}[language=SQL]
+        DROP VIEW nome_vista {CASCADE | RESTRICT};
+    \end{lstlisting}
+    \subsection{Interrogazioni su viste}
+    Una volta definita, una vista è parte dello schema e può essere utilizzata nelle interrogazioni come una relazione di base.
+    \subsection{Aggiornamenti su viste}
+    Un ulteriore aspetto da tenere in considerazione riguarda le operazioni di aggiornamento eseguite attrvaerso le viste. L'esecuzione di un'operazione di aggiornamento su una vista viene propagata alla relazione su cui la vista è definita.
+    \begin{enumerate}
+        \item E' possibile eseguire il comando \texttt{DELETE} sulla vista $V$ se l'interrogazione $Q$: \begin{itemize}
+            \item E' un'interrogazione su una singola relazione $R$
+            \item Non contiene la clausola \texttt{GROUP BY}, l'opzione \texttt{DISTINCT}, operatori insiemistici, né alcuna funzione di gruppo
+            \item Eventuali sotto-interrogazioni presenti nella clausola di selezione non fanno riferimento, né mediante correlazione né elencandola esplicitamente nella clausola \texttt{FROM}, alla relazione $R$
+        \end{itemize}
+        \item E' possibile eseguire il comando \texttt{UPDATE} su una colonna $C$ di $V$ se $Q$: \begin{itemize}
+            \item Soddisfa tutte le condizioni per il comando \texttt{DELETE}
+            \item $C$ non è definita tramite un'espressione o funzione
+        \end{itemize}
+        \item E' possibile eseguire il comando \texttt{INSERT} su $V$ se $Q$: \begin{itemize}
+            \item Soddisfa tutte le condizioni per il comando \texttt{UPDATE}
+            \item Qualsiasi colonna per cui valga il vincolo \texttt{NOT NULL} è inclusa nella vista
+        \end{itemize}
+    \end{enumerate}
+    Per assicurare quindi che le tuple inserite tramite una vista siano accettate solo se verificano la condizione dell'interrogazione di definizione della vista, si deve specificare la clausola \texttt{CHECK OPTION} nel comando di definizione della vista. L'opzione \texttt{CHECK OPTION} può essere specificata con le opzioni \texttt{LOCAL} o \texttt{CASCADED}
+    \begin{itemize}
+        \item \texttt{LOCAL CHECK OPTION}: solo la clausola \texttt{WHERE} della vista in cui compare l'opzione viene verificata
+        \item \texttt{CASCADED CHECK OPTION} (default): le clausola \texttt{WHERE} della vista in cui compare l'opzione e di tutte le viste su cui si basa eventualmente la sua definizione vengono verificate
+    \end{itemize}
+    \chapter{Normalizzazione}
+    La teoria della normalizzazione genera un nuovo schema equivalente al precedente ma normalizzato (senza ridondanze). Questa teoria si basa sull'analisi di determinati vincoli di integrità noti come \important{dipendenze funzionali}.
+    \section{Ridondanze ed anomalie}
+    Le anomalie che vogliamo eliminare tramite il processo di normalizzazione dipendono dalla presenza di dati ridondanti in una base di dati relazionale.
+    \begin{itemize}
+        \item \important{Anomalie di modifica}: si verificano quando si deve modificare lo stesso dato in più tuple
+        \item \important{Anomalie di cancellazione}: si verificano quando si cancella una tupla che contiene informazioni che non si vogliono perdere
+        \item \important{Anomalie di inserimento}: si verificano quando si vuole inserire una nuova tupla ma non si hanno tutti i dati necessari
+    \end{itemize}
+    L'obiettivo della teoria della normalizzazione è, quindi, quello di:
+    \begin{itemize}
+        \item Identificare situazioni che possono generare anomalie, partendo dall'analisi di alcuni tipi di vincoli di integrità validi per lo schema di partenza. Tali vincoli sono noti come \important{dipendenze funzionali}
+        \item Identificare quali proprietà, rispetto alle dipendenze funzionali, uno schema deve soddisfare afficnhé non sia soggetto ad anomalie. Tali proprietà portano alla definizione di \important{forme normali} per gli schemi relazionali
+        \item Fornire strumenti per trasformare lo schema relazionale di partenza in uno schema equivalente al precedente che soddisfi una forma normale e quindi non sia soggetto a determinati tipi di anomalie. Questo processo è noto come \important{scomposizione} e prevde la sostituzione di una relazione che presenta anomalie con un insieme di relazioni, che non presentano tale problema
+    \end{itemize}
+    \textbf{La normalizzazione può portare ad inefficienze nelle prestazioni, nel caso in cui le interrogazioni richiedano frequentemente di combinare i dati suddivisi in relazioni distinte}.
+    \section{Dipendenze funzionali}
+    Una dipendenza funzionale descrive un legame di tipo funzionale esistente tra gli attributi di una singola relazione, più formalmente:\\
+    Sia $R(A_{1},\ldots,A_{n})$ uno shcme di relazione. Siano $X$ ed $Y$ sottoinsiemi di $U_{R}$. Sia $r$ un'istanta di $R(A_{1},\ldots,A_{n})$. $r$ soddisfa $X\rightarrow Y$ se, per ogni coppia di tuple $t_{1}$ e $t_{2}$ in $r$, vale la seguente condizione: se $t_{1}[X] = t_{2}[X]$, allora $t_{1}[Y] = t_{2}[Y]$.\\
+    $X$ determina funzionalmente $Y$ in $R(A_{1},\ldots,A_{n})$, indicato con $X\rightarrow_{R(A_{1},\ldots,A_{n})}Y$ (o con $X \rightarrow Y$ in assenza di ambiguità) se qualunque istanza $r$ di $R(A_{1},\ldots,A_{n})$ soddisfa $X\rightarrow Y$. $X \rightarrow{R(A_{1},\ldots,A_{n})} Y$ è chiamata dipendenza funzionale su $U_{R}$.\\
+    In modo compatto:
+    \begin{equation*}
+        \forall r\in R \text{ se } t_{1}[X]=t_{2}[X] \text{ allora } t_{1}[Y]=t_{2}[Y]
+    \end{equation*}
+    \textbf{Esempio:}\\
+    \texttt{titolo $\rightarrow$ regista}, si legge come "uno stesso titolo non può avere registi diversi".
+    \begin{itemize}
+        \item \important{Dipendenze funzionali banali}: sempre valide
+        \item \important{Dipendenze funzionali derivate}: sono implicate da altre dipendenze funzionali note
+    \end{itemize}
+    \textbf{Esempio:}
+    \begin{enumerate}
+        \item \texttt{titolo regista $\rightarrow$ genere}
+        \item \texttt{colloc $\rightarrow$ titolo regista}
+        \item \texttt{colloc $\rightarrow$ genere}
+    \end{enumerate}
+    La terza è una dipendenza funzionale derivate dalle prime due.
+    \subsection{Chiusura di un insieme di dipendenze funzionali}
+    Indicheremo con $F^{+}$ l'insieme delle dipendenze funzionali logicamente implicate da $F$ pertanto $F^{+}=\{X\rightarrow Y | F \models X \rightarrow Y\}$.
+    \subsubsection{Regole di Armstrong}
+    Nel seguito $D$ è un insieme di attributi:
+    \begin{itemize}
+        \item \important{Riflessività}: sia $Y \subseteq X \subseteq D$ allora $X \rightarrow Y$
+        \item \important{Additività}: sia $Z\subseteq D$. Se $X \rightarrow Y$ allora $XZ \rightarrow YZ$
+        \item \important{Transitività}: se $X \rightarrow Y$ e $Y \rightarrow Z$ allora $X \rightarrow Z$
+        \item \important{Unione}: se $X \rightarrow Y$ e $X \rightarrow Z$ allora $X \rightarrow YZ$
+        \item \important{Pseudotransitività}: se $X \rightarrow Y$ e $WY \rightarrow Z$ allora $WX \rightarrow Z$
+        \item \important{Scomposizione}: sia $Z\subseteq Y$. Se $X \rightarrow Y$ allora $X \rightarrow Z$
+    \end{itemize}
+    Diciamo che $X\rightarrow Y$ è derivabile da $F$, indicato con $F \vdash X \rightarrow Y \iff F \models X\rightarrow Y$.
+    \subsection{Chiusura di un insieme di attributi}
+    Sia $F$ un insieme di dipendenze funzionali su un insieme di attributi $D$. Sia $X\subseteq D$. La chiusura di $X$ rispetto ad $F$, denotata con $X^{+}$, è l'insieme $\{A\in D|F\vdash X\rightarrow A\}$.
+    \textbf{Esempio:}
+    $D=\{colloc,titolo,regista,anno,genere,valutaz,tipo\}$
+    \begin{enumerate}
+        \item \texttt{titolo regista $\rightarrow$ anno}
+        \item \texttt{titolo regista $\rightarrow$ genere}
+        \item \texttt{titolo regista $\rightarrow$ valutaz}
+        \item \texttt{colloc $\rightarrow$ titolo regista}
+        \item \texttt{colloc $\rightarrow$ tipo}
+    \end{enumerate}
+    Prendiamo $X=\text{colloc}$, $X^{+}={\text{\{titolo,regista,tipo,anno,genere,valutaz,colloc\}}}$
+    \subsection{Chiave}
+    Sia $R(A_{1},\ldots,A_{n})$ uno schema di relazione, $K$ un sottoinsieme di $A_{1},\ldots,A_{n}$ e $F$ un insieme di dipendenze funzionali su $A_{1},\ldots,A_{n}$. $K$ è una chiave per $R$ se:
+    \begin{enumerate}
+        \item $K\rightarrow A_{1},\ldots,A_{n} \in F^{+}$
+        \item Non esiste $Y\subset K$ tale che $Y\rightarrow A_{1},\ldots,A_{n} \in F^{+}$
+    \end{enumerate}
+    In poche parole:
+    \begin{equation*}
+        K^{+} = \{A_{1},\ldots,A_{n}\}
+    \end{equation*}
+    \textbf{Esempio:}\\
+    Considerando l'esempio di prima, $X=\text{colloc}$ è chiave perchè $R\subseteq X^{+}$\\
+    \textbf{Se un attributo non compare mai a destra di una dipendenza funzionale in $F$, questo attributo farà \underline{certamente} parte della chiave}.
+    \section{Forme normali}
+    \subsection{Forma normale di Boyce-Codd (BCNF)}
+    Sia $R(A_{1},\ldots, A_{n})$ uno schema di relazione. Sia $F$ un insieme di dipendenze funzionali su $U_{R}$. $R(A_{1},\ldots, A_{n})$ è in forma normale di Boyce-Codd rispetto ad $F$ se per ogni dipendenza funzionale $X\rightarrow Y \in F$, con $Y \nsubseteq X$, allora $X$ è una chiave o super-chiave di $R$.
+    \subsection{Terza forma normale (3NF)}
+    \subsubsection{Attributo primo}
+    Un attributo $A_{i}$ è un attributo primo di $R$ rispetto a $F$ se $A_{i}$ è contenuto in una chiave di $R$.
+    \subsubsection{Terza forma normale}
+    Sia $R(A_{1},\ldots, A_{n})$ uno schema di relazione. Sia $F$ un insieme di dipendenze funzionali su $U_{R}$. $R(A_{1},\ldots, A_{n})$ è in terza forma normale rispetto ad $F$ se per ogni dipendenza funzionale $X\rightarrow Y \in F$, con $Y \nsubseteq X$, allora $X$ è una chiave o super-chiave di $R$ oppure $\forall A \in Y$, $A$ è un attributo primo per $R(A_{1},\ldots, A_{n})$.
+    \section{Scomposizione di schemi relazionali}
+    La scomposizione di uno schema di relazione $R(A_{1},\ldots, A_{n})$ è la sua sostituzione con un insime di schemi relazionali:
+    \begin{equation*}
+        \Sigma = \{R_{1},\ldots,R_{k}\}
+    \end{equation*}
+    tali che:
+    \begin{equation*}
+        U_{R} = U_{R_{1}} \cup \ldots \cup U_{R_{k}}
+    \end{equation*}
+    Gli schemi di attributi dei vari schemi $R$ non devono essere necessariamente disgiunti, pertanto uno stesso attributo di $R$ può comparire in più schemi $R_{i}$.
+    \subsection{Proprietà}
+    \subsubsection{Lossless Join}
+    Se una relazione viene scomposta, è importante che sia possibile riottenere esattamente la stessa relazione eseguendo il join naturale delle relazioni in cui è stata scomposta (\important{lossless join}):
+    \begin{equation*}
+        r = \pi_{R_{1}}(r)\bowtie \ldots \bowtie \pi_{R_{k}}(r)
+    \end{equation*}
+    cioè $r$ è il join naturale delle sue proiezioni sugli schemi $R_{1},\ldots,R_{k}$. \textit{Con $r$ istanza di $R$}.\\
+    Una scomposizione per uno schema di relazione ha la proprietà di lossless join se soddisfa una delle seguenti implicazioni:
+    \begin{itemize}
+        \item $(U_{R_{1}} \cap U_{R_{2}}) \rightarrow (U_{R_{1}}-U_{R_{2}})$
+        \item $(U_{R_{1}} \cap U_{R_{2}}) \rightarrow (U_{R_{2}}-U_{R_{1}})$
+    \end{itemize}
+    \textbf{Se gli schemi di una scomposizione sono disgiunti, la scomposizione non è  lossless join}.
+    \subsubsection{Proiezione di insiemi di dipendenze funzionali}
+    Sia $D$ un insieme di attributi. Sia $F$ un insieme di dipendenze funzionali su $D$. Sia $Z\subseteq D$. La proiezione di $F$ su $Z$, denotata con $\Pi_{Z}(F)$, è l'insieme $\{X\rightarrow Y|X\rightarrow Y \in F^{+}|XY\subseteq Z\}$.
+    Una scomposizione preserva un insieme di dipendenze funzionali $F$ se l'unione di tutti gli insiemi di dipendenze $\Pi_{R_{i}}(F),i=1,\ldots,k$, implica logicamente tutte le dipendenze in $F$.
+    \subsubsection{Scomposizione che preserva le dipendenze}
+    Sia $R(A_{1},\ldots.A_{n})$ uno schema di relazione. Sia $\Sigma = \{R_{1},\ldots,R_{k}\}$ una scomposizione per $R(A_{1},\ldots.A_{n})$. Sia $F$ un insieme di dipendenze funzionali su $U_{R}$. $\Sigma$ preserva le dipendenze in $F$ se:
+    \begin{equation*}
+        \bigcup_{i=1,\ldots,k}\Pi_{R_{i}}(F) \models F
+    \end{equation*}
     \chapter{Gestore delle strutture di memorizzazione}
     \section{Gerarchia delle memorie}
     La gerarchia può essere vista come una piramide, i dischi magnetici saranno alla base (lento, economico e capiente) mentre la \important{memoria principale} sarà in alto (veloce, costosa e di piccola capacità). Per calcolare il tempo di accesso a una memoria si può usare la formula:
