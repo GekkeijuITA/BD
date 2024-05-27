@@ -577,15 +577,63 @@
         \end{lstlisting}
     \end{itemize}
     \subsection{Operatori insiemistici}
+    Un'interrogazione (o sotto-interrogazione) può essere costituita da una o più sotto interrogazioni connesse dall'operatore \texttt{UNION}. Tale operatore restituisce tutte le tuple distinte restituite da almeno una delle sotto-interrogazioni a cui è applicata.
     \begin{itemize}
         \item \texttt{UNION}: restituisce l'unionde di due insiemi di tuple, elimina i duplicati
         \item \texttt{INTERSECT}: restituisce l'intersezione di due insiemi di tuple, elimina i duplicati
         \item \texttt{EXCEPT (o MINUS)}: restituisce la differenza tra due insiemi di tuple, elimina i duplicati
     \end{itemize}
+    \section{Operazioni di aggiornamento}
     \subsection{Inserimento}
     \begin{lstlisting}[language=SQL]
         INSERT INTO nome_tabella
         VALUES (valore1,valore2,...);
+    \end{lstlisting}
+    E' possibile anche inserire una nuova tupla con i valori di alcune colonne specificate:
+    \begin{lstlisting}[language=SQL]
+        INSERT INTO nome_tabella (colonna1,colonna2,...)
+        VALUES (valore1,valore2,...);
+    \end{lstlisting}
+    I valori delle colonne possono essere generati anche con una sotto-interrogazione:
+    \begin{lstlisting}[language=SQL]
+        INSERT INTO nome_tabella (colonna1,colonna2,...)
+        sotto-interrogazione;
+    \end{lstlisting}
+    La clausola di proiezione della sotto-interrogazione deve includere colonne di tipo compatibile con le colonne della tupla o delle tuple da inserire. Quando usiamo una sotto-interrogazioine all'interno di un comando \texttt{INSERT} viene inserito un numero di tuple uguale alla cardinalità del risultato della sotto-interrogazione.
+    \subsection{Cancellazione}
+    Il comando \texttt{DELETE} permette la cancellazione di tuple da una data relazione. Le tuple da cancellare sono specificate tramite una condizione di ricerca; se non è specificata alcuna condizione di ricerca, vengono cancellate \textbf{tutte} le tuple presenti nella relazione oggetto del comando.
+    \begin{lstlisting}[language=SQL]
+        DELETE FROM nome_tabella
+        [WHERE condizione];
+    \end{lstlisting}
+    \subsection{Modifica}
+    Il comando \texttt{UPDATE} permette l'esecuzione di modifiche ad una o più colonne delle tuple di una relazione. Le sotto-interrogazioni possono essere usate non solo per determinare le tuple da modificare ma anche per determinare i valori da assegnare alle colonne da modificare.
+    \begin{lstlisting}[language=SQL]
+        UPDATE nome_tabella
+        SET colonna1 = valore1, colonna2 = valore2, ...
+        [WHERE condizione];
+    \end{lstlisting}
+    \section{Vincoli di integrità}
+    SQL permette la specifica di alcuni vincoli di integrità semantica, dove con vincolo intendiamo una proprietà che un insieme di dati deve verificare. E' possibile innanzitutto disitnguere tra vincoli \remark{statici} e vincoli \remark{di transizione}. Un vincolo statico riguarda uno stato della base di dati (\textit{es. "la valutazione relativa ad un film deve essere compresa tra 0 e 5"}) mentre un vincolo di transizione mette in relazione stati diversi della base di dati (\textit{es. "non è possibile modificare la data di restituzione di un video assegnandogli una data precedente a quella memorizzata"}).
+    \begin{itemize}
+        \item \important{Vincoli su singola relazione}: Sono i vincoli che riguardano una singola relazione \begin{itemize}
+            \item \remark{Vincoli su singola tupla}: vincoli di questo tipo coinvolgono gli attributi di una singola tupla \begin{itemize}
+                \item Vincoli su singolo attributo (\textit{es. \texttt{NOT NULL}})
+                \item Vincoli su attributi multipli
+            \end{itemize}
+            \item \remark{Vincoli su tuple multiple di una stessa relazione} \begin{itemize}
+                \item Dipendenze funzionali: permettono di modellare correlazioni tra i valori di determinati attributi in tuple diverse e di esprimere che un attributo od un insieme di attributi siano chiave di una relazione
+                \item Vincoli di aggregazione: impongono che una determinata funzione aggregata calcolata su un insieme di tuple verifichi una data relazione di confronto rispetto ad un valore dato
+            \end{itemize}
+        \end{itemize}
+        \item \important{Vincoli su relazioni multiple}: sono vincoli che coinvolgono tuple di relazioni diverse. Un importante tipo di vincolo in questa classe è l'integrità referenziale
+    \end{itemize}
+    Quando si crea una tabella è possibile usare il comando \texttt{CHECK} per definire vincoli arbitrari su colonna o su relazione, che corrispondono a vincoli su singola tupla della classificazione precedente. Per definire un vincolo \texttt{CHECK} si usa la seguente sintassi:
+    \begin{lstlisting}[language=SQL]
+        CREATE TABLE nome_tabella(
+            nome_colonna tipo_colonna CHECK (condizione),
+            ...
+        );
     \end{lstlisting}
     \chapter{Gestore delle strutture di memorizzazione}
     \section{Gerarchia delle memorie}
