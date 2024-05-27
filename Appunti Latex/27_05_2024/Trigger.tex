@@ -1,0 +1,47 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\input{../variables.tex}
+\preamble
+
+\title{Trigger}
+\date{27 Maggio 2024}
+
+\begin{document}
+\maketitle
+\section{Introduzione}
+Un DBMS si dice \remark{attivo} quando reagisce ad eventi eseguendo operazioni definite dal progettista $\rightarrow$ ADBMS. 
+\section{Trigger}
+Un trigger è un insieme di istruzioni SQL che viene eseguito automaticamente dal DBMS in risposta ad un evento specifico che si verifica nel database.\\
+\textbf{Benefici:}
+\begin{itemize}
+    \item Efficienza
+    \item Costi di manutenzione
+    \item Uniformità di gestione dei dati
+    \item Integrazione con le altre componenti del DBMS
+\end{itemize}
+\subsection{Paradigma ECA(Evento-Condizione-Azione)}
+\begin{lstlisting}
+    ON evento
+    IF condizione
+    THEN azione
+\end{lstlisting}
+Un evento è qualcosa che accade e che può essere
+mappato, dal punto di vista del sistema, in un istante di tempo (\textit{es. \texttt{INSERT,UPDATE,DELETE}}).
+\subsection{In PostgreSQL}
+\begin{lstlisting}[language=SQL]
+    CREATE TRIGGER nome_trigger
+    {BEFORE | AFTER | INSTEAD OF} {evento}
+    ON nome_tabella
+    [FOR EACH ROW]
+    [WHEN ([NEW | OLD] condizione)]
+    EXECUTE FUNCTION nome_funzione
+\end{lstlisting}
+\begin{itemize}
+    \item \texttt{BEFORE}: il trigger viene eseguito prima dell'evento
+    \item \texttt{AFTER}: il trigger viene eseguito dopo l'evento
+    \item \texttt{INSTEAD OF}: il trigger viene eseguito al posto dell'evento (\textbf{solo per viste})
+    \item \texttt{FOR EACH ROW}: il trigger viene eseguito per ogni riga coinvolta dall'evento
+    \item \texttt{OLD}: rappresenta il valore della riga prima dell'evento
+    \item \texttt{NEW}: rappresenta il valore della riga dopo l'evento
+\end{itemize}
+\end{document}
