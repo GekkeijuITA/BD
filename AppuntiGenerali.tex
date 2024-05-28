@@ -1020,4 +1020,32 @@
     \begin{center}
         \includegraphics[scale=0.4]{Appunti Latex/Immagini/recordfile.png}
     \end{center}
+    \section{Gestione del buffer}
+    L’obiettivo è minimizzare il numero di accessi alla memoria non volatile, che è molto lenta. Il buffer viene gestito dal DBMS. Mantenere pi`u blocchi possibili in memoria principale in modo da evitare riletture da memoria non volatile.\\
+    Il buffer è organizzato in pagine, che hanno la stessa dimensione delle pagine/blocchi su disco.
+    \begin{center}
+        \includegraphics[width=\textwidth]{Appunti Latex/Immagini/buffer.png}
+    \end{center}
+    Dopo l'esecuzione di una interrogazione, il \textbf{Buffer Manager} (BM) controlla prima nel buffer e se la pagina non è presente:
+    \begin{itemize}
+        \item Cerca una pagina nel buffer libera
+        \item Se non è presente, cerca una pagina da sostituire
+        \item Se la pagina da sostituire è stata modificata, la scrive su disco
+        \item A questo punto la pagina è libera e può essere sovrascritta
+    \end{itemize}
+    Quando una pagina è presente nel buffer, le operazioni di lettura e scrittura possono essere effettuate su di essa.\\
+    \important{Accedere alle pagine nel buffer invece che alle corrispondenti pagine su disco influenza notevolmente le prestazioni}.
+    \subsection{Politiche di sostituzione}
+    Il BM sceglie quale politica usare in base alle informazioni che ha.
+    \begin{description}
+        \item[\textbf{LRU (Least Recently Used)}]: La pagina meno recentemente usata viene sostituita. 
+        \item[\textbf{MRU (Most Recently Used)}]: La pagina più recentemente usata viene sostituita. Spesso viene usata questa politica perchè il sistema sa che dovrà rileggere questo blocco ma non nell'immediato futuro.
+    \end{description}
+    \section{Indici}
+    \subsection{Indici ad albero (o ordinati)}
+    \subsubsection{Terminologia}
+    \begin{itemize}
+        \item \textbf{Organizzazione primaria}: l'insieme dei file dei dati
+        \item \textbf{Organizzazione secondaria}: l'insieme dei file per indici ordinati
+    \end{itemize}
 \end{document}
