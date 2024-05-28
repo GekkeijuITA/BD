@@ -1048,4 +1048,127 @@
         \item \textbf{Organizzazione primaria}: l'insieme dei file dei dati
         \item \textbf{Organizzazione secondaria}: l'insieme dei file per indici ordinati
     \end{itemize}
+    Le coppie $(k_{i},r_{i})$ vengono memorizzate in un file su disco (\textbf{organizzazione secondaria}), ordinate rispetto ai valori della chiave $k_{i}$. Se l'indice è molto piccolo, può essere tenuto in memoria principale. Altrimenti è necessario tenerlo su disco, quindi per rendere più efficiente l'accesso alle coppie dell'indice si usa una \textcolor{Cyan}{struttura multilivello}.\\
+L'indice assume una \textbf{struttura ad albero} in cui ogni nodo dell'albero corrisponde a un blocco dati.
+    \subsubsection{Requisiti}
+    \begin{itemize}
+        \item \important{Bilanciato}: l'indice è bilanciato rispetto ai blocchi e non ai singoli nodi (il cammino dalla radice a ogni blocco deve essere distante uguale)
+        \item \important{Occupazione minima}: per evitare un sotto-utilizzo della memoria viene stabilito un limite inferiore all'utilizzazione dei blocchi
+        \item \important{Efficienza di aggiornamento}: il costo delle operazioni di aggiornamento è comunque limitato
+    \end{itemize}
+    In un indice ad albero ogni nodo corrisponde a un blocco e il costo delle operazioni (ricerca, inserimento e cancellazione) in tali strutture è lineare nell'altezza dell'albero e logaritmico nel numero di elementi memorizzati nell'indice. Il numero massimo di elementi (coppie) memorizzabili in un nodo è $m-1$ dove $m$ dice quanti puntatori al massimo sono contenuti in un nodo ($m$ può essere maggiore di 2 quindi l'albero non è solo binario). Il numero minimo di elementi è $\lceil \frac{m}{2} \rceil -1$ ovvero l'albero è "pieno" almeno al 50\%.
+    \begin{center}
+        \Tree [.$B_{0}$ 
+            [ .$B_{1}$\\(pl,k,pr)(pl,k,pr) $B_{3}$\\(pl,k,pr)(pl,k,pr) $B_{4}$\\(pl,k,pr)(pl,k,pr) ] 
+            [ .$B_{2}$\\(pl,k,pr)(pl,k,pr) $B_{5}$\\(pl,k,pr)(pl,k,pr) $B_{6}$\\(pl,k,pr)(pl,k,pr) ]
+        ] 
+    \end{center}
+    Nelle parentesi ci sono i puntatori ai figli. Nel caso delle foglie i puntatori punteranno all'organizzazione primaria. I nodi foglia hanno anche i puntatori ai nodi foglia successivi come una lista. I nodi puntano ai figli in base al valore della chiave ($pl$ è il puntatore sinistro, $pr$ è il puntatore destro).
+    \subsubsection{Ricerca per uguaglianza}
+    \includegraphics[width=\textwidth]{Appunti Latex/Immagini/ricercaindici.png}
+    \begin{enumerate}
+        \item La radice viene caricata nel buffer e il valore viene confrontato con il valore di ricerca ($K$) se è minore si scende a sinistra, altrimenti centrale o destra
+        \item Si scende nel sottoalbero e viene controllato che il valore sia quello ricercato, se lo è scendo nel sottoalbero puntato dal numero ricercato.
+        \item Ritorno al passo 1 fino a quando il nodo non punta all'organizzazione primaria. Se il valore non esiste non si accede ai file dati.
+    \end{enumerate}
+    \subsubsection{Ricerca per intervallo}
+    \includegraphics[width=\textwidth]{Appunti Latex/Immagini/ricercaindiciintervallo.png}
+Molto simile alla ricerca per uguaglianza solo che se non c'è controllo qual è la prima foglia a soddisfare la condizione (ad esempio nell'immagine il numero 88 è maggiore del numero più "vicino" quindi so che tutti i nodi a destra di quel nodo potrebbero soddisfare la condizione).
+    \subsubsection{Inserimento}
+    \includegraphics[width=\textwidth]{Appunti Latex/Immagini/inserimento.png}
+Lo split avviene nel primo nodo pieno che si incontra. Per nodo pieno si intende che non c'è spazio per inserire un nuovo separatore.
+    \subsection{Indici Clusterizzati e non Clusterizzati}
+    Un indice ad albero è \important{clusterizzato} se il file dei dati è ordinato rispetto alla chiave di ricerca, in caso contrario è \important{non clusterizzato}. Le operazioni di inserimento, cancellazione e aggiornamento nel file ordinato sono facilitate dalla presenza dell'indice. \underline{Al più un indice può essere clusterizzato per tabella}. Se l'indice è su un campo chiave, che sia clusterizzato o meno, punteranno a un solo blocco. Se l'indice è su un campo non chiave, l'indice punterà a blocchi diversi.
+    \subsubsection{Indici su più attributi}
+    Indice la cui chiave di ricerca è costituita da più attributi, altrimenti si chiama \important{indice su singolo attributo}.
+    \subsection{Indici Hash}
+    Una funzione hash ottimale deve \important{distribuire uniformemente} le chiavi nello spazio negli indirizzi e \important{distribuire casualmente} le chiavi. Una funzione è detta \important{perfessa} se non vengono prodotti trabocchi. Può essere sempre definita disponendo di un'area primaria con capacità complessiva pari al numeri dei record da memorizzare. Le funzioni hash operano su \important{insiemi di chiavi intere} (se le chiavi sono alfanumeriche si può associare un id prima di applicare la trasformazione).\\
+    La funzione hash è quindi definita come:
+    \begin{equation*}
+        h(k) = k \mod M
+    \end{equation*}
+    \remark{Per avere una buona distribuzione delle chiavi è opportuno che $M$ sia un numero primo oppure $\leq 20$}.\\
+    L’uso di indici ad albero ha lo svantaggio di richiedere la scansione di una struttura dati, memorizzata su disco, per localizzare i dati. Questo perché le associazioni $(k_{i}, r_{i})$ vengono mantenute in forma esplicita, come record in un file Gli indici hash al contrario mantengono le associazioni $(k_{i}, r_{i})$ in modo implicito, tramite l’uso di una funzione hash, definita sul dominio della chiave di ricerca.
+    \begin{center}
+        \includegraphics[scale=0.5]{Appunti Latex/Immagini/indicihashgen.png}
+    \end{center}
+    \textit{A ogni valore della funzione hash corrisponde un indirizzo in area primaria.}\\
+    \textbf{Esempio:}\\
+    $I_{A}(R) \quad H(D_{A}\rightarrow\{0,\ldots,2\})$, la funzione $H$ restituisce il numero del bucket.
+    \begin{itemize}
+        \item $H(1)=1$
+        \item $H(2)=2$
+        \item $H(3)=0$
+        \item $H(5)=2$
+        \item $H(10)=1$
+    \end{itemize}
+    \begin{center}
+        Bucket index: 
+        \begin{tabular}{|c|c|c|}
+            \hline
+            0 & 1 & 2 \\
+            \hline
+        \end{tabular}\\
+        \begin{tabular}{|c|c|}
+            \hline
+            A & B\\
+            \hline
+            1 & a \\
+            2 & a \\
+            3 & b \\
+            5 & c \\
+            10 & d \\
+            3 & f \\
+            \hline
+        \end{tabular} $\Rightarrow$
+        \begin{tabular}{|cc|}
+            \hline
+            \textbf{Bucket 0} & \hphantom{}\\
+            3 & b\\
+            3 & f \\
+            \hline
+            \textbf{Bucket 1} & \hphantom{}\\
+            1 & a \\
+            10 & d \\
+            \hline
+            \textbf{Bucket 2} & \hphantom{}\\
+            2 & a \\
+            5 & c \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \subsubsection{Ricerca per uguaglianza}
+    \begin{center}
+        \includegraphics[scale=0.5]{Appunti Latex/Immagini/indicihashuguaglianza.png}
+    \end{center}
+    \textit{Non supporta la ricerca per intervallo in quanto dovrei conoscere tutti i valori dell'intervallo in quanto la funzione hash non mantiene l'ordine.}
+    \subsubsection{Inserimento e Trabocchi}
+    \begin{center}
+        \includegraphics[scale=0.5]{Appunti Latex/Immagini/inidicihashinserimento.png}
+    \end{center}
+    Se il bucket è pieno, si alloca un nuovo blocco (\textit{trabocco}) dove c'è spazio chiamato \textcolor{red}{area di overflow} e se anche l'area di overflow è piena se ne crea un'altra e così via.
+    \subsubsection{Ricerca}
+    \begin{center}
+        \includegraphics[scale=0.4]{Appunti Latex/Immagini/indicihashricercatrabocco.png}
+    \end{center}
+    In generale i costi di una qualsiasi operazione usando un indice hash sono:
+    \begin{itemize}
+        \item In assenza di overflow, il costo di accesso a indice è \important{costante}
+        \item In presenza di overflow, il costo non è facilmente determinabile \begin{itemize}
+            \item Quanti blocchi di overflow per il blocco acceduto?
+            \item Dove sono memorizzati?
+        \end{itemize}
+    \end{itemize}
+    \subsubsection{Indici Hash clusterizzati e non clusterizzati}
+    E' \textcolor{red}{clusterizzato} se i record con chiavi simili sono memorizzati nello stesso bucket. In caso contrario è \textcolor{red}{non clusterizzato}.\\
+    \textit{Finora abbiamo considerato solo gli indici clusterizzati.}
+    \\\textcolor{Cyan}{Un file dei dati di tipo hash è sempre associato a un indice hash clusterizzato.}
+    \\\textcolor{red}{In presenza di un indice hash \textbf{clusterizzato} l'organizzazione primaria corrisponde ai record memorizzati nell'area primaria + i record memorizzati negli overflow.}\\
+    \textbf{Esempio:}
+    \begin{center}
+        \includegraphics[scale=0.5]{Appunti Latex/Immagini/esempioindicihashclusterizzato.png}
+        \includegraphics[scale=0.5]{Appunti Latex/Immagini/esempioindicihashnonclusterizzato.png}
+    \end{center}
+    Gli indici non clusterizzati sono indici multilivello.\\
+    Per selezioni di uguaglianza sono preferibili gli indici hash, per le selezioni di range sono preferibili gli indici ad albero.
 \end{document}
