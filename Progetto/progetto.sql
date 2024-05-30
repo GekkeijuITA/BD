@@ -1,4 +1,4 @@
-set search_path to "UniGeSocialSport"
+set search_path to "UniGeSocialSport";
 	
 CREATE TABLE CorsoDiStudio(
 	id NUMERIC PRIMARY KEY,

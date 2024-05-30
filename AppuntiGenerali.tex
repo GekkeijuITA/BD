@@ -974,6 +974,7 @@
     Il tempo di trasferimento è il tempo impiegato per trasferire un certo numero di byte e si riferisce alla velocità con cui si trasferiscono byte dai (sui) piatti sulla (dalla) cache del controller. Dipende dalla \important{velocità di trasferimento (o Transfer Rate $Tr$)}.\\
     Un \important{blocco (o pagina)} è una sequenza contigua di settori su una traccia, costituisce l'unità di I/O per il trasferimento dei dati tra il disco e la memoria principale.\\
     Il compito del gestore delle strutture di memorizzazione è quello di ridurre i tempi di latenza.
+    \textbf{Il tempo di trasferimento di un blocco in un disco magnetico è inferiore di circa un ordine di grandezza rispetto al tempo di latenza}\footnote{Tempo di trasferimento per 4kb: 1msec, Latenza (nel caso peggiore): 10msec. Per "inferiore di un'ordine di grandezza" si intende che è 10msec/10=1msec}.
     \section{Il Database Fisico}
     \important{A livello fisico di un DB consiste in un insieme di file, ognuno dei quali viene visto come una collezione di pagine di dimensione fissa.}
     \begin{center}

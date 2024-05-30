@@ -109,7 +109,7 @@
 \contentsline {subsection}{\numberline {7.4.1}Allocazione contigua}{35}{subsection.7.4.1}%
 \contentsline {subsection}{\numberline {7.4.2}Allocazione concatenata}{35}{subsection.7.4.2}%
 \contentsline {section}{\numberline {7.5}Organizzazione dei record nei file}{35}{section.7.5}%
-\contentsline {section}{\numberline {7.6}Gestione del buffer}{35}{section.7.6}%
+\contentsline {section}{\numberline {7.6}Gestione del buffer}{36}{section.7.6}%
 \contentsline {subsection}{\numberline {7.6.1}Politiche di sostituzione}{36}{subsection.7.6.1}%
 \contentsline {section}{\numberline {7.7}Indici}{37}{section.7.7}%
 \contentsline {subsection}{\numberline {7.7.1}Indici ad albero (o ordinati)}{37}{subsection.7.7.1}%
