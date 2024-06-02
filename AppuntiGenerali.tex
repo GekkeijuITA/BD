@@ -3,68 +3,23 @@
 \input{Appunti Latex/variables.tex}
 \preamble
 
-\usepackage{lipsum} 
-\usepackage{caption}
-\usepackage{fancyhdr}
-\usepackage{setspace}
-\usepackage{titlesec}
-
-\geometry{top=1in, bottom=1in, left=1in, right=1in}
-
-\pagestyle{fancy}
-\fancyhf{}
-\rfoot{\thepage}
-\renewcommand{\headrulewidth}{0pt}
-
-\titleformat{\chapter}[display]
-  {\normalfont\fontsize{14}{16}\selectfont\bfseries\centering}{\MakeUppercase{\chaptertitlename}\ \thechapter}{20pt}{\fontsize{14}{16}\selectfont\bfseries}
-\titleformat{\section}
-  {\normalfont\fontsize{12}{14}\selectfont\bfseries}{\thesection}{1em}{}
-\titleformat{\subsection}
-  {\normalfont\fontsize{12}{14}\selectfont\bfseries}{\thesubsection}{1em}{}
-\titleformat{\subsubsection}
-  {\normalfont\fontsize{12}{14}\selectfont\bfseries}{\thesubsubsection}{1em}{}
-
-  \makeatletter
-  \renewcommand*\l@chapter[2]{%
-    \ifnum \c@tocdepth >\m@ne
-      \addpenalty{-\@highpenalty}%
-      \vskip 1.0em \@plus\p@
-      \setlength\@tempdima{1.5em}%
-      \begingroup
-        \parindent \z@ \rightskip \@pnumwidth
-        \parfillskip -\@pnumwidth
-        \leavevmode \bfseries
-        \advance\leftskip\@tempdima
-        \hskip -\leftskip
-        #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
-        \penalty\@highpenalty
-      \endgroup
-    \fi}
-  
-  \renewcommand*\l@section{\@dottedtocline{1}{0em}{2.3em}}
-  \renewcommand*\l@subsection{\@dottedtocline{2}{2.3em}{3.2em}}
-  \renewcommand*\l@subsubsection{\@dottedtocline{3}{5.5em}{4.1em}}
-  \renewcommand*\l@paragraph{\@dottedtocline{4}{8.6em}{5em}}
-  \renewcommand*\l@subparagraph{\@dottedtocline{5}{12em}{6em}}
-  \makeatother 
-
 \begin{document}
     \begin{titlepage}
         \centering
-        % Title
-        {\Huge \bfseries{[Appunti Basi di Dati]}\par}
-        \vspace{1cm}
-        {\large Appunti del corso "Basi di Dati" dell'Università degli Studi di Genova\par}
-        {\Large\bfseries Lorenzo Vaccarecci\par}
-        \vspace{1cm}
-        % University Logo
-        \includegraphics[width=0.7\textwidth]{Appunti Latex/Immagini/logoUnige.png}\\
-        \vspace{1cm}
-        % Department and University
-        {\Large\bfseries Dipartimento di Informatica\par}
-        {\Large\bfseries Università degli Studi di Genova\par}
-        {\Large\bfseries 2024\par}
+        \vfill
+        {\bfseries\Huge
+            Appunti Basi di Dati\\
+            \vskip1cm
+            \Large
+            Lorenzo Vaccarecci\\
+            \vskip1cm
+            \normalsize
+            A.A. 2023/2024
+        }
+        \vfill
+        \includegraphics[width=10cm]{Appunti Latex/Immagini/logoUnige.png}
+        \vfill
+        \vfill
     \end{titlepage}
     \tableofcontents
     \chapter{Modello Relazionale}
@@ -744,7 +699,7 @@
     \end{lstlisting}
     Definire tali vincoli di integrità come asserzioni è concettualmente più corretto, ed, in generale, porta ad una verifica più efficiente.\\
     Un'asserzione può essere rimossa tramite il comando \texttt{DROP ASSERTION nome\_asserzione}.
-    \section{Controllo di vincoli di integrità}
+    \section{Controllo di vincoli di integrità}\label{sec:5.9}
     SQL consente di specificare sia vincoli d'integrità con \remark{valutazione immediata}, cioè valutati dopo ogni comando di manipolazione dei dati, sia vincoli la cui \remark{valutazione è differita} al termine dell'esecuzione di una sequenza di operazioni di manipolazione dei dati, che constituiscono una \important{transazione}. Quando i vincoli sono immediatamente verificati, una violazione del vincolo causa la non esecuzione del comando che ne ha causato la violazione (eventuali modifiche parziali vengono annullate). Nel caso in cui i vincoli siano valutati alla fine della transazione, invece, la violazione del vincolo comporta l'abort della transazione. Tutte le operazioni nella transazione vengono cioè annullate, poichè non vi è modo di stabilire quale operazione ha causato la violazione del vincolo.\\
     Nella definizione di un vincolo è possibile specificare se dovrà essere sempre valutato dopo ogni singola operazione SQL (\texttt{NOT DEFERRABLE}, di default è questa), viceversa  la valutazione di un vincolo può essere differita alla fine della transazione (\texttt{DEFERRABLE}). Un vincolo \texttt{DEFERRABLE} può essere specificato con le opzioni
     \begin{itemize}
@@ -1172,4 +1127,446 @@ Lo split avviene nel primo nodo pieno che si incontra. Per nodo pieno si intende
     \end{center}
     Gli indici non clusterizzati sono indici multilivello.\\
     Per selezioni di uguaglianza sono preferibili gli indici hash, per le selezioni di range sono preferibili gli indici ad albero.
-\end{document}
+    \chapter{Elaborazione delle interrogazioni}
+    \section{Introduzione}
+    La fase di ottimizzazione delle interrogazioni è una fase estremamente costosa ma la scelta di un piano di esecuzione sbagliato può avere un impatto maggiore sulle prestazioni.
+    \section{Ottimizzazione Logica}
+    \begin{itemize}
+        \item \textbf{Input:} espressione algebrica tradotta dall'interrogazione SQL
+        \item \textbf{Output:} un singolo piano di esecuzione logico ottimizzato (LQP)
+    \end{itemize}
+    \important{Piano di esecuzione logico}: espressione algebrica per l'interrogazione rappresentata come albero e per ottimizzare questo albero vengono utilizzate le proprietà dell'algebra relazionale.
+    \begin{center}
+        \includegraphics[scale=0.4]{Appunti Latex/Immagini/esempioalberologicoottimizzato.png}*
+    \end{center}
+    \textit{*L'esempio è incompleto ma rende l'idea}
+    \subsection{Come avviene l'ottimizzazione}
+    \begin{itemize}
+        \item Si basa su \important{equivalenze algebriche} \begin{itemize}
+            \item Due espressioni algebriche $e_{1} \text{ ed } e_{2}$ sono equivalenti se per ogni possibile base di dati in input, $e_{1}$ e $e_{2}$ restituiscono lo stesso risultato in output
+        \end{itemize}
+    \end{itemize}
+    Queste equivalenze sono usate come \important{regole di riscrittura}, utlizzando opportune \important{euristiche} per passare da un'espressione algebrica a un'altra.
+    \subsection{Esempi notevoli}
+    \subsubsection{Selezione}
+    \begin{equation*}
+        \sigma_{P1}(\sigma_{P2}(e))\equiv \sigma_{P2}(\sigma_{P1}(e)) \equiv \sigma_{P1 \land P2}(e)
+    \end{equation*}
+    \subsubsection{Proiezione}
+    \begin{equation*}
+        \Pi_{A1,\ldots,An}(\Pi_{B1,\ldots,Bn}(e))\equiv \Pi_{A1,\ldots,An}(e)
+    \end{equation*}
+    Permette di gestire cascate di proiezioni e vale se $\left\{A1,\ldots,An\right\}\subseteq \left\{B1,\ldots,Bn\right\}$
+    \subsubsection{Commutazione di selezione e proiezione}
+    \begin{equation*}
+        \Pi_{A1,\ldots,An}(\sigma_{P}(e))\equiv \sigma_{P}(\Pi_{A1,\ldots,An}(e))
+    \end{equation*}
+    Vale se $P$ coinvolge solo attributi $A1,\ldots,An$
+    \subsubsection{Commutazione di selezione e prodotto cartesiano}
+    \begin{equation*}
+        \sigma_{P}(e_{1}\times e_{2}) \equiv \sigma_{P}(e_{1})\times e_{2}
+    \end{equation*}
+    Vale solo se $P$ coinvolge gli attributi di $e_{1}$
+    \subsubsection{Commutazione di proiezione e prodotto cartesiano}
+    \begin{equation*}
+        \Pi_{A1,\ldots,An}(e_{1}\times e_{2})\equiv \Pi_{B1,\ldots,Bn}(e_{1}) \times \Pi_{C1,\ldots,Cn}(e_{2})
+    \end{equation*}
+    Se $\left\{A1,\ldots,An\right\} = \left\{B1,\ldots,Bn\right\} \cup \left\{C1,\ldots,Cn\right\}$
+    \subsubsection{Selezioni, prodotto cartesiano e join}
+    \begin{equation*}
+        \sigma_{P}(e_{1} \times e_{2}) \equiv e_{1}\Join_{P}  e_{2}
+    \end{equation*}
+    \subsubsection{Prodotto cartesiano e join}
+    \begin{itemize}
+        \item \textbf{Commutatività} \begin{itemize}
+            \item $e_{1} \Join_{F} e_{2} \equiv e_{2} \Join_{F} e_{1}$
+            \item $e_{1} \Join e_{2} \equiv e_{2} \Join e_{1}$
+            \item $e_{1} \times e_{2} \equiv e_{2} \times e_{1}$
+        \end{itemize}
+        \item \textbf{Associatività} \begin{itemize}
+            \item $(e_{1} \Join_{F_{1}} e_{2})\Join_{F_{2}} e_{3} = e_{1} \Join_{F_{1}} (e_{2} \Join_{F_{2}} e_{3})$
+            \item $(e_{1} \Join e_{2})\Join e_{3} = e_{1} \Join(e_{2} \Join e_{3})$
+            \item $(e_{1} \times e_{2})\times e_{3} = e_{1} \times (e_{2} \times e_{3})$
+        \end{itemize}
+    \end{itemize}
+    \subsubsection{Unione e differenza}
+    \begin{itemize}
+        \item \textbf{Commutatività} \begin{itemize}
+            \item $e_{1} \cup e_{2} \equiv e_{2} \cup e_{1}$
+            \item $\sigma_{P}(e_{1} \cup e_{2}) \equiv \sigma_{P}(e_{1}) \cup \sigma_{P}(e_{2})$
+            \item $\sigma_{P}(e_{1}-e_{2}) \equiv \sigma_{P}(e_{1})-\sigma_{P}(e_{2}) \equiv \sigma_{P}(e_{1})-e_{2}$
+            \item $\Pi_{A_{1},\ldots,A_{n}}(e_{1} \cup e_{2})\equiv \Pi_{A_{1},\ldots,A_{n}}(e_{1}) \cup \Pi_{A_{1},\ldots,A_{n}}(e_{2})$
+        \end{itemize}
+        \item \textbf{Associatività} \begin{itemize}
+            \item $(e_{1} \cup e_{2})\cup e_{3} \equiv e_{1} \cup (e_{2} \cup e_{3})$
+        \end{itemize}
+    \end{itemize}
+    \subsection{Euristiche}
+    Le \important{euristiche} permettono di trasformare le equivalenze in regole di riscrittura. Va un po' a "buon senso", guarda quale delle riscritture ha l'input minore.
+    \subsubsection{Euristiche fondamentali}
+    \begin{itemize}
+        \item \important{Anticipare il più possibile \textbf{selezioni} e \textbf{proiezioni}}
+        \item Fattorizzare condizioni di selezione complesse per aumentare la possibilità di applicare le regole di riscrittura
+    \end{itemize}
+    \subsubsection{Euristiche principali}
+    \important{Nessuna regola di riscrittura si riferisce all'ordine con cui eseguire un insieme di join (verrà ottimizzato al livello fisico)}.
+    \begin{enumerate}
+        \item eseguire le operazioni di selezione il prima possibile
+        \item eseguire le operazioni di proiezione il prima possibile
+        \item fattorizzare condizioni di selezione complesse per aumentare la possibilità di applicare le regole di riscrittura
+    \end{enumerate}
+    \textbf{Esempio:}\\
+    Relazioni: $R(A,B,C) \quad S(D,E,F)$\\
+    Query: $\Pi_{B,E}(\sigma_{A>5 \land F>6 \land C=D}(R\times S))$\\
+    Ottimizzazione (\textit{i numerini sulle frecce indicano l'euristica usata}):
+    \begin{description}
+        \item[$\rightarrow^{1}$] $\Pi_{BE}(\sigma_{C=D}(\sigma_{A>5}(\sigma_{F>6}(R\times S))))$
+        \item[$\rightarrow^{1}$] $\Pi_{BE}(\sigma_{C=D}(\sigma_{A>5}(R\times \sigma_{F>6}(S))))$
+        \item[$\rightarrow^{1}$] $\Pi_{BE}(\sigma_{C=D}(\sigma_{A>5}(R)\times \sigma_{F>6}(S)))$
+    \end{description}
+    \section{Ottimizzazione Fisica}
+    \begin{itemize}
+        \item \textbf{Input}: piano di esecuzione logica ottimizzato (LQP)
+        \item \textbf{Output}: piano di esecuzione fisico ottimale (PQP)
+    \end{itemize}
+    \important{Piano di esecuzione fisico}: algoritmo di esecuzione dell'interrogazione, rappresentato come albero, sul livello fisico.
+    \subsection{Esempio}
+    Ogni nodo corrisponde a un algoritmo
+    \begin{center}
+        \includegraphics[scale=0.6]{Appunti Latex/Immagini/esempioalberolivellofisico.png}
+        \includegraphics[scale=0.6]{Appunti Latex/Immagini/esempioalberofisico.png}
+    \end{center}
+    \textbf{Schema fisico}
+    \begin{itemize}
+        \item File per $R$ ordinato rispetto ad $A$
+        \item File per $S$ ordinato rispetto ad $C$
+        \item Indice ordinato su $R.A:I_{A}(R)$
+        \item Indice ordinato su $S.C:I_{C}(S)$
+    \end{itemize}
+    \subsection{Operatori Fisici}
+    \important{Sono implementazioni specifiche di un operatore
+    logico (ad esempio del join), basate su un certo
+    algoritmo di realizzazione}.\\ Esistono diversi algoritmi di realizzazione per ogni operatore logico. Algoritmi diversi possono utilizzare diverse informazioni contenute a livello fisico.\\
+    \important{La possibilità di usare un certo operatore fisico e quindi generare un certo piano fisico dipendono dallo schema fisico esistente (org primaria e indici).}\\
+    Operatori fisici:
+    \begin{itemize}
+        \item Accesso alle relazioni di base
+        \item Operazioni di relazione
+        \item Operazioni di Join
+    \end{itemize}
+    \subsubsection{Accesso alle relazioni di base}
+    Il nostro piano sarà un albero (PQP). Le foglie sono le relazioni, l'accesso alle foglie avviene tramite \important{cammini di accesso}.
+    \subsubsection{Cammini di accesso}
+    Descrive come accedere al file dei dati di una relazione.
+    \begin{itemize}
+        \item \important{Scansione sequenziale}
+        \item \important{Indice più una condizione di selezione (Predicato di ricerca)}: utilizzabile solo se esiste una condizione di selezione che può essere eseguita usando l'indice
+    \end{itemize}
+    \textbf{Esempio:}
+    \begin{verbatim}
+        SELECT * FROM R WHERE R.A=5
+    \end{verbatim}
+    \Tree [ .$\sigma_{A=5}$ R ]
+    \\Può essere implementato in due modi:
+    \begin{itemize}
+        \item Accesso sequenziale
+        \item alla scansione sequenziale si aggiunge $(I_{A}(R),A=5)$
+    \end{itemize}
+    Ogni cammino di accesso diventa un nodo foglia.
+    \begin{verbatim}
+        SEQ SCAN R Filter (A=5)
+        INDEX SCAN (I_{A}(R),A=5)
+    \end{verbatim}
+    \textbf{Esempio:}
+    \begin{verbatim}
+        SELECT * FROM R WHERE R.A <> 5
+    \end{verbatim}
+    Non posso usare l'indice, quindi ho solo la scansione sequenziale. Perchè io devo trovare tutte le tuple che soddisfano la condizione, ma non posso sapere a priori quali sono.
+    \textbf{Esempio:}
+    \begin{verbatim}
+        SELECT * FROM R WHERE R.A=5 AND R.B=6
+    \end{verbatim}
+    \Tree [ .$\sigma_{A=5 AND B=6}$ R ]
+    \begin{verbatim}
+        SEQ SCAN R Filter (A=5 AND B=6)
+        INDEX SCAN (I_{A}(R),A=5) Filter (B=6)
+        INDEX SCAN (I_{B}(R),B=6) Filter (A=5)
+    \end{verbatim}
+    \remark{\textit{Dopo avere acceduto la relazione, è
+    necessario filtrare (scartare) le tuple che non
+    soddisfano l’altro congiunto}}.
+    Per accedere una singola relazione, \remark{può anche essere scelto più di
+    un cammino di accesso}, combinando poi i risultati con un ulteriore
+    operatore fisico.
+    \textbf{Esempio:}
+    \begin{verbatim}
+        SELECT * FROM R WHERE R.A=5 AND R.B=6
+        INDEX SCAN (I_{A}(R),A=5)
+        INDEX SCAN (I_{B}(R),B=6)
+    \end{verbatim}
+    E poi i risultati delle due scan vengono intersecati.
+    \begin{center}
+        \Tree [ .INTERSECTION [ .INDEX\_SCAN(I_{A}(R),A=5) ] [ .INDEX\_SCAN(I_{B}(R),B=6) ] ]
+    \end{center}
+    Con l'\textbf{OR} è simile ma si usa l'unione.
+    \subsubsection{Costi}
+    \begin{itemize}
+        \item \textcolor{red}{Costo di accesso}: numero di pagine di blocco lette
+        \item \textcolor{red}{Costo di selezione}: tipo di indice e numero di tuple che soddisfano il predicato
+    \end{itemize}
+    Costo totale = (costo di determinare i riferimenti ai dati che soddisfano la condizione, in organizzazione secondaria (1 per hash, $h(\log n)$ per albero)) + (costo per accedere ai
+    corrispondenti blocchi dei
+    dati in organizzazione
+    primaria, la clusterizzazione influisce).
+    \begin{itemize}
+        \item Indice ordinato clusterizzato: \remark{Ogni blocco dati viene letto al più una volta}
+        \item Indice ordinato non clusterizzato: \remark{Un blocco può essere acceduto più volte}
+        \item Indice non ordinato clusterizzato: \remark{Un blocco può essere acceduto più volte}, i puntatori ai blocchi vengono ordinati. (Operatore BITMAP)
+    \end{itemize}
+    \subsubsection{Operazioni di relazione}
+    \subsubsection{Selezione}
+    \question{Cosa succede se eseguo una selezione su un risultato intermedio?}
+    La selezione può essere implementata solo in modo sequenziale perchè \important{non è possibile utilizzare un indice su un risultato intermedio.} Se la condizione è \underline{composta}, il fattore che potrebbe rendere \textbf{falsa} tutta la condizione viene chiamato \important{fattore booleano} (\textit{esempio: $\sigma_{(A=5 \text{ OR } B=6) \text{ AND } C>10}(R)$, il fattore booleano è $R.C>10$}).
+    \subsubsection{Join}
+    E' un'operazione costosa: richiede $T(R)\cdot T(S)$ confronti (dove $T(R)$ e $T(S)$ sono il numero di tuple delle due relazioni). Per evitare tutti i possibili confronti:
+    \begin{itemize}
+        \item \important{Nested Loop Join}: Si accede ad una tupla di $R$ (outer relation) e si confronta con ogni tupla di $S$ (inner relation). L'ordine corrisponde all'ordine delle tuple della relazione esterna. Costi: $B(R) + T(R) \cdot B(S)$. \important{Conviene considerare come relazione outer la relazione più grande}.
+        \item \important{Index Nested Join}: Come il nested loop join, ma si utilizza un indice su $S$ per accedere alle tuple e si usa solo se esiste l'indice. Costi: $B(R)+T(R) \cdot$costo di accesso a $S$.
+        \item \important{Merge Join}: \remark{ applicabile quando le relazioni in input sono ordinate rispetto all’attributo di join}. \important{L’algoritmo sfrutta il fatto che entrambi gli input sono
+        ordinati rispetto all’attributo di join}. Prima avviene l'ordinamento delle relazioni, poi si scansionano le relazioni in parallelo e si fanno i confronti tupla per tupla.
+        \item \important{Hash Join}: applico la funzione hash alle tuple delle due relazioni e le metto in un bucket. Se due tuple hanno lo stesso hash, vengono messe nello stesso bucket. Si calcola il join tra i bucket. \important{Sicuramente due tuple in due bucket diversi non possono essere in join}, se sono nello stesso bucket \textbf{potrebbero} essere in join.
+    \end{itemize}
+    $B(\cdot)$ è il numero di blocchi letti.
+    \begin{center}
+        \includegraphics[scale=0.5]{Appunti Latex/Immagini/opfisici.png}
+    \end{center}
+    \subsubsection{Condizioni più generali}
+    \begin{itemize}
+        \item \important{Uguaglianza su più di un attributo}
+        \item \important{Theta-join con disuguaglianza}
+    \end{itemize}
+    \subsection{Pipeline}
+    Si può applicare solo se \remark{l’operatore fisico esegue un ciclo sulla relazione outer}. Non tutti gli algoritmi possono essere eseguiti in pipeline (ad esempio l'ordinamento).
+    in questo caso, \important{il pipeline viene applicato alla relazione outer
+    mentre la relazione inner, utilizzata ad ogni ciclo per i confronti,
+    deve essere materializzata}
+    \begin{center}
+        \includegraphics[scale=0.4]{Appunti Latex/Immagini/pipeliningOpFisici.png}
+    \end{center}
+    \subsection{Stima del costo di un piano di esecuzione}
+    Per ogni piano, la stima viene fatta a partire dalle foglie (\remark{bottom-up}). Per stimare il costo di un piano di esecuzione vengono considerati i \important{costi di accesso} e per ogni nodo dell'albero il \important{costo dell'operazione} e la \important{dimensione del risultato}. Il tutto poi sommato.\\
+    Le statistiche non sono sempre aggiornate, infatti sono aggiornate periodicamente. Molti DBMS prevedono un comando per richiedere l'aggiornamento delle statistiche (\texttt{ANALYZE} in PostgreSQL).
+    \subsubsection{Esempio di stima del costo: Selezione}
+    \Tree [ .$\sigma_{R.C=3}$ [ .$\Join$ R S ] ]\\
+    Il numero di tuple restituito è dipende da quante tuple di $R$ soddisfano la condizione (P).\\
+    \important{Fattore di selettività: F(P)}, se è $<1$ è molto selettivo (poche tuple che soddisfano P) e viceversa.\\
+    \question{Quante sono le tuple restituite da $\sigma_{P}(R)$?}
+    $F(P)\cdot T(R)$\\
+    \question{Come si stima il fattore di selettività?}
+    \begin{equation*}
+        F(P)=\frac{\text{Casi favorevoli}}{\text{Casi possibili}}=\frac{1}{V(C,R)}
+    \end{equation*}
+    \subsection{Euristica per join}
+    \subsubsection{Piano Left Deep}
+    \begin{equation*}
+        R \Join S \Join T \Join V
+    \end{equation*}
+    \Tree[ .$\Join$ [ .$\Join$ [ .$\Join$ R S ] T ] V ]
+    \Tree[ .$\Join$ [ .$\Join$ R S ] [ .$\Join$ T V ] ]\\
+    L'albero di sinistra è Left Deep, quello di destra no.
+    \subsubsection{Progettazione Fisica}
+    \important{Dato un carico di lavoro, l’attività di progettazione fisico si
+    preoccupare di progettare uno schema fisico, in termini di
+    insieme di indici creati, che permetta di rendere il più possibile
+    efficiente l’esecuzione delle operazioni contenute nel workload}. Una scelta impropria degli indici può portare a:
+    \begin{itemize}
+        \item inutilizzo degli indici
+        \item scansioni sequenziali per uno o pochi record
+        \item join multipli con tempi di esecuzione elevatissimi
+        \item spreco di spazio disco1
+    \end{itemize}
+    \subsubsection{Approccio generale}
+    Si considerano uno alla volta le interrogazioni, partendo da quelle usate più frequentemente. Per ogni interrogazione $Q$:
+    \begin{itemize}
+        \item si ipotizza un potenziale piano di esecuzione ottimale
+        \item si individuano gli indici che permettono al sistema di prendere in considerazione il piano individuato
+        \item si valuta empiricamente l'efficacia degli indici creati
+        \item se gli indici non sono efficaci, cercare di comprendere la motivazione ed eventualmente rimuoverli dal livello fisico
+    \end{itemize}
+    Poi si valuta se gli indici identificati al passo i (per la
+    query $Q_{i}$) sono compatibili con gli indici
+    identificati fino al passo i-1 (per la query $Q_{i-1}$), ed
+    eventualmente si apportano correttivi, \textbf{solo un indice per relazione può essere clusterizzato}.
+    \chapter{Controllo dell'Accesso}
+    \textit{Questo capitolo si collega alla sezione 5.9 \hyperref[sec:5.9]{Controllo di vincoli di integrità}}
+    \section{Introduzione}
+    Il problema è che \textbf{non tutti gli utenti possono eseguire le stesse operazioni} (\textit{es. gestore e cliente}). Lo scopo del controllo dell'accesso è quello di \textbf{limitare e controllare} le operazioni degli utenti e \textbf{prevenire} azioni che potrebbero compromettere la correttezza e la sicurezza del sistema. Le operazioni vengono catturate prima di essere eseguite.
+    \section{Politiche di sicurezza}
+    \begin{itemize}
+        \item \remark{Regole e principi}: per la protezione delle informazioni
+        \item \remark{Insieme di direttive ad alto livello}
+    \end{itemize}
+    \textit{Es. "le valutazioni dei film possono essere viste solo dal responsabile della videoteca"}.\\
+    Tre entità principali:
+    \begin{itemize}
+        \item \important{Oggetti}: sono le risorse a cui vogliamo garantire protezione (le tabelle)
+        \item \important{Soggetti}: sono le entità (gli utenti)
+        \item \important{Privilegi}: descrivono quali operazioni possono essere eseguite dai soggetti sugli oggetti
+    \end{itemize}
+    \section{Controllo degli Accessi in SQL}
+    \begin{itemize}
+        \item \important{Sistema chiuso}: un accesso è concesso solo se è stato esplicitamente permesso
+        \item \important{Amministrazione decentralizzata} (mediante \textbf{ownership}): l'utente che crea una relazione, riceve privilegi di controllo su di essa e può concedere o revocare privilegi
+        \item \important{\texttt{GRANT}}: se un privilegio è concesso con grant option l'utente che lo riceve può non solo esercitare il privilegio, ma anche concederlo ad altri
+        \item \important{\texttt{REVOKE}}: toglie i privilegi a uno o più utenti
+    \end{itemize}
+    \subsection{\texttt{GRANT}}
+    L'inserimento di una nuova autorizzazione avviene tramite il comando \texttt{GRANT}:
+    \begin{lstlisting}[language=SQL]
+        GRANT {<lista privilegi> | ALL PRIVILEGES}
+        ON <nome oggetto>
+        TO {<lista utenti> | <lista ruoli> | PUBLIC}
+        [WITH GRANT OPTION];
+    \end{lstlisting}
+    La lista dei privilegi è composta da: \texttt{SELECT}, \texttt{INSERT}, \texttt{UPDATE}, \texttt{DELETE}, ecc.\\ 
+    \texttt{WITH GRANT OPTION} (opzionale) consente la delega dell'amministrazione dei privilegi.
+    Alla creazione di una risorsa, il creatore riceve automaticamente tutti i privilegi su di essa quindi \textbf{i comandi di \texttt{GRANT}} corrispondenti vengono \textbf{eseguiti automaticamente} dal sistema.
+    Possiamo concedere il privilegio anche su singole colonne.
+    \href{https://2023.aulaweb.unige.it/pluginfile.php/352748/mod_resource/content/4/03A-controlloAccesso-23-24.pdf}{Esempi di \texttt{GRANT} (p.20)}.
+    \subsection{\texttt{REVOKE}}
+    La revoca di privilegi avviene tramite il comando \texttt{REVOKE}:
+    \begin{lstlisting}[language=SQL]
+        REVOKE [GRANT OPTION FOR] <lista privilegi>
+        ON <nome oggetto>
+        FROM <lista utenti>
+        [CASCADE | RESTRICT];
+    \end{lstlisting}
+    La clausola opzionale \texttt{GRANT OPTION FOR}, se presente, revoca il privilegio di concedere il privilegio ad altri utenti. \textbf{Un utente può revocare solo i privilegi concessi da lui.}
+    \section{Rappresentazione delle autorizzazioni}
+    In modo astratto le informazioni contenute nei cataloghi possono essere rappresentate in astratto come un insieme di grafi (\important{grafi delle autorizzazioni}). \important{Esiste un grafo per ogni privilegio $p$ su una certa tabella}. Un grafo delle interrogazioni per il privilegio sulla tabella $R$ contiene:
+    \begin{center}
+        \begin{tikzpicture}[node distance={20mm}, main/.style = {draw, circle}] 
+            \node[main] (1) {$u_{1}$};
+            \node[main] (2) [right of = 1] {$u_{2}$}; 
+            \draw[->] (1) -- node[above] {$g$} (2);
+        \end{tikzpicture}
+    \end{center} 
+    Un nodo per ogni utente che ha il privilegio $p$ sulla tabella $R$. L'arco uscente da $u_{1}$ verso $u_{2}$ indica che $u_{1}$ ha concesso il privilegio a $u_{2}$ ed è \important{etichettato $g$ se è concesso con \texttt{GRANT OPTION}}.
+    \begin{center}
+        \includegraphics[scale=0.4]{Appunti Latex/Immagini/esempioautorizzazioni.png}
+    \end{center}
+    Un comando di \texttt{GRANT} può essere eseguito parzialmente in alcuni casi:
+    \begin{center}
+        \includegraphics[scale=0.4]{Appunti Latex/Immagini/esempiograntparziale.png}
+    \end{center}
+    Il comando \texttt{REVOKE}:
+    \begin{center}
+        \includegraphics[scale=0.4]{Appunti Latex/Immagini/esempiorevoke.png}
+    \end{center}
+    \texttt{RESTRICT}: non elimina altri nodi oltre quello designato\\
+    \texttt{CASCADE}: elimina anche tutti i nodi che dipendono da quello designato, quindi se un nodo è puntato da due nodi, viene eliminato solo l'arco che parte dal nodo chiamante (però i figli vengono eliminati).
+    \begin{center}
+        \includegraphics[scale=0.4]{Appunti Latex/Immagini/esempiorevokecascade.png}
+    \end{center}
+    Se non si specifica niente, il comportamento di default è \texttt{RESTRICT}.
+    \section{Ruoli}
+    I ruoli sono funzioni svolte in ambito di un'organizzazione. \important{Gli utenti sono abilitati a ricoprire uno o più ruoli}. I privilegi possono essere concessi anche ai ruoli, le autorizzazioni specificate per un ruolo sono quelle necessarie per esercitare le funzioni connesse al ruolo stesso. Semplificano l'attribuzione dei privilegi ai soggetti.
+    \begin{lstlisting}[language=SQL]
+        CREATE ROLE <nome ruolo>;
+        DROP ROLE <nome ruolo>;
+        SET ROLE <nome ruolo>; -- Associazione dimanica di un ruolo all'utente della sessione attiva
+    \end{lstlisting}
+    Nel comando \texttt{GRANT} mettiamo
+    \begin{lstlisting}[language=SQL]
+        GRANT <lista ruoli>
+        TO {<lista utenti> | PUBLIC}
+        [WITH ADMIN OPTION]; -- Analogo a GRANT OPTION
+    \end{lstlisting}
+    E' possibile dare una gerarchia ai ruoli:
+    \begin{lstlisting}[language=SQL]
+        GRANT <ruolo_figlio> 
+        TO <ruolo_padre>;
+    \end{lstlisting}
+    I privilegi del figlio sono acquisiti dal padre ma non viceversa.
+    \\\textbf{Esempio:}
+    \begin{lstlisting}[language=SQL]
+        CREATE ROLE direttoreVideoteca;
+        CREATE ROLE commesso;
+
+        GRANT SELECT ON film TO commesso;
+        GRANT INSERT, DELETE ON film TO direttoreVideoteca;
+        GRANT commesso TO direttoreVideoteca;
+    \end{lstlisting}
+    Di solito prima si danno i privilegi(specifici) ai figli e poi al padre.
+    \subsection{REVOKE}
+    \begin{lstlisting}[language=SQL]
+        REVOKE [ADMIN OPTION FOR]
+        <lista ruoli>
+        FROM <lista utenti>
+    \end{lstlisting}
+    \section{Controllo dell'accesso basato sul contenuto}
+    \subsection{Autorizzazione su Viste}
+    Le viste consentono di realizzare il così detto
+    \important{controllo dell'accesso in base al contenuto}. Permettono di concedere anche \important{privilegi statistici} (es. una vista che computa il numero di noleggi effettuati da ogni cliente e concedere all'utente l'accesso alla vista invece che alla tabella).\\
+    \question{Chi può creare una vista?}
+    \remark{Gli utenti che hanno il privilegio di \texttt{SELECT} su tutte le tabelle utilizzate dalla vista.}\\
+    \question{Il proprietario della vista quali privilegi può esercitare sulla vista?}
+    Bisogna considerare:
+    \begin{itemize}
+        \item Le autorizzazioni sulle tabelle coinvolte ($P1$)
+        \item \href{https://2023.aulaweb.unige.it/pluginfile.php/352757/mod_resource/content/3/LinguaggioSQLParte4DatiDerivati-23-24.pdf}{Regole per formare le autorizzazioni $P2$ (p. 26)}
+    \end{itemize}
+    \remark{Il proprietario ha i privilegi che ha sono l'intersezione tra $P1$ e $P2$}.
+    \chapter{Transazioni}
+    \section{Cosa è una transazione}
+    \important{E' un'unità di elaborazione} che corrisponde a \remark{una serie di operazioni fisiche elementari} sulla base di dati a cui viene garantita un'esecuzione che soddisfa alcune buone proprietà.
+    \section{Proprietà ACID}
+    \begin{itemize}
+        \item \important{A}tomicità: se succede qualcosa di sbagliato allora il sistema torna allo stato precedente alla transazione.
+        \item \important{C}onsistenza: lo stato iniziale e finale di una transazione devono sempre soddisfare tutti i vincoli di integrita' esistenti. \textbf{Gli stati intermedi possono pero' violare la consistenza.} 
+        \item \important{I}solamento: se si hanno più transazioni contemporaneamente, "non si pestano i piedi".
+        \item \important{D}urabilità (persistenza): nel momento in cui la transazione è completata, le modifiche sono permanenti. 
+    \end{itemize}
+    Le proprietà ACID sono garantite da specifiche componenti presenti del DBMS (\important{Transaction Manager}).
+    \section{Comandi SQL}
+    In SQL si usano i comandi \texttt{BEGIN} e \texttt{COMMIT}:
+    \begin{lstlisting}[language=SQL]
+        BEGIN;
+            ...
+        COMMIT;
+    \end{lstlisting}
+    Il comando \texttt{COMMIT} restituisce \texttt{COMMIT} se è andato a buon fine, altrimenti restituisce \texttt{ROLLBACK}.\\
+    Un altro modo è:
+    \begin{lstlisting}[language=SQL]
+        BEGIN;
+            ...
+        ROLLBACK;
+    \end{lstlisting}
+    In questo modo si annullano tutte le operazioni come se ci fosse stato un errore (anche se tutto corretto).\\
+    \important{\underline{\texttt{AUTOCOMMIT}} è un'opzione che permette di eseguire ogni comando SQL come se fosse una transazione a sé stante (se \texttt{=TRUE})}
+    \chapter{Riferimenti Bibliografici}
+    \textit{Nota: alcuni (o tutti) i link potrebbero non essere più validi.}
+    \begin{itemize}
+        \item \href{https://www.dropbox.com/scl/fi/9w8y5cb2peg4oz7kvr05v/modelloRelazionale.pdf?rlkey=b8f9fo2e8tms0la9wqlkf5pno&e=1&dl=0}{Modello Relazionale}
+        \item \href{https://www.dropbox.com/scl/fi/ptunok2aixlle4zso58va/concettuale.pdf?rlkey=e0pvma78pnq2vdkisp81tcsux&e=1&dl=0}{Progettazione concettuale}
+        \item \href{https://www.dropbox.com/scl/fi/jjvvpol4p4vodi24jjr1u/progettazionelogica.pdf?rlkey=ggi2mchpt7xrnumhvprdi420x&e=1&dl=0}{Progettazione logica}
+        \item \href{https://www.dropbox.com/scl/fi/wjtpva027ju0fei216kls/sqlDDL.pdf?rlkey=5a0k6g99sq8zvx4iea4df6c5l&e=1&dl=0}{SQL DDL}
+        \item SQL Query \begin{itemize}
+            \item \href{https://www.dropbox.com/scl/fi/ly22527v36sp153e38c1g/sqlQuery1.pdf?rlkey=08pme9f9kornu6m0utbvejeyl&e=1&dl=0}{Prima parte}
+            \item \href{https://www.dropbox.com/scl/fi/eczn4be6s050tzxrtqbym/sqlQuery2.pdf?rlkey=pf45n3a0da1m32ub8yquflb5v&e=1&dl=0}{Seconda parte}
+            \item \href{https://www.dropbox.com/scl/fi/q6gl4sn3egmqeejs5z74l/sqlQuery3.pdf?rlkey=yg82xztwpktkhrg0u59i5jm8d&e=1&dl=0}{Terza parte}
+        \end{itemize}
+        \item Algebra Relazionale \begin{itemize}
+            \item \href{https://www.dropbox.com/scl/fi/c1grvxcutg64g3ud33925/algebraRelazionale1.pdf?rlkey=uhzbmw6t125hw6khkd0uhv4uh&e=1&dl=0}{Prima parte}
+            \item \href{https://www.dropbox.com/scl/fi/g8c7xiqw56bs1pbcepcx3/algebraRelazionale2.pdf?rlkey=i9pznnyv1vzkeyje7ujjiy3cg&e=1&dl=0}{Seconda parte}
+        \end{itemize}
+        \item \href{https://2023.aulaweb.unige.it/pluginfile.php/352551/mod_book/chapter/829/sqlModifiche.pdf}{Modifiche in SQL}
+        \item \href{https://2023.aulaweb.unige.it/pluginfile.php/352551/mod_book/chapter/829/sqllVincoli.pdf}{Vincoli di Integrità in SQL}
+        \item \href{https://www.dropbox.com/scl/fi/cpqszf14jy3ng39nrkt64/sqllViste.pdf?rlkey=8zxyihsdlmvtcbb67dq762gqm&e=1&dl=0}{Dati derivati e viste}
+        \item \href{https://2023.aulaweb.unige.it/pluginfile.php/352551/mod_book/chapter/835/normalizzazione.pdf}{Normalizzazione}
+        \item \href{https://www.dropbox.com/scl/fi/68ovdsvcp11ojj2izgd6o/gestore%20delle%20strutture%20di%20memorizzazione%20e%20di%20accesso.pdf?rlkey=49iws799mhi21arnjyos2c51r&e=1&dl=0}{Strutture di memorizzazione e di accesso}
+        \item \href{https://www.dropbox.com/scl/fi/1s8pjkfvv3qhw6n9vxgv6/elab-interrogazioni.pdf?rlkey=dnfz86cnhyz94hvxs4jmx23gz&e=1&dl=0}{Elaborazione di interrogazioni}
+        \item \href{https://www.dropbox.com/scl/fi/wt3igo4wa8hfvoywlv8tm/controlloAccesso.pdf?rlkey=j4pfjg3mu7xundkmi6sbg3xvw&e=1&dl=0}{Controllo dell'Accesso}
+        \item \href{https://www.dropbox.com/scl/fi/aqtxqxwpirdfxg9fpxtbs/transazioni.pdf?rlkey=xmjnie9k0ucfpz5xdhqbohyyi&e=1&dl=0}{Transazioni}
+    \end{itemize}
+    \end{document}
