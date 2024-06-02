@@ -1,0 +1,133 @@
+\documentclass[10pt]{article}
+\usepackage[italian]{babel}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\geometry{margin=2cm}
+\let\olditemize\itemize
+\renewcommand\itemize{\olditemize\setlength\itemsep{0em}}
+
+\author{Lorenzo Vaccarecci}
+
+\title{Formulario}
+\date{}
+
+\begin{document}
+\maketitle
+\section{Algebra Relazionale}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Operatore} & \textbf{Descrizione} & \textbf{Uso}\\
+    \hline
+    $\sigma_{\theta}$ & Selezione & isolo righe\\
+    \hline
+    $\pi_{A_{1}, A_{2}, \ldots, A_{n}}$ & Proiezione & isolo colonne\\
+    \hline
+    $\times$ & Prodotto cartesiano & solo se schemi disgiunti\\
+    \hline
+    $\cup$ & Unione & solo se stesso schema\\
+    \hline
+    $\cap$ & Intersezione & solo se stesso schema\\
+    \hline
+    $-$ & Differenza & solo se stesso schema e grado\\
+    \hline
+    $\bowtie$ & Join & solo se schemi disgiunti\\
+    \hline
+    $\div$ & Divisione & query con 'tutto'\\
+    \hline
+    \end{tabular}
+\end{table}
+Divisione: Quali sono gli elementi di A che sono correlati a tutti gli elementi di B?
+\section{Outer Join}
+% Adjusting table font size and row height
+\begin{table}[h]
+    \centering
+    \small % Font size adjustment
+    \setlength{\arrayrulewidth}{0.5mm} % Thickness of the table border
+    \renewcommand{\arraystretch}{1.2} % Row height
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Tabella A} & \textbf{Tabella B} & \textbf{Left Outer Join} & \textbf{Right Outer Join} \\
+    \hline
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{ID} & \textbf{Nome}  \\
+    \hline
+    1  & Anna  \\
+    \hline
+    2  & Bruno \\
+    \hline
+    3  & Carlo \\
+    \hline
+    \end{tabular} &
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{ID} & \textbf{Cognome}  \\
+    \hline
+    3  & Rossi    \\
+    \hline
+    4  & Verdi    \\
+    \hline
+    5  & Bianchi  \\
+    \hline
+    \end{tabular} &
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{ID} & \textbf{Nome} & \textbf{Cognome} \\
+    \hline
+    1  & Anna  & NULL    \\
+    \hline
+    2  & Bruno & NULL    \\
+    \hline
+    3  & Carlo & Rossi   \\
+    \hline
+    \end{tabular} &
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{ID} & \textbf{Nome} & \textbf{Cognome} \\
+    \hline
+    3  & Carlo & Rossi    \\
+    \hline
+    4  & NULL  & Verdi    \\
+    \hline
+    5  & NULL  & Bianchi  \\
+    \hline
+    \end{tabular} \\
+    \hline
+    \end{tabular}
+\end{table}
+
+% Adjusting table font size and row height
+\begin{table}[h]
+    \centering
+    \small % Font size adjustment
+    \setlength{\arrayrulewidth}{0.5mm} % Thickness of the table border
+    \renewcommand{\arraystretch}{1.2} % Row height
+    \begin{tabular}{|c|}
+    \hline
+    \textbf{Full Outer Join} \\
+    \hline
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{ID} & \textbf{Nome} & \textbf{Cognome} \\
+    \hline
+    1  & Anna  & NULL     \\
+    \hline
+    2  & Bruno & NULL     \\
+    \hline
+    3  & Carlo & Rossi    \\
+    \hline
+    4  & NULL  & Verdi    \\
+    \hline
+    5  & NULL  & Bianchi  \\
+    \hline
+    \end{tabular} \\
+    \hline
+    \end{tabular}
+\end{table}    
+
+\section{Normalizzazione}
+\end{document}

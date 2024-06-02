@@ -1,6 +1,0 @@
-[ ] Algebra Relazionale (sintassi e utilizzo)
-[ ] Vincoli
-[ ] Join
-[ ] Sintassi dei comandi sql (giusto per)
-[ ] (NOT)EXISTS, ANY, ALL ecc. (Come usarli e quando)
-[ ] Come fare la normalizzazione e riconoscerla
