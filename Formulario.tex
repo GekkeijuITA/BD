@@ -15,119 +15,46 @@
 
 \begin{document}
 \maketitle
-\section{Algebra Relazionale}
 \begin{table}[h]
     \centering
     \begin{tabular}{|c|c|c|}
-    \hline
-    \textbf{Operatore} & \textbf{Descrizione} & \textbf{Uso}\\
-    \hline
-    $\sigma_{\theta}$ & Selezione & isolo righe\\
-    \hline
-    $\pi_{A_{1}, A_{2}, \ldots, A_{n}}$ & Proiezione & isolo colonne\\
-    \hline
-    $\times$ & Prodotto cartesiano & solo se schemi disgiunti\\
-    \hline
-    $\cup$ & Unione & solo se stesso schema\\
-    \hline
-    $\cap$ & Intersezione & solo se stesso schema\\
-    \hline
-    $-$ & Differenza & solo se stesso schema e grado\\
-    \hline
-    $\bowtie$ & Join & solo se schemi disgiunti\\
-    \hline
-    $\div$ & Divisione & query con 'tutto'\\
-    \hline
+        \hline
+        \textbf{Op.} & \textbf{Cond.} & \textbf{Lett.}\\
+        \hline
+        $\Pi_{A}(R)$ &  & isolo colonne\\
+        $\sigma_{F}(R)$ &  & isolo righe che soddisfano $F$\\
+        $R \times S$ & schemi disgiunti & tutte le combinazioni di $R$ e $S$\\
+        $R \cup S$ & stesso schema & tuple in $R$ \textbf{o} $S$\\
+        $R \cap S$ & stesso schema & tuple in $R$ \textbf{e} in $S$\\
+        $R - S$ & stesso schema e grado & tuple in $R$ ma \textbf{non in} $S$\\
+        $R \bowtie_{F} S$ & schemi disgiunti & prodotto cartesiano con selezione\\
+        $R \bowtie S$ & almeno un attributo in comune & prodotto cartesiano con selezione\\
+        $R \div S$ & almeno un attributo in comune & tuple in $R$ che compaiono in $S$\\
+        \hline
     \end{tabular}
 \end{table}
-Divisione: Quali sono gli elementi di A che sono correlati a tutti gli elementi di B?
-\section{Outer Join}
-% Adjusting table font size and row height
-\begin{table}[h]
-    \centering
-    \small % Font size adjustment
-    \setlength{\arrayrulewidth}{0.5mm} % Thickness of the table border
-    \renewcommand{\arraystretch}{1.2} % Row height
-    \begin{tabular}{|c|c|c|c|}
-    \hline
-    \textbf{Tabella A} & \textbf{Tabella B} & \textbf{Left Outer Join} & \textbf{Right Outer Join} \\
-    \hline
-    \begin{tabular}{|c|c|}
-    \hline
-    \textbf{ID} & \textbf{Nome}  \\
-    \hline
-    1  & Anna  \\
-    \hline
-    2  & Bruno \\
-    \hline
-    3  & Carlo \\
-    \hline
-    \end{tabular} &
-    \begin{tabular}{|c|c|}
-    \hline
-    \textbf{ID} & \textbf{Cognome}  \\
-    \hline
-    3  & Rossi    \\
-    \hline
-    4  & Verdi    \\
-    \hline
-    5  & Bianchi  \\
-    \hline
-    \end{tabular} &
-    \begin{tabular}{|c|c|c|}
-    \hline
-    \textbf{ID} & \textbf{Nome} & \textbf{Cognome} \\
-    \hline
-    1  & Anna  & NULL    \\
-    \hline
-    2  & Bruno & NULL    \\
-    \hline
-    3  & Carlo & Rossi   \\
-    \hline
-    \end{tabular} &
-    \begin{tabular}{|c|c|c|}
-    \hline
-    \textbf{ID} & \textbf{Nome} & \textbf{Cognome} \\
-    \hline
-    3  & Carlo & Rossi    \\
-    \hline
-    4  & NULL  & Verdi    \\
-    \hline
-    5  & NULL  & Bianchi  \\
-    \hline
-    \end{tabular} \\
-    \hline
-    \end{tabular}
-\end{table}
-
-% Adjusting table font size and row height
-\begin{table}[h]
-    \centering
-    \small % Font size adjustment
-    \setlength{\arrayrulewidth}{0.5mm} % Thickness of the table border
-    \renewcommand{\arraystretch}{1.2} % Row height
-    \begin{tabular}{|c|}
-    \hline
-    \textbf{Full Outer Join} \\
-    \hline
-    \begin{tabular}{|c|c|c|}
-    \hline
-    \textbf{ID} & \textbf{Nome} & \textbf{Cognome} \\
-    \hline
-    1  & Anna  & NULL     \\
-    \hline
-    2  & Bruno & NULL     \\
-    \hline
-    3  & Carlo & Rossi    \\
-    \hline
-    4  & NULL  & Verdi    \\
-    \hline
-    5  & NULL  & Bianchi  \\
-    \hline
-    \end{tabular} \\
-    \hline
-    \end{tabular}
-\end{table}    
-
-\section{Normalizzazione}
+\textbf{Tips:}
+\begin{itemize}
+    \item Parti sempre dalle sotto-query
+    \item La divisione usala quando nella richiesta c'è una condizione del tipo "tutti"
+    \item Se usi un operatore di aggregazione (\texttt{COUNT}, \texttt{SUM}, \texttt{AVG}, \texttt{MAX}, \texttt{MIN}), devi usare \texttt{GROUP BY} e puoi usare \texttt{HAVING}
+\end{itemize}
+\textbf{Normalizzazione tips:}
+\begin{itemize}
+    \item $X \rightarrow Y$: per una stessa $X$ non ci sono $Y$ diverse
+    \item Se un attributo non compare mai a destra allora fa parte sicuramente della chiave
+    \item E' BCNF se per ogni $A\rightarrow B$, $A$ chiave e $B \nsubseteq A$
+    \item E' 3NF se $A\rightarrow B$ con $A$ chiave/superchiave \textbf{oppure} $B$ attributo primo
+\end{itemize}
+\textbf{Decomposizione in 3NF:}
+\begin{itemize}
+    \item Individuare le chiavi candidate \begin{itemize}
+        \item Scrivere tutte le $X^{+}$ per ogni attributo a sinistra della freccia delle dipendenze funzionali fornite
+        \item Se ci sono attributi multipli, in $X^{+}$ vanno le dipendenze dei singoli attributi e le dipendenze degli attributi multipli
+        \item Ricorda di mettere anche la dipendenze derivate seguendo la regola sopra
+        \item Le chiavi candidate sono tutte quelle $X^{+}$ che contengono tutti gli attributi della tabella
+    \end{itemize}
+    \item Scompongo in tabelle delle dipendenze usando le dipendenze funzionali
+    \item Guardo se almeno una delle tabella ha come chiave la chiave della tabella originale
+\end{itemize}
 \end{document}
