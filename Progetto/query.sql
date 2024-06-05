@@ -8,21 +8,26 @@ SELECT U.utente FROM utenteiscriveevento U JOIN
 		(SELECT COUNT(DISTINCT categoria) FROM evento WHERE stato = 'CHIUSO')
 
 --Ipotetica query se si aggiunge il campo 'durata' a evento
-SELECT SUM(EXTRACT('MINUTE' FROM durata) + (EXTRACT('HOUR' FROM durata) * 60)) AS utilizzo FROM evento GROUP BY impianto
+SELECT impianto, SUM(EXTRACT('MINUTE' FROM durata) + (EXTRACT('HOUR' FROM durata) * 60)) AS utilizzo 
+	FROM evento 
+	GROUP BY impianto
 
---Ipotetica query se si aggiunge il campo 'orari_disponibilità' a impianto (in un giorno)
-SELECT SUM(EXTRACT('MINUTE' FROM I.orari_disponibilita) + (EXTRACT('HOUR' FROM I.orari_disponibilita) * 60)) AS disponibilita_minuti FROM impianto
+-- Disponibilità giornaliera per impianto (in minuti)
+SELECT 
+	nome, SUM((EXTRACT('MINUTE' FROM I.fine_disponibilita) - EXTRACT('MINUTE' FROM I.inizio_disponibilita)) + ((EXTRACT('HOUR' FROM I.fine_disponibilita) * 60)-(EXTRACT('HOUR' FROM I.inizio_disponibilita) * 60))) AS disponibilita_minuti 
+	FROM impianto I
+	GROUP BY nome
 
 --Ipotetica query per calcolare la disponibilità e l'utilizzo per mese
 SELECT 
     EXTRACT(MONTH FROM E.data_svolgimento) AS mese,
     E.impianto, 
     SUM(EXTRACT('MINUTE' FROM E.durata) + (EXTRACT('HOUR' FROM E.durata) * 60)) AS utilizzo_eventi,
-    SUM(EXTRACT('MINUTE' FROM I.orari_disponibilita) + (EXTRACT('HOUR' FROM I.orari_disponibilita) * 60)) AS disponibilita_minuti
+    SUM((EXTRACT('MINUTE' FROM I.fine_disponibilita) - EXTRACT('MINUTE' FROM I.inizio_disponibilita)) + ((EXTRACT('HOUR' FROM I.fine_disponibilita) * 60)-(EXTRACT('HOUR' FROM I.inizio_disponibilita) * 60))) AS disponibilita_minuti
 FROM 
     evento E
 JOIN
-    impianti I ON E.impianto = I.id
+    impianto I ON E.impianto = I.nome
 GROUP BY 
     mese, E.impianto;
 
@@ -59,7 +64,7 @@ ORDER BY categoria
 
 -- Selezionare i corsi di studio con il numero massimo di partecipanti per categoria
 SELECT partecipanti_massimi, (SELECT denominazione FROM corsodistudio WHERE id = corsodistudio) FROM (
-		SELECT DISTINCT MAX(partecipanti) AS partecipanti_massimi, categoria, corsodistudio FROM (
+		SELECT DISTINCT MAX(partecipanti) AS partecipanti_massimi, categoria FROM (
 			SELECT COUNT(*) AS partecipanti, categoria FROM utenteiscriveevento 
 			JOIN evento E ON evento = E.id
 			JOIN utente U ON utente = U.username
@@ -67,8 +72,6 @@ SELECT partecipanti_massimi, (SELECT denominazione FROM corsodistudio WHERE id =
 		)
 		GROUP BY categoria
 )
-
-
 
 
 

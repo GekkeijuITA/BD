@@ -8,8 +8,6 @@
 \let\olditemize\itemize
 \renewcommand\itemize{\olditemize\setlength\itemsep{0em}}
 
-\author{Lorenzo Vaccarecci}
-
 \title{Formulario}
 \date{}
 
@@ -17,27 +15,28 @@
 \maketitle
 \begin{table}[h]
     \centering
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|c|c|c|}
         \hline
-        \textbf{Op.} & \textbf{Cond.} & \textbf{Lett.}\\
+        \textbf{Op.} & \textbf{Cond.} & \textbf{Lett.} & \textbf{SQL}\\
         \hline
-        $\Pi_{A}(R)$ &  & isolo colonne\\
-        $\sigma_{F}(R)$ &  & isolo righe che soddisfano $F$\\
-        $R \times S$ & schemi disgiunti & tutte le combinazioni di $R$ e $S$\\
-        $R \cup S$ & stesso schema & tuple in $R$ \textbf{o} $S$\\
-        $R \cap S$ & stesso schema & tuple in $R$ \textbf{e} in $S$\\
-        $R - S$ & stesso schema e grado & tuple in $R$ ma \textbf{non in} $S$\\
-        $R \bowtie_{F} S$ & schemi disgiunti & prodotto cartesiano con selezione\\
-        $R \bowtie S$ & almeno un attributo in comune & prodotto cartesiano con selezione\\
-        $R \div S$ & almeno un attributo in comune & tuple in $R$ che compaiono in $S$\\
+        $\Pi_{A}(R)$ &  & isolo colonne, senza duplicati & \texttt{SELECT DISTINCT A FROM R}\\
+        $\sigma_{F}(R)$ &  & isolo righe che soddisfano $F$ & \texttt{SELECT * FROM R WHERE F}\\
+        $R \times S$ & schemi disgiunti & tutte le combinazioni di $R$ e $S$ & \texttt{R CROSS JOIN S}\\
+        $R \cup S$ & stesso schema & tuple in $R$ \textbf{o} $S$ & \texttt{R UNION S}\\
+        $R \cap S$ & stesso schema & tuple in $R$ \textbf{e} in $S$ & \texttt{R INTERSECT S}\\
+        $R - S$ & stesso schema e grado & tuple in $R$ ma \textbf{non in} $S$ & \texttt{EXCEPT} o \texttt{NOT IN/NOT EXISTS}\\
+        $R \bowtie_{F} S$ & schemi disgiunti & prodotto cartesiano con selezione & \texttt{R JOIN S ON F}\\
+        $R \bowtie S$ & almeno un attributo in comune & prodotto cartesiano con selezione & \texttt{R NATURAL JOIN S}\\
+        $R \div S$ & almeno un attributo in comune & tuple in $R$ che compaiono in $S$ & \\
         \hline
     \end{tabular}
 \end{table}
 \textbf{Tips:}
 \begin{itemize}
+    \item La divisione $R \div S$ si può anche scrivere come $\Pi_{D}(R) - \Pi_{D}((\Pi_{D}(R)\times S)-R)$
     \item Parti sempre dalle sotto-query
     \item La divisione usala quando nella richiesta c'è una condizione del tipo "tutti"
-    \item Se usi un operatore di aggregazione (\texttt{COUNT}, \texttt{SUM}, \texttt{AVG}, \texttt{MAX}, \texttt{MIN}), devi usare \texttt{GROUP BY} e puoi usare \texttt{HAVING}
+    \item Se usi un operatore di aggregazione (\texttt{COUNT}, \texttt{SUM}, \texttt{AVG}, \texttt{MAX}, \texttt{MIN}), devi usare \texttt{GROUP BY} con lo stesso attributo usato nell'operatore e puoi usare \texttt{HAVING}
 \end{itemize}
 \textbf{Normalizzazione tips:}
 \begin{itemize}
@@ -56,5 +55,6 @@
     \end{itemize}
     \item Scompongo in tabelle delle dipendenze usando le dipendenze funzionali
     \item Guardo se almeno una delle tabella ha come chiave la chiave della tabella originale
+    \item Se la chiave si trova a sinistra è anche BCNF
 \end{itemize}
 \end{document}
