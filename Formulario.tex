@@ -36,7 +36,7 @@
     \item La divisione $R \div S$ si può anche scrivere come $\Pi_{D}(R) - \Pi_{D}((\Pi_{D}(R)\times S)-R)$
     \item Parti sempre dalle sotto-query
     \item La divisione usala quando nella richiesta c'è una condizione del tipo "tutti"
-    \item Se usi un operatore di aggregazione (\texttt{COUNT}, \texttt{SUM}, \texttt{AVG}, \texttt{MAX}, \texttt{MIN}), devi usare \texttt{GROUP BY} con lo stesso attributo usato nell'operatore e puoi usare \texttt{HAVING}
+    \item Se usi un operatore di aggregazione (\texttt{COUNT}, \texttt{SUM}, \texttt{AVG}, \texttt{MAX}, \texttt{MIN}), puoi usare \texttt{GROUP BY} e puoi usare \texttt{HAVING}
 \end{itemize}
 \textbf{Normalizzazione tips:}
 \begin{itemize}
@@ -44,6 +44,8 @@
     \item Se un attributo non compare mai a destra allora fa parte sicuramente della chiave
     \item E' BCNF se per ogni $A\rightarrow B$, $A$ chiave e $B \nsubseteq A$
     \item E' 3NF se $A\rightarrow B$ con $A$ chiave/superchiave \textbf{oppure} $B$ attributo primo
+    \item Se $R$ non è in 3NF allora non è in BCNF
+    \item Se $R$ non è in BCNF potrebbe essere in 3NF
 \end{itemize}
 \textbf{Decomposizione in 3NF:}
 \begin{itemize}
@@ -56,5 +58,13 @@
     \item Scompongo in tabelle delle dipendenze usando le dipendenze funzionali
     \item Guardo se almeno una delle tabella ha come chiave la chiave della tabella originale
     \item Se la chiave si trova a sinistra è anche BCNF
+\end{itemize}
+\textbf{SQL}
+\begin{itemize}
+    \item HAVING quando e perchè
+    \item ALL e ANY
+    \item EXISTS e NOT EXISTS
+    \item AGGREGAZIONE (GROUP BY)
+    \item SOTTO QUERY
 \end{itemize}
 \end{document}
