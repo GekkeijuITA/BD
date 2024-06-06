@@ -5,7 +5,7 @@
 -- Dumped from database version 16.3
 -- Dumped by pg_dump version 16.3
 
--- Started on 2024-06-05 10:12:44
+-- Started on 2024-06-06 10:06:46
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -27,6 +27,30 @@ CREATE SCHEMA "UniGeSocialSport";
 
 
 ALTER SCHEMA "UniGeSocialSport" OWNER TO postgres;
+
+--
+-- TOC entry 232 (class 1255 OID 16629)
+-- Name: get_random_impianto_id(); Type: FUNCTION; Schema: UniGeSocialSport; Owner: postgres
+--
+
+CREATE FUNCTION "UniGeSocialSport".get_random_impianto_id() RETURNS character varying
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    impianto_id VARCHAR;
+BEGIN
+    SELECT nome
+    INTO impianto_id
+    FROM IMPIANTO
+    ORDER BY RANDOM()
+    LIMIT 1;
+    
+    RETURN impianto_id;
+END;
+$$;
+
+
+ALTER FUNCTION "UniGeSocialSport".get_random_impianto_id() OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -288,7 +312,7 @@ CREATE TABLE "UniGeSocialSport".utentevalutautente (
 ALTER TABLE "UniGeSocialSport".utentevalutautente OWNER TO postgres;
 
 --
--- TOC entry 4962 (class 0 OID 16407)
+-- TOC entry 4963 (class 0 OID 16407)
 -- Dependencies: 217
 -- Data for Name: categoria; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -306,7 +330,7 @@ INSERT INTO "UniGeSocialSport".categoria (id, denominazione, num_giocatori, rego
 
 
 --
--- TOC entry 4961 (class 0 OID 16400)
+-- TOC entry 4962 (class 0 OID 16400)
 -- Dependencies: 216
 -- Data for Name: corsodistudio; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -324,45 +348,45 @@ INSERT INTO "UniGeSocialSport".corsodistudio (id, denominazione) VALUES (10, 'Ps
 
 
 --
--- TOC entry 4970 (class 0 OID 16500)
+-- TOC entry 4971 (class 0 OID 16500)
 -- Dependencies: 225
 -- Data for Name: evento; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
 
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (4, 35, 30, 'CHIUSO', '2024-06-18', 4, NULL, 4, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (9, 25, 20, 'APERTO', '2024-07-04', 4, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (14, 40, 35, 'CHIUSO', '2024-07-19', 4, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (19, 45, 40, 'APERTO', '2024-08-03', 4, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (24, 50, 45, 'CHIUSO', '2024-08-19', 4, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (29, 55, 50, 'APERTO', '2024-09-03', 4, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (5, 2, 1, 'CHIUSO', '2024-06-20', 5, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (10, 4, 2, 'APERTO', '2024-07-07', 5, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (15, 6, 3, 'CHIUSO', '2024-07-22', 5, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (20, 8, 5, 'APERTO', '2024-08-06', 5, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (25, 12, 8, 'CHIUSO', '2024-08-22', 5, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (30, 14, 9, 'APERTO', '2024-09-06', 5, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (3, 3, 0, 'CHIUSO', '2024-06-15', 3, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (8, 5, 3, 'APERTO', '2024-07-01', 3, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (13, 7, 4, 'CHIUSO', '2024-07-16', 3, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (18, 9, 7, 'APERTO', '2024-07-31', 3, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (23, 11, 9, 'CHIUSO', '2024-08-16', 3, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (28, 13, 10, 'APERTO', '2024-08-31', 3, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (1, 20, 18, 'CHIUSO', '2024-06-10', 1, NULL, 1, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (6, 10, 5, 'APERTO', '2024-06-25', 1, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (11, 18, 16, 'CHIUSO', '2024-07-10', 1, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (16, 22, 20, 'APERTO', '2024-07-25', 1, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (21, 24, 22, 'CHIUSO', '2024-08-10', 1, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (26, 28, 25, 'APERTO', '2024-08-25', 1, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (2, 25, 22, 'CHIUSO', '2024-06-12', 2, NULL, 2, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (7, 15, 12, 'APERTO', '2024-06-28', 2, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (12, 30, 27, 'CHIUSO', '2024-07-13', 2, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (17, 33, 30, 'APERTO', '2024-07-28', 2, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (22, 38, 35, 'CHIUSO', '2024-08-13', 2, NULL, NULL, '02:00:00');
-INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (27, 42, 40, 'APERTO', '2024-08-28', 2, NULL, NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (4, 35, 30, 'CHIUSO', '2024-06-18', 4, 'RDS Stadium', 4, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (9, 25, 20, 'APERTO', '2024-07-04', 4, 'RDS Stadium', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (14, 40, 35, 'CHIUSO', '2024-07-19', 4, 'Arena Albaro Village', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (19, 45, 40, 'APERTO', '2024-08-03', 4, 'Stadio Luigi Ferraris', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (24, 50, 45, 'CHIUSO', '2024-08-19', 4, 'Campo Sportivo Carlini', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (29, 55, 50, 'APERTO', '2024-09-03', 4, 'Complesso Polisportivo', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (5, 2, 1, 'CHIUSO', '2024-06-20', 5, 'RDS Stadium', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (10, 4, 2, 'APERTO', '2024-07-07', 5, 'Complesso Polisportivo', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (15, 6, 3, 'CHIUSO', '2024-07-22', 5, 'Piscina Sciorba', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (20, 8, 5, 'APERTO', '2024-08-06', 5, 'Palazzetto dello Sport', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (25, 12, 8, 'CHIUSO', '2024-08-22', 5, 'Teatro Carlo Felice', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (30, 14, 9, 'APERTO', '2024-09-06', 5, 'RDS Stadium', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (3, 3, 0, 'CHIUSO', '2024-06-15', 3, 'Palasport di Genova', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (8, 5, 3, 'APERTO', '2024-07-01', 3, 'Palazzetto dello Sport', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (13, 7, 4, 'CHIUSO', '2024-07-16', 3, 'RDS Stadium', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (18, 9, 7, 'APERTO', '2024-07-31', 3, 'Arena Albaro Village', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (23, 11, 9, 'CHIUSO', '2024-08-16', 3, 'Stadio Luigi Ferraris', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (28, 13, 10, 'APERTO', '2024-08-31', 3, 'Palazzo Ducale', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (1, 20, 18, 'CHIUSO', '2024-06-10', 1, 'Palasport di Genova', 1, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (6, 10, 5, 'APERTO', '2024-06-25', 1, 'Teatro Carlo Felice', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (11, 18, 16, 'CHIUSO', '2024-07-10', 1, 'Complesso Polisportivo', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (16, 22, 20, 'APERTO', '2024-07-25', 1, 'Stadio Luigi Ferraris', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (21, 24, 22, 'CHIUSO', '2024-08-10', 1, 'Palazzo Ducale', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (26, 28, 25, 'APERTO', '2024-08-25', 1, 'Complesso Polisportivo', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (2, 25, 22, 'CHIUSO', '2024-06-12', 2, 'Piscina Sciorba', 2, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (7, 15, 12, 'APERTO', '2024-06-28', 2, 'Piscina Sciorba', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (12, 30, 27, 'CHIUSO', '2024-07-13', 2, 'Arena Albaro Village', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (17, 33, 30, 'APERTO', '2024-07-28', 2, 'Palazzetto dello Sport', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (22, 38, 35, 'CHIUSO', '2024-08-13', 2, 'Piscina Sciorba', NULL, '02:00:00');
+INSERT INTO "UniGeSocialSport".evento (id, punti_sq1, punti_sq2, stato, data_svolgimento, categoria, impianto, torneo, durata) VALUES (27, 42, 40, 'APERTO', '2024-08-28', 2, 'Campo Sportivo Carlini', NULL, '02:00:00');
 
 
 --
--- TOC entry 4963 (class 0 OID 16414)
+-- TOC entry 4964 (class 0 OID 16414)
 -- Dependencies: 218
 -- Data for Name: impianto; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -380,115 +404,305 @@ INSERT INTO "UniGeSocialSport".impianto (nome, email, telefono, longitudine, lat
 
 
 --
--- TOC entry 4969 (class 0 OID 16481)
+-- TOC entry 4970 (class 0 OID 16481)
 -- Dependencies: 224
 -- Data for Name: livello; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
 
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 1, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 2, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 3, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 4, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 5, 70);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 6, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 7, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 8, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 9, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 10, 70);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 1, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 2, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 3, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 4, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 5, 70);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 6, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 7, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 8, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 9, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 10, 70);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 1, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 2, 70);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 3, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 4, 95);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 5, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 6, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 7, 70);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 8, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 9, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 10, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 1, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 2, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 3, 70);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 4, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 5, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 6, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 7, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 8, 70);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 9, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 10, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 1, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 2, 70);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 3, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 4, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 5, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 6, 75);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('alessandroB', 1, 14);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andrea_v', 1, 48);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andreaN', 1, 82);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 1, 20);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('annaG', 1, 83);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 1, 9);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiaraV', 1, 56);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('elenaB', 1, 94);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 1, 69);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('federicaR', 1, 44);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 1, 18);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('gabrieleV', 1, 49);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanna_v', 1, 86);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 1, 8);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giulia_m', 1, 10);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 1, 9);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('lauraG', 1, 2);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luca_r', 1, 85);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 1, 73);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marco_blu', 1, 14);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marcoM', 1, 11);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 1, 59);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 1, 19);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloN', 1, 100);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('riccardoR', 1, 100);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 1, 23);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('saraR', 1, 36);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('silviaG', 1, 40);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('simoneN', 1, 53);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('alessandroB', 2, 71);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andrea_v', 2, 24);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andreaN', 2, 42);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 2, 70);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('annaG', 2, 63);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 2, 21);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiaraV', 2, 98);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('elenaB', 2, 20);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 2, 76);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('federicaR', 2, 51);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 2, 6);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('gabrieleV', 2, 66);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanna_v', 2, 28);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 2, 87);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giulia_m', 2, 98);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 2, 48);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('lauraG', 2, 97);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luca_r', 2, 97);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 2, 82);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marco_blu', 2, 74);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marcoM', 2, 28);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 2, 82);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 2, 5);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloN', 2, 68);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('riccardoR', 2, 13);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 2, 88);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('saraR', 2, 73);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('silviaG', 2, 17);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('simoneN', 2, 38);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('alessandroB', 3, 43);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andrea_v', 3, 83);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andreaN', 3, 18);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 3, 59);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('annaG', 3, 37);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 3, 85);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiaraV', 3, 73);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('elenaB', 3, 53);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 3, 13);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('federicaR', 3, 40);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 3, 33);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('gabrieleV', 3, 27);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanna_v', 3, 9);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 3, 30);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giulia_m', 3, 10);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 3, 64);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('lauraG', 3, 39);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luca_r', 3, 42);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 3, 89);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marco_blu', 3, 70);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marcoM', 3, 25);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 3, 46);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 3, 53);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloN', 3, 47);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('riccardoR', 3, 33);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 3, 67);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('saraR', 3, 22);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('silviaG', 3, 88);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('simoneN', 3, 6);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('alessandroB', 4, 41);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andrea_v', 4, 5);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andreaN', 4, 30);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 4, 72);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('annaG', 4, 34);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 4, 66);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiaraV', 4, 29);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('elenaB', 4, 45);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 4, 6);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('federicaR', 4, 29);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 4, 47);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('gabrieleV', 4, 75);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanna_v', 4, 51);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 4, 49);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giulia_m', 4, 78);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 4, 23);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('lauraG', 4, 77);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luca_r', 4, 21);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 4, 100);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marco_blu', 4, 67);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marcoM', 4, 51);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 4, 20);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 4, 39);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloN', 4, 69);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('riccardoR', 4, 41);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 4, 86);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('saraR', 4, 7);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('silviaG', 4, 84);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('simoneN', 4, 26);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('alessandroB', 5, 26);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andrea_v', 5, 72);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andreaN', 5, 58);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 5, 79);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('annaG', 5, 89);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 5, 15);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiaraV', 5, 5);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('elenaB', 5, 34);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 5, 57);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('federicaR', 5, 29);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 5, 78);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('gabrieleV', 5, 26);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanna_v', 5, 16);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 5, 82);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giulia_m', 5, 96);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 5, 56);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('lauraG', 5, 15);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luca_r', 5, 2);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 5, 36);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marco_blu', 5, 71);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marcoM', 5, 49);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 5, 6);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 5, 86);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloN', 5, 86);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('riccardoR', 5, 27);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 5, 54);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('saraR', 5, 56);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('silviaG', 5, 82);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('simoneN', 5, 15);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('alessandroB', 6, 22);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andrea_v', 6, 36);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andreaN', 6, 50);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 6, 97);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('annaG', 6, 26);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 6, 18);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiaraV', 6, 79);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('elenaB', 6, 58);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 6, 86);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('federicaR', 6, 70);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 6, 58);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('gabrieleV', 6, 95);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanna_v', 6, 90);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 6, 14);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giulia_m', 6, 35);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 6, 13);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('lauraG', 6, 98);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luca_r', 6, 34);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 6, 7);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marco_blu', 6, 22);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marcoM', 6, 23);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 6, 60);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 6, 81);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloN', 6, 96);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('riccardoR', 6, 15);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 6, 16);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('saraR', 6, 2);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('silviaG', 6, 84);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('simoneN', 6, 12);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('alessandroB', 7, 25);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andrea_v', 7, 64);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andreaN', 7, 93);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 7, 81);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('annaG', 7, 14);
 INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 7, 70);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 8, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 9, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 10, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 1, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 2, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 3, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 4, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 5, 70);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 6, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 7, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 8, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 9, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 10, 70);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 1, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 2, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 3, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 4, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 5, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 6, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 7, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 8, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 9, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 10, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 1, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 2, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 3, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 4, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 5, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 6, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 7, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 8, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 9, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 10, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 1, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 2, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 3, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 4, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 5, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 6, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 7, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 8, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 9, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 10, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 1, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 2, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 3, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 4, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 5, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 6, 80);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 7, 85);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 8, 90);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 9, 75);
-INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 10, 80);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiaraV', 7, 60);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('elenaB', 7, 12);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 7, 91);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('federicaR', 7, 73);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 7, 13);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('gabrieleV', 7, 85);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanna_v', 7, 32);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 7, 45);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giulia_m', 7, 100);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 7, 2);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('lauraG', 7, 3);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luca_r', 7, 28);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 7, 78);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marco_blu', 7, 67);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marcoM', 7, 18);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 7, 54);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 7, 73);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloN', 7, 88);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('riccardoR', 7, 1);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 7, 11);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('saraR', 7, 24);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('silviaG', 7, 74);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('simoneN', 7, 46);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('alessandroB', 8, 100);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andrea_v', 8, 50);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andreaN', 8, 70);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 8, 95);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('annaG', 8, 46);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 8, 59);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiaraV', 8, 23);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('elenaB', 8, 15);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 8, 62);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('federicaR', 8, 67);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 8, 91);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('gabrieleV', 8, 68);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanna_v', 8, 29);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 8, 87);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giulia_m', 8, 62);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 8, 59);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('lauraG', 8, 63);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luca_r', 8, 71);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 8, 65);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marco_blu', 8, 58);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marcoM', 8, 54);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 8, 14);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 8, 93);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloN', 8, 15);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('riccardoR', 8, 49);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 8, 58);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('saraR', 8, 48);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('silviaG', 8, 19);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('simoneN', 8, 14);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('alessandroB', 9, 15);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andrea_v', 9, 24);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andreaN', 9, 98);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 9, 41);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('annaG', 9, 44);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 9, 28);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiaraV', 9, 87);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('elenaB', 9, 84);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 9, 60);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('federicaR', 9, 76);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 9, 57);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('gabrieleV', 9, 87);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanna_v', 9, 87);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 9, 72);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giulia_m', 9, 97);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 9, 95);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('lauraG', 9, 74);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luca_r', 9, 67);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 9, 17);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marco_blu', 9, 7);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marcoM', 9, 58);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 9, 59);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 9, 93);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloN', 9, 54);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('riccardoR', 9, 6);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 9, 35);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('saraR', 9, 53);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('silviaG', 9, 50);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('simoneN', 9, 25);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('alessandroB', 10, 94);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andrea_v', 10, 68);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('andreaN', 10, 30);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('anna_neri', 10, 50);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('annaG', 10, 66);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiara_rosa', 10, 31);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('chiaraV', 10, 73);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('elenaB', 10, 30);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('eleonora_v', 10, 94);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('federicaR', 10, 86);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('francesca_blu', 10, 39);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('gabrieleV', 10, 15);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanna_v', 10, 52);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giovanniG', 10, 86);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('giulia_m', 10, 82);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('laura_b', 10, 5);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('lauraG', 10, 8);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luca_r', 10, 6);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('luigi_v', 10, 70);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marco_blu', 10, 13);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('marcoM', 10, 77);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('mario88', 10, 31);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloA', 10, 52);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('paoloN', 10, 2);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('riccardoR', 10, 95);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('rick_marr', 10, 61);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('saraR', 10, 38);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('silviaG', 10, 7);
+INSERT INTO "UniGeSocialSport".livello (utente, categoria, punteggio) VALUES ('simoneN', 10, 93);
 
 
 --
--- TOC entry 4965 (class 0 OID 16432)
+-- TOC entry 4966 (class 0 OID 16432)
 -- Dependencies: 220
 -- Data for Name: premio; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -506,7 +720,7 @@ INSERT INTO "UniGeSocialSport".premio (id, descrizione) VALUES (10, 'Premio alla
 
 
 --
--- TOC entry 4968 (class 0 OID 16464)
+-- TOC entry 4969 (class 0 OID 16464)
 -- Dependencies: 223
 -- Data for Name: sostituzione; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -522,7 +736,7 @@ INSERT INTO "UniGeSocialSport".sostituzione (id, utente_richiedente, utente_sost
 
 
 --
--- TOC entry 4964 (class 0 OID 16425)
+-- TOC entry 4965 (class 0 OID 16425)
 -- Dependencies: 219
 -- Data for Name: sponsor; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -540,7 +754,7 @@ INSERT INTO "UniGeSocialSport".sponsor (id, denominazione) VALUES (10, 'Lotto');
 
 
 --
--- TOC entry 4972 (class 0 OID 16535)
+-- TOC entry 4973 (class 0 OID 16535)
 -- Dependencies: 227
 -- Data for Name: sponsorfinanziatorneo; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -552,7 +766,7 @@ INSERT INTO "UniGeSocialSport".sponsorfinanziatorneo (sponsor, torneo) VALUES (4
 
 
 --
--- TOC entry 4971 (class 0 OID 16523)
+-- TOC entry 4972 (class 0 OID 16523)
 -- Dependencies: 226
 -- Data for Name: squadra; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -562,7 +776,7 @@ INSERT INTO "UniGeSocialSport".squadra (nome, colore_maglia, descrizione, note, 
 
 
 --
--- TOC entry 4973 (class 0 OID 16552)
+-- TOC entry 4974 (class 0 OID 16552)
 -- Dependencies: 228
 -- Data for Name: squadrapartecipatorneo; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -572,7 +786,7 @@ INSERT INTO "UniGeSocialSport".squadrapartecipatorneo (squadra, torneo) VALUES (
 
 
 --
--- TOC entry 4966 (class 0 OID 16439)
+-- TOC entry 4967 (class 0 OID 16439)
 -- Dependencies: 221
 -- Data for Name: torneo; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -590,7 +804,7 @@ INSERT INTO "UniGeSocialSport".torneo (id, descrizione, restrizione) VALUES (10,
 
 
 --
--- TOC entry 4967 (class 0 OID 16446)
+-- TOC entry 4968 (class 0 OID 16446)
 -- Dependencies: 222
 -- Data for Name: utente; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -627,7 +841,7 @@ INSERT INTO "UniGeSocialSport".utente (username, numero_matricola, nome, cognome
 
 
 --
--- TOC entry 4974 (class 0 OID 16569)
+-- TOC entry 4975 (class 0 OID 16569)
 -- Dependencies: 229
 -- Data for Name: utentefapartesquadra; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -641,7 +855,7 @@ INSERT INTO "UniGeSocialSport".utentefapartesquadra (utente, squadra, stato) VAL
 
 
 --
--- TOC entry 4976 (class 0 OID 16608)
+-- TOC entry 4977 (class 0 OID 16608)
 -- Dependencies: 231
 -- Data for Name: utenteiscriveevento; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -696,7 +910,7 @@ INSERT INTO "UniGeSocialSport".utenteiscriveevento (utente, evento, data_iscrizi
 
 
 --
--- TOC entry 4975 (class 0 OID 16585)
+-- TOC entry 4976 (class 0 OID 16585)
 -- Dependencies: 230
 -- Data for Name: utentevalutautente; Type: TABLE DATA; Schema: UniGeSocialSport; Owner: postgres
 --
@@ -716,7 +930,7 @@ INSERT INTO "UniGeSocialSport".utentevalutautente (utente_valutante, utente_valu
 
 
 --
--- TOC entry 4761 (class 2606 OID 16413)
+-- TOC entry 4762 (class 2606 OID 16413)
 -- Name: categoria categoria_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -725,7 +939,7 @@ ALTER TABLE ONLY "UniGeSocialSport".categoria
 
 
 --
--- TOC entry 4759 (class 2606 OID 16406)
+-- TOC entry 4760 (class 2606 OID 16406)
 -- Name: corsodistudio corsodistudio_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -734,7 +948,7 @@ ALTER TABLE ONLY "UniGeSocialSport".corsodistudio
 
 
 --
--- TOC entry 4785 (class 2606 OID 16507)
+-- TOC entry 4786 (class 2606 OID 16507)
 -- Name: evento evento_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -743,7 +957,7 @@ ALTER TABLE ONLY "UniGeSocialSport".evento
 
 
 --
--- TOC entry 4763 (class 2606 OID 16422)
+-- TOC entry 4764 (class 2606 OID 16422)
 -- Name: impianto impianto_email_key; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -752,7 +966,7 @@ ALTER TABLE ONLY "UniGeSocialSport".impianto
 
 
 --
--- TOC entry 4765 (class 2606 OID 16420)
+-- TOC entry 4766 (class 2606 OID 16420)
 -- Name: impianto impianto_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -761,7 +975,7 @@ ALTER TABLE ONLY "UniGeSocialSport".impianto
 
 
 --
--- TOC entry 4767 (class 2606 OID 16424)
+-- TOC entry 4768 (class 2606 OID 16424)
 -- Name: impianto impianto_telefono_key; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -770,7 +984,7 @@ ALTER TABLE ONLY "UniGeSocialSport".impianto
 
 
 --
--- TOC entry 4783 (class 2606 OID 16489)
+-- TOC entry 4784 (class 2606 OID 16489)
 -- Name: livello livello_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -779,7 +993,7 @@ ALTER TABLE ONLY "UniGeSocialSport".livello
 
 
 --
--- TOC entry 4771 (class 2606 OID 16438)
+-- TOC entry 4772 (class 2606 OID 16438)
 -- Name: premio premio_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -788,7 +1002,7 @@ ALTER TABLE ONLY "UniGeSocialSport".premio
 
 
 --
--- TOC entry 4781 (class 2606 OID 16470)
+-- TOC entry 4782 (class 2606 OID 16470)
 -- Name: sostituzione sostituzione_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -797,7 +1011,7 @@ ALTER TABLE ONLY "UniGeSocialSport".sostituzione
 
 
 --
--- TOC entry 4769 (class 2606 OID 16431)
+-- TOC entry 4770 (class 2606 OID 16431)
 -- Name: sponsor sponsor_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -806,7 +1020,7 @@ ALTER TABLE ONLY "UniGeSocialSport".sponsor
 
 
 --
--- TOC entry 4789 (class 2606 OID 16541)
+-- TOC entry 4790 (class 2606 OID 16541)
 -- Name: sponsorfinanziatorneo sponsorfinanziatorneo_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -815,7 +1029,7 @@ ALTER TABLE ONLY "UniGeSocialSport".sponsorfinanziatorneo
 
 
 --
--- TOC entry 4787 (class 2606 OID 16529)
+-- TOC entry 4788 (class 2606 OID 16529)
 -- Name: squadra squadra_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -824,7 +1038,7 @@ ALTER TABLE ONLY "UniGeSocialSport".squadra
 
 
 --
--- TOC entry 4791 (class 2606 OID 16558)
+-- TOC entry 4792 (class 2606 OID 16558)
 -- Name: squadrapartecipatorneo squadrapartecipatorneo_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -833,7 +1047,7 @@ ALTER TABLE ONLY "UniGeSocialSport".squadrapartecipatorneo
 
 
 --
--- TOC entry 4773 (class 2606 OID 16445)
+-- TOC entry 4774 (class 2606 OID 16445)
 -- Name: torneo torneo_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -842,7 +1056,7 @@ ALTER TABLE ONLY "UniGeSocialSport".torneo
 
 
 --
--- TOC entry 4775 (class 2606 OID 16456)
+-- TOC entry 4776 (class 2606 OID 16456)
 -- Name: utente utente_numero_matricola_key; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -851,7 +1065,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utente
 
 
 --
--- TOC entry 4777 (class 2606 OID 16454)
+-- TOC entry 4778 (class 2606 OID 16454)
 -- Name: utente utente_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -860,7 +1074,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utente
 
 
 --
--- TOC entry 4779 (class 2606 OID 16458)
+-- TOC entry 4780 (class 2606 OID 16458)
 -- Name: utente utente_telefono_key; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -869,7 +1083,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utente
 
 
 --
--- TOC entry 4793 (class 2606 OID 16574)
+-- TOC entry 4794 (class 2606 OID 16574)
 -- Name: utentefapartesquadra utentefapartesquadra_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -878,7 +1092,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utentefapartesquadra
 
 
 --
--- TOC entry 4797 (class 2606 OID 16617)
+-- TOC entry 4798 (class 2606 OID 16617)
 -- Name: utenteiscriveevento utenteiscriveevento_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -887,7 +1101,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utenteiscriveevento
 
 
 --
--- TOC entry 4795 (class 2606 OID 16592)
+-- TOC entry 4796 (class 2606 OID 16592)
 -- Name: utentevalutautente utentevalutautente_pkey; Type: CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -896,7 +1110,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utentevalutautente
 
 
 --
--- TOC entry 4803 (class 2606 OID 16508)
+-- TOC entry 4804 (class 2606 OID 16508)
 -- Name: evento evento_categoria_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -905,7 +1119,7 @@ ALTER TABLE ONLY "UniGeSocialSport".evento
 
 
 --
--- TOC entry 4804 (class 2606 OID 16513)
+-- TOC entry 4805 (class 2606 OID 16513)
 -- Name: evento evento_impianto_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -914,7 +1128,7 @@ ALTER TABLE ONLY "UniGeSocialSport".evento
 
 
 --
--- TOC entry 4805 (class 2606 OID 16518)
+-- TOC entry 4806 (class 2606 OID 16518)
 -- Name: evento evento_torneo_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -923,7 +1137,7 @@ ALTER TABLE ONLY "UniGeSocialSport".evento
 
 
 --
--- TOC entry 4801 (class 2606 OID 16495)
+-- TOC entry 4802 (class 2606 OID 16495)
 -- Name: livello livello_categoria_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -932,7 +1146,7 @@ ALTER TABLE ONLY "UniGeSocialSport".livello
 
 
 --
--- TOC entry 4802 (class 2606 OID 16490)
+-- TOC entry 4803 (class 2606 OID 16490)
 -- Name: livello livello_utente_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -941,7 +1155,7 @@ ALTER TABLE ONLY "UniGeSocialSport".livello
 
 
 --
--- TOC entry 4799 (class 2606 OID 16471)
+-- TOC entry 4800 (class 2606 OID 16471)
 -- Name: sostituzione sostituzione_utente_richiedente_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -950,7 +1164,7 @@ ALTER TABLE ONLY "UniGeSocialSport".sostituzione
 
 
 --
--- TOC entry 4800 (class 2606 OID 16476)
+-- TOC entry 4801 (class 2606 OID 16476)
 -- Name: sostituzione sostituzione_utente_sostitutivo_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -959,7 +1173,7 @@ ALTER TABLE ONLY "UniGeSocialSport".sostituzione
 
 
 --
--- TOC entry 4807 (class 2606 OID 16542)
+-- TOC entry 4808 (class 2606 OID 16542)
 -- Name: sponsorfinanziatorneo sponsorfinanziatorneo_sponsor_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -968,7 +1182,7 @@ ALTER TABLE ONLY "UniGeSocialSport".sponsorfinanziatorneo
 
 
 --
--- TOC entry 4808 (class 2606 OID 16547)
+-- TOC entry 4809 (class 2606 OID 16547)
 -- Name: sponsorfinanziatorneo sponsorfinanziatorneo_torneo_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -977,7 +1191,7 @@ ALTER TABLE ONLY "UniGeSocialSport".sponsorfinanziatorneo
 
 
 --
--- TOC entry 4806 (class 2606 OID 16530)
+-- TOC entry 4807 (class 2606 OID 16530)
 -- Name: squadra squadra_creatore_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -986,7 +1200,7 @@ ALTER TABLE ONLY "UniGeSocialSport".squadra
 
 
 --
--- TOC entry 4809 (class 2606 OID 16559)
+-- TOC entry 4810 (class 2606 OID 16559)
 -- Name: squadrapartecipatorneo squadrapartecipatorneo_squadra_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -995,7 +1209,7 @@ ALTER TABLE ONLY "UniGeSocialSport".squadrapartecipatorneo
 
 
 --
--- TOC entry 4810 (class 2606 OID 16564)
+-- TOC entry 4811 (class 2606 OID 16564)
 -- Name: squadrapartecipatorneo squadrapartecipatorneo_torneo_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -1004,7 +1218,7 @@ ALTER TABLE ONLY "UniGeSocialSport".squadrapartecipatorneo
 
 
 --
--- TOC entry 4798 (class 2606 OID 16459)
+-- TOC entry 4799 (class 2606 OID 16459)
 -- Name: utente utente_corsodistudio_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -1013,7 +1227,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utente
 
 
 --
--- TOC entry 4811 (class 2606 OID 16580)
+-- TOC entry 4812 (class 2606 OID 16580)
 -- Name: utentefapartesquadra utentefapartesquadra_squadra_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -1022,7 +1236,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utentefapartesquadra
 
 
 --
--- TOC entry 4812 (class 2606 OID 16575)
+-- TOC entry 4813 (class 2606 OID 16575)
 -- Name: utentefapartesquadra utentefapartesquadra_utente_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -1031,7 +1245,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utentefapartesquadra
 
 
 --
--- TOC entry 4816 (class 2606 OID 16623)
+-- TOC entry 4817 (class 2606 OID 16623)
 -- Name: utenteiscriveevento utenteiscriveevento_evento_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -1040,7 +1254,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utenteiscriveevento
 
 
 --
--- TOC entry 4817 (class 2606 OID 16618)
+-- TOC entry 4818 (class 2606 OID 16618)
 -- Name: utenteiscriveevento utenteiscriveevento_utente_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -1049,7 +1263,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utenteiscriveevento
 
 
 --
--- TOC entry 4813 (class 2606 OID 16603)
+-- TOC entry 4814 (class 2606 OID 16603)
 -- Name: utentevalutautente utentevalutautente_evento_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -1058,7 +1272,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utentevalutautente
 
 
 --
--- TOC entry 4814 (class 2606 OID 16593)
+-- TOC entry 4815 (class 2606 OID 16593)
 -- Name: utentevalutautente utentevalutautente_utente_valutante_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -1067,7 +1281,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utentevalutautente
 
 
 --
--- TOC entry 4815 (class 2606 OID 16598)
+-- TOC entry 4816 (class 2606 OID 16598)
 -- Name: utentevalutautente utentevalutautente_utente_valutato_fkey; Type: FK CONSTRAINT; Schema: UniGeSocialSport; Owner: postgres
 --
 
@@ -1075,7 +1289,7 @@ ALTER TABLE ONLY "UniGeSocialSport".utentevalutautente
     ADD CONSTRAINT utentevalutautente_utente_valutato_fkey FOREIGN KEY (utente_valutato) REFERENCES "UniGeSocialSport".utente(username) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2024-06-05 10:12:45
+-- Completed on 2024-06-06 10:06:46
 
 --
 -- PostgreSQL database dump complete

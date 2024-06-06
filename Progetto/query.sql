@@ -1,5 +1,6 @@
 set search_path to "UniGeSocialSport"
 
+-- Utenti che hanno partecipato agli eventi di ogni categoria
 SELECT U.utente FROM utenteiscriveevento U JOIN 
 	evento E ON U.evento = E.id AND E.stato = 'CHIUSO'
 	WHERE U.stato = 'accettato' AND U.no_show = false
@@ -23,16 +24,19 @@ SELECT
     EXTRACT(MONTH FROM E.data_svolgimento) AS mese,
     E.impianto, 
     SUM(EXTRACT('MINUTE' FROM E.durata) + (EXTRACT('HOUR' FROM E.durata) * 60)) AS utilizzo_eventi,
-    SUM((EXTRACT('MINUTE' FROM I.fine_disponibilita) - EXTRACT('MINUTE' FROM I.inizio_disponibilita)) + ((EXTRACT('HOUR' FROM I.fine_disponibilita) * 60)-(EXTRACT('HOUR' FROM I.inizio_disponibilita) * 60))) AS disponibilita_minuti
+    SUM((EXTRACT('MINUTE' FROM I.fine_disponibilita) - EXTRACT('MINUTE' FROM I.inizio_disponibilita)) + ((EXTRACT('HOUR' FROM I.fine_disponibilita) - EXTRACT('HOUR' FROM I.inizio_disponibilita))*60)) AS disponibilita_minuti
 FROM 
     evento E
 JOIN
     impianto I ON E.impianto = I.nome
 GROUP BY 
-    mese, E.impianto;
+    mese, E.impianto
+ORDER BY mese
 
 -- Conta quanti eventi (non di un torneo) ci sono in un impianto e di una categoria e conta anche i partecipanti
-SELECT E.impianto, C.denominazione AS categoria, COUNT(E.id) AS eventi, partecipanti, corsi_Di_Studio_Partecipanti, torneo IS NOT NULL as torneo, EXTRACT('MONTH' FROM data_svolgimento) AS mese_svolgimento, 'durata' AS durata_in_minuti
+SELECT 
+	E.impianto, C.denominazione AS categoria, COUNT(E.id) AS eventi, partecipanti, corsi_Di_Studio_Partecipanti, 
+	torneo IS NOT NULL as torneo, EXTRACT('MONTH' FROM data_svolgimento) AS mese_svolgimento, 
 	FROM evento E JOIN categoria C ON E.id = C.id
 	LEFT JOIN (SELECT evento, COUNT(*) AS partecipanti FROM utenteiscriveevento GROUP BY evento) P ON C.id = P.evento 
 	LEFT JOIN (
@@ -73,10 +77,31 @@ SELECT partecipanti_massimi, (SELECT denominazione FROM corsodistudio WHERE id =
 		GROUP BY categoria
 )
 
+-- Funzione che effettua la conferma di un giocatore quale componente di una squadra, realizzando gli opportuni controlli
+CREATE OR REPLACE FUNCTION in_squadra(nome_giocatore VARCHAR, nome_squadra VARCHAR) RETURNS BOOLEAN AS
+$$
+	DECLARE
+		componenti_squadra CURSOR FOR SELECT DISTINCT utente FROM utentefapartesquadra WHERE squadra = nome_squadra AND stato = 'Accettato';
+		utente VARCHAR;
+	BEGIN
+		OPEN componenti_squadra;
+		FETCH componenti_squadra INTO utente;
+		WHILE FOUND LOOP
+			BEGIN
+				IF utente = nome_giocatore THEN
+					RAISE NOTICE 'Fa parte della squadra';
+					CLOSE componenti_squadra;
+					RETURN true;
+				END IF;
+				FETCH componenti_squadra INTO utente;
+			END;
+		END LOOP;
+		RAISE NOTICE 'Non fa parte della squadra';
+		CLOSE componenti_squadra;
+		RETURN false;
+	END;
+$$
+LANGUAGE plpgsql;
 
-
-
-
-
-
+SELECT in_squadra('anna_neri', 'Squadra Rossa')
 
