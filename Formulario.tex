@@ -3,10 +3,32 @@
 \usepackage{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{listings}
 
 \geometry{margin=2cm}
 \let\olditemize\itemize
 \renewcommand\itemize{\olditemize\setlength\itemsep{0em}}
+
+\lstdefinestyle{mystyle}{
+        backgroundcolor=\color{backcolour},   
+        commentstyle=\color{codegreen},
+        keywordstyle=\color{magenta},
+        numberstyle=\tiny\color{codegray},
+        stringstyle=\color{codepurple},
+        basicstyle=\ttfamily\footnotesize,
+        breakatwhitespace=false,         
+        breaklines=true,                 
+        captionpos=b,                    
+        keepspaces=true,                 
+        numbers=left,                    
+        numbersep=5pt,                  
+        showspaces=false,                
+        showstringspaces=false,
+        showtabs=false,                  
+        tabsize=2
+    }
+
+    \lstset{style=mystyle}
 
 \title{Formulario}
 \date{}
@@ -61,10 +83,13 @@
 \end{itemize}
 \textbf{SQL}
 \begin{itemize}
-    \item HAVING quando e perchè
-    \item ALL e ANY
-    \item EXISTS e NOT EXISTS
-    \item AGGREGAZIONE (GROUP BY)
+    \item \texttt{HAVING} è utile per fare condizioni sugli attributi aggregati (\textit{ad esempio se vogliamo avere tutti i gruppi con una media superiore a 8})
+    \item \texttt{ALL}: \texttt{SELECT * FROM R WHERE A > ALL (SELECT B FROM S)} restituisce le tuple di $R$ che soddisfano la condizione $A>B$ se $A$ è maggiore di tutti i valori di $B$
+    \item \texttt{ANY}: simile a prima ma restituisce le tuple di R che soddisfano la condizione $A>B$ se $A$ è maggiore di almeno un valore di $B$
+    \item \texttt{[NOT]EXISTS}: serve per controllare se (non) esiste almeno una tupla in una sotto-query
+    \item \texttt{GROUP BY}: raggruppa le tuple in base ai valori di un attributo
     \item SOTTO QUERY
+    \item \texttt{VISTE}: \texttt{CREATE VIEW <nome\_vista> AS <sotto\_query>}
+    \item TABELLE TEMPORANEE: \texttt{WITH <nome\_tabellatemp>(<nome\_colonne>) AS (<sotto\_query>)}
 \end{itemize}
 \end{document}
