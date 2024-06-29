@@ -36,7 +36,7 @@ ORDER BY mese
 -- Conta quanti eventi (non di un torneo) ci sono in un impianto e di una categoria e conta anche i partecipanti
 SELECT 
 	E.impianto, C.denominazione AS categoria, COUNT(E.id) AS eventi, partecipanti, corsi_Di_Studio_Partecipanti, 
-	torneo IS NOT NULL as torneo, EXTRACT('MONTH' FROM data_svolgimento) AS mese_svolgimento, 
+	torneo IS NOT NULL as torneo, EXTRACT('MONTH' FROM data_svolgimento) AS mese_svolgimento 
 	FROM evento E JOIN categoria C ON E.id = C.id
 	LEFT JOIN (SELECT evento, COUNT(*) AS partecipanti FROM utenteiscriveevento GROUP BY evento) P ON C.id = P.evento 
 	LEFT JOIN (
@@ -45,7 +45,7 @@ SELECT
 		JOIN corsodistudio ON id = U.corsodistudio
 		GROUP BY evento
 	) CDS ON CDS.evento = E.id
-	GROUP BY denominazione, impianto, partecipanti, EXTRACT('MONTH' FROM data_svolgimento), corsi_Di_Studio_Partecipanti, torneo	
+	GROUP BY denominazione, impianto, partecipanti, mese_svolgimento, corsi_Di_Studio_Partecipanti, torneo	
 
 
 -- Contare per evento gli studenti che partecipano a una categoria suddividendoli per cds
@@ -103,5 +103,26 @@ $$
 $$
 LANGUAGE plpgsql;
 
-SELECT in_squadra('anna_neri', 'Squadra Rossa')
+SELECT in_squadra('anna_neri', 'Squadra Blu')
+
+-- Si parte dal livello corrente del giocatore, 
+	--una valutazione positiva +0.5, 
+	--una valutazione negativa -0.75, 
+	--una vittoria +1, 
+	--una sconfitta -1.5, 
+	--ritardo -0.3, 
+	--no_show -2
+CREATE OR REPLACE FUNCTION aggiorna_livello_fun(nome_giocatore VARCHAR, categoria NUMERIC) RETURN VOID AS
+	$$
+		DECLARE
+		BEGIN
+		END;
+	$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER aggiorna_livello 
+	AFTER INSERT 
+	ON
+	WHEN 
+	EXECUTE FUNCTION
 
