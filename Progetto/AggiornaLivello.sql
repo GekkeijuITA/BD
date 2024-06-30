@@ -10,8 +10,6 @@ set search_path to "UniGeSocialSport2.0"
 	totale dei partecipanti provenienti da quel corso di studi)
 */
 
-DROP FUNCTION aggiornalivellovalutazione
-
 CREATE OR REPLACE FUNCTION aggiornalivellovalutazione() RETURNS trigger AS
 	$aggiornalivellovalutazione$
 		DECLARE
@@ -45,28 +43,74 @@ CREATE OR REPLACE FUNCTION aggiornalivelloeventochiuso() RETURNS trigger AS
 			punti_giocatore NUMERIC;
 			cartellino VARCHAR(255);
 			squadra_vincente NUMERIC;
-			utente_partecipa_evento CURSOR FOR SELECT utente, ritardo, no_show, squadra_temp, punti_giocatore, cartellino FROM utentegiocaevento WHERE evento = NEW.id AND stato = 'accettato';
-			
+			utente_partecipa_evento CURSOR FOR 
+				SELECT utente, ritardo, no_show, squadra_temp, punti_giocatore, cartellino 
+				FROM utentegiocaevento 
+				WHERE evento = NEW.id AND stato = 'accettato';
+			old_livello NUMERIC;
+			new_livello NUMERIC;
 		BEGIN
-			SELECT * INTO new_evento FROM evento WHERE id = NEW.id AND stato = 'CHIUSO';
+			IF NEW.stato != 'CHIUSO' THEN
+				RETURN NEW;
+			END IF;
+
+			SELECT * INTO new_evento FROM evento WHERE id = NEW.id;
+
+			-- Squadra vincente (se esiste)
+			IF new_evento.punti_sq1 IS NOT NULL AND new_evento.punti_sq2 IS NOT NULL THEN
+				IF new_evento.punti_sq1 > new_evento.punti_sq2 THEN
+					squadra_vincente = 1;
+				ELSIF new_evento.punti_sq2 > new_evento.punti_sq1 THEN
+					squadra_vincente = 2;
+				ELSE
+					squadra_vincente = 0; -- Pareggio
+				END IF;
+			END IF; 
+
 			OPEN utente_partecipa_evento;
 			FETCH utente_partecipa_evento INTO utente_id, ritardo, no_show, squadra_temp, punti_giocatore, cartellino;
 			WHILE FOUND LOOP
-				-- Devo guardare se ritardo o no_show se è no_show non mi importa del resto altrimenti devo guardare la squadra_temp, se ha fatto punti e se ha preso cartellini
-				BEGIN
+					old_livello := (SELECT punteggio FROM livello WHERE utente = utente_id AND categoria = new_evento.categoria);
+					new_livello := old_livello;
+
 					IF ritardo IS TRUE THEN
-						
+						new_livello := new_livello - 1;
 					END IF;
-					FETCH utente_partecipa_evento INTO utente_id;
-				END;
+
+					IF no_show IS TRUE THEN
+						new_livello := new_livello - 5;
+					ELSE
+						IF squadra_temp == squadra_vincente THEN
+							new_livello := new_livello + 10;
+						ELSIF squadra_vincente != 0 THEN
+									new_livello := new_livello - 7;
+						END IF;
+
+						IF punti_giocatore IS NOT NULL THEN
+							new_livello := new_livello + (punti_giocatore * 0.5);
+						END IF;
+		
+						IF cartellino IS NOT NULL THEN
+							IF cartellino = 'giallo' THEN
+								new_livello := new_livello - 2;
+							ELSIF cartellino = 'rosso' THEN
+								new_livello := new_livello - 4;
+							END IF;
+						END IF;
+
+					END IF;
+
+					UPDATE livello SET punteggio = new_livello WHERE utente = utente_id AND categoria = new_evento.categoria;
+
+					FETCH utente_partecipa_evento INTO utente_id, ritardo, no_show, squadra_temp, punti_giocatore, cartellino;
 			END LOOP;
 			CLOSE utente_partecipa_evento;
-
-END;
+			RETURN NEW;
+		END;
 	$aggiornalivelloeventochiuso$
 LANGUAGE plpgsql;
 	
 CREATE TRIGGER aggiornalivelloeventochiuso
-AFTER INSERT OR UPDATE ON eventi
+AFTER INSERT OR UPDATE ON evento
 FOR EACH ROW
 EXECUTE FUNCTION aggiornalivelloeventochiuso()
